@@ -1,4 +1,4 @@
-import { VStack, HStack, Text, ScrollView, IconButton } from 'native-base';
+import { VStack, HStack, Text,  ScrollView, IconButton } from 'native-base';
 import React from 'react';
 import { FlatList, StyleSheet } from 'react-native';
 import { CardAnotation } from '../../components/CardAnotation';
@@ -88,7 +88,7 @@ export function Home() {
       w: "100%"
     }*/ >
       <VStack flex={1}
-        bg="#251751"
+        bg="#180F34" /*23154F */
       >
         <HStack marginTop={10} paddingX={4} style={styles.title} >
           <Image style={styles.imageLogo} source={require('../../assets/images/moon.png')} />
@@ -101,6 +101,7 @@ export function Home() {
 
           <VStack alignItems={'center'}>
             <IconButton
+              marginBottom={-2}
               icon={<Globe color="#FFFFFF" size={25} />}
               onPress={handleNewOrder}
             />
@@ -110,7 +111,7 @@ export function Home() {
           </VStack>
         </HStack>
 
-        <Text paddingX={4} marginTop={6} marginBottom={5} style={styles.secondtitle} >Músicas</Text>
+        <Text paddingX={5} marginTop={6} marginBottom={4} fontFamily={'medium'} style={styles.secondtitle} >Músicas</Text>
         <HStack marginBottom={10}>
           <FlatList
             data={data[0]}
@@ -125,7 +126,7 @@ export function Home() {
           />
 
         </HStack>
-        <Text paddingX={4} marginBottom={3} style={styles.secondtitle} >Músicas</Text>
+        
         <HStack >
 
           <FlatList
@@ -141,7 +142,7 @@ export function Home() {
           />
 
         </HStack>
-        <Text paddingX={4} marginBottom={3} style={styles.secondtitle} >Histórias para Dormir</Text>
+        <Text paddingX={5} marginBottom={3} fontFamily={'medium'} style={styles.secondtitle} >Histórias para Dormir</Text>
         <HStack >
 
           <FlatList
@@ -157,7 +158,7 @@ export function Home() {
           />
 
         </HStack>
-        <Text paddingX={4} marginBottom={3} style={styles.secondtitle} >Anotações</Text>
+        <Text paddingX={5} fontFamily={'medium'} marginBottom={3}  >Anotações</Text>
         <HStack marginBottom={10}>
           <FlatList
             data={data[3]}
@@ -189,7 +190,9 @@ const styles = StyleSheet.create({
   secondtitle: {
     color: "#FFFFFF",
     alignContent: "center",
-
+    fontSize: 11,
+    
+ 
   },
   imageLogo: {
     width: 30,
