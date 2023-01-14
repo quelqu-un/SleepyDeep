@@ -1,56 +1,98 @@
-import { VStack, HStack, Text } from 'native-base';
+import { VStack, HStack, Text, ScrollView } from 'native-base';
 import React from 'react';
 import { FlatList, StyleSheet } from 'react-native';
+import { CardAnotation } from '../../components/CardAnotation';
 import { CardMusic } from '../../components/CardMusic';
+import { Image } from 'react-native';
+import { Globe } from 'phosphor-react-native';
 
 export function Home() {
   let data = [[{
     id: '0',
-    text: 'aqui é Gabriel o cara',
+    text: 'Ouvidos recentes',
     recent: true
   },
   {
     id: '1',
-    text: 'Laura enjoadinha de vdd',
+    text: 'Chuva Forte',
     recent: true
   },
   {
     id: '2',
-    text: 'Gabriel',
+    text: 'Música Instrumental',
     recent: true
   },
   ],[
     {
       id: '3',
-      text: 'Laura',
+      text: 'Ondas Alphas',
       recent: true
     },
     {
       id: '4',
-      text: 'É a cara',
+      text: 'Sons da Natureza',
       recent: true
     },
     {
       id: '5',
-      text: 'musica de trovão',
+      text: 'ASMR',
       recent: true
     },
-  ]]
+  ],[
+    {
+      id: '6',
+      text: 'História 1',
+      recent: true
+    },
+    {
+      id: '7',
+      text: 'História 2',
+      recent: true
+    },
+    {
+      id: '8',
+      text: 'História 3',
+      recent: true
+    },
+  ],[
+    {
+      id: '0',
+      text: 'O que eu sonhei hoje',
+      recent: true
+    },
+    {
+      id: '1',
+      text: 'Metas do dia',
+      recent: true
+    },
+    {
+      id: '2',
+      text: 'Estresse do dia',
+      recent: true
+    },
+  ],
 
-  return (
-    <VStack flex={1} 
+]
+
+  return ( 
+    <ScrollView /*_contentContainerStyle={{
+      
+      h: "100%",
+      w: "100%"
+    }*/ >
+      <VStack flex={1} 
     bg="#251751" 
-    alignItems={'center'} 
-    justifyContent={'center'} >
-      <Text style={styles.container}>_______HOME_______</Text>
-      <Text style={styles.container}>Gabriel é o cara</Text>
-      <Text style={styles.container}>Gabriel é enjoadinho</Text>
-      <Text style={styles.container}>Gabriel é enjoadinho</Text>
-      <Text style={styles.container}>Laura é a cara</Text>
-      <Text style={styles.container} marginBottom={20}>_______HOME_______</Text>
+   > 
+      <HStack marginTop={10}  paddingX = {4} style={styles.title} >
+      <Image  style={styles.imageLogo}  source={require('../../assets/images/moon.png')}/>
+      <Text   >SlyDeep</Text>
+      
+      <Text  marginTop={7}>br</Text>
+      </HStack>
 
+      <Text paddingX = {4} marginTop={6} marginBottom={5} style={styles.secondtitle} >Músicas</Text>
       <HStack marginBottom={10}>
-
+      {/* <Globe color="#FFFFFF" size={24} /> */}
         <FlatList
           data={data[0]}
           horizontal={true}
@@ -60,12 +102,12 @@ export function Home() {
               data={item}
             ></CardMusic>
           }
-          contentContainerStyle={{ paddingBottom: 100 }}
+          contentContainerStyle={{ paddingBottom: 40 }}
         />
 
       </HStack>
-
-      <HStack marginBottom={1}>
+      <Text paddingX = {4}  marginBottom={3} style={styles.secondtitle} >Músicas</Text>
+      <HStack >
 
         <FlatList
           data={data[1]}
@@ -76,10 +118,67 @@ export function Home() {
               data={item}
             ></CardMusic>
           }
-          contentContainerStyle={{ paddingBottom: 100 }}
+          contentContainerStyle={{ paddingBottom: 80 }}
         />
 
       </HStack>
+      <Text paddingX = {4}  marginBottom={3} style={styles.secondtitle} >Histórias para Dormir</Text>
+      <HStack >
+
+<FlatList
+  data={data[2]}
+  horizontal={true}
+  keyExtractor={item => item.id}
+  renderItem={({ item }) => 
+    <CardMusic
+      data={item}
+    ></CardMusic>
+  }
+  contentContainerStyle={{ paddingBottom: 80 }}
+/>
+
+</HStack>
+<Text paddingX = {4}  marginBottom={3} style={styles.secondtitle} >Anotações</Text>
+<HStack marginBottom={10}>
+        <FlatList
+          data={data[3]}
+          horizontal={true}
+          keyExtractor={item => item.id}
+          renderItem={({ item }) => 
+            <CardAnotation
+              data={item}
+            ></CardAnotation>
+          }
+          contentContainerStyle={{ paddingBottom: 40 }}
+        />
+        </HStack>
+
+    </VStack>
+     
+
+    </ScrollView>
+    
+  );
+}
+
+const styles = StyleSheet.create({
+  title: {
+    color: "#FFFFFF",
+    flexDirection: "row",
+    justifyContent: "space-between"
+  },
+  secondtitle:{
+    color: "#FFFFFF",
+    alignContent: "center",
+   
+  },
+  imageLogo:{
+      width: 30,
+      height: 30,
+    
+  },
+});
+
 
       {/* <HStack marginBottom={10}>
 
@@ -96,13 +195,3 @@ export function Home() {
         ></CardMusic>
 
       </HStack> */}
-
-    </VStack>
-  );
-}
-
-const styles = StyleSheet.create({
-  container: {
-    color: "#FFFFFF"
-  },
-});
