@@ -29,9 +29,7 @@ export function CardAnotation({ data, ...rest }: Props) {
             <Image  style={styles.imagens} borderTopLeftRadius ={20} borderTopRightRadius ={20}  source={dataImages[data.id]} />
 
             <VStack style={styles.legenda}  
-            /* paddingX={3} 
-            paddingY={3}*/
-            
+              
                >
 
                 <Text color="#FFFFFF">{data.text}</Text>

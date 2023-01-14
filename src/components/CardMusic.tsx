@@ -37,14 +37,18 @@ export function CardMusic({ data, ...rest }: Props) {
             <Image  style={styles.imagens} borderTopLeftRadius ={20} borderTopRightRadius ={20}  source={dataImages[data.id]} />
 
             <VStack style={styles.legenda}  bg="#2F2570" 
-           /* paddingX={3} 
-            paddingY={3}*/
-
-           
             borderBottomLeftRadius={20} 
-            borderBottomRightRadius={20}>
-
-                <Text paddingX= {2} color="#FFFFFF">{data.text}</Text>
+            borderBottomRightRadius={20}
+            alignItems={'center'}>
+            
+              <Text 
+              paddingX={2} 
+              paddingY={1} 
+              color="#FFFFFF" 
+              fontSize={10}
+              fontFamily={'bold'}>
+                {data.text}
+              </Text>
 
             </VStack>
 
