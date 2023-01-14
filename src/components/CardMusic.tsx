@@ -33,20 +33,20 @@ export function CardMusic({ data, ...rest }: Props) {
 
   return (
     <Pressable {...rest} >
-        <VStack width={100} height={95} marginLeft={4} marginRight={2.5} >
+        <VStack width={100} height={95} marginLeft={4} marginRight={5} >
             <Image  style={styles.imagens} borderTopLeftRadius ={20} borderTopRightRadius ={20}  source={dataImages[data.id]} />
 
-            <VStack style={styles.legenda}  bg="#2F2570" 
+            <VStack style={styles.legenda}  bg="#32206A" 
             borderBottomLeftRadius={20} 
             borderBottomRightRadius={20}
             alignItems={'center'}>
             
               <Text 
               paddingX={2} 
-              paddingY={1} 
+              paddingY={1.5} 
               color="#FFFFFF" 
               fontSize={10}
-              fontFamily={'bold'}>
+              fontFamily={'regular'}>
                 {data.text}
               </Text>
 
@@ -60,13 +60,13 @@ export function CardMusic({ data, ...rest }: Props) {
 const styles = StyleSheet.create({
   imagens: {
     color: "#FFFFFF",
-    width: 110,
+    width: 120,
     height: 100
 
   } ,
    legenda: {
       color: "#FFFFFF",
-      width: 110,
+      width: 120,
       height: 35,
       paddingX: "50"
    }

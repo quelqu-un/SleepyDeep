@@ -25,15 +25,20 @@ export function CardAnotation({ data, ...rest }: Props) {
 
   return (
     <Pressable {...rest} >
-        <VStack width={100} height={100} marginLeft={4} marginRight={2.5} >
+        <VStack width={100} height={100} marginLeft={4} marginRight={5} >
             <Image  style={styles.imagens} borderTopLeftRadius ={20} borderTopRightRadius ={20}  source={dataImages[data.id]} />
 
             <VStack style={styles.legenda}  
               
                >
 
-                <Text color="#FFFFFF">{data.text}</Text>
-
+                <Text paddingX={2} 
+              paddingY={1} 
+              color="#FFFFFF" 
+              fontSize={12.5}
+              fontFamily={'regular'}>
+                {data.text}
+                </Text>
             </VStack>
 
         </VStack>
@@ -43,13 +48,13 @@ export function CardAnotation({ data, ...rest }: Props) {
 const styles = StyleSheet.create({
     imagens: {
       color: "#FFFFFF",
-      width: 110,
+      width: 120,
       height: 100
   
     } ,
      legenda: {
         color: "#FFFFFF",
-        width: 110,
+        width: 120,
         
      }
   });
