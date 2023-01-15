@@ -93,15 +93,15 @@ export function Home() {
         bg="#180F34" /*23154F */
       >
         <HStack marginTop={10} paddingX={4} style={styles.title} >
-          <Image style={styles.imageLogo} source={require('../../assets/images/moon.png')} />
+          <Image   style={styles.imageLogo} source={require('../../assets/images/moon1.png')} />
           <Text
-            fontFamily="bold"
+            fontFamily="nuvem"
             color={'#FFFFFF'}
             fontSize={20}>
             SleepyDeep
           </Text>
 
-          <VStack alignItems={'center'}>
+          <VStack marginTop = {-2} alignItems={'center'}>
             <IconButton
               marginBottom={-2}
               icon={<Globe color="#FFFFFF" size={25} />}
@@ -113,7 +113,7 @@ export function Home() {
           </VStack>
         </HStack>
 
-        <Text paddingX={5} marginTop={6} marginBottom={4} fontFamily={'medium'} style={styles.secondtitle} >Músicas</Text>
+        <Text paddingX={5} marginTop={8} marginBottom={4} fontFamily={'medium'} style={styles.secondtitle} >Músicas</Text>
         <HStack marginBottom={10}>
           <FlatList
             data={data[0]}

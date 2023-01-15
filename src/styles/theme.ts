@@ -28,7 +28,8 @@ export const THEME = extendTheme({
     light: 'Ubuntu_300Light',
     regular: 'Ubuntu_400Regular',
     medium: 'Ubuntu_500Medium',
-    bold: 'Ubuntu_700Bold'
+    bold: 'Ubuntu_700Bold',
+    nuvem: 'Modak_400Regular',
   },
   fontSizes: {
     16: 16,
