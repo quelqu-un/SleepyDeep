@@ -26,7 +26,8 @@ export function CardAnotation({ data, ...rest }: Props) {
   return (
     <Pressable {...rest} >
         <VStack width={100} height={100} marginLeft={4} marginRight={5} >
-            <Image  style={styles.imagens} borderTopLeftRadius ={20} borderTopRightRadius ={20}  source={dataImages[data.id]} />
+            <Image  style={styles.imagens}  borderBottomLeftRadius={20} 
+            borderBottomRightRadius={20} borderTopLeftRadius ={20} borderTopRightRadius ={20}  source={dataImages[data.id]} />
 
             <VStack style={styles.legenda}  
               

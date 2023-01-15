@@ -7,6 +7,9 @@ import { useFonts,
   Ubuntu_500Medium,
   Ubuntu_700Bold, 
 } from '@expo-google-fonts/ubuntu';
+import { Modak_400Regular, 
+  
+} from '@expo-google-fonts/modak';
 import { THEME } from './src/styles/theme';
 import { Routes } from './src/routes';
 import { Loading } from './src/components/Loading';
@@ -17,6 +20,7 @@ export default function App() {
     Ubuntu_400Regular,
     Ubuntu_500Medium,
     Ubuntu_700Bold,
+    Modak_400Regular,
   });
 
   if (!fontsLoaded) {

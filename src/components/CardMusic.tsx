@@ -39,8 +39,7 @@ export function CardMusic({ data, ...rest }: Props) {
             <VStack style={styles.legenda}  bg="#32206A" 
             borderBottomLeftRadius={20} 
             borderBottomRightRadius={20}
-            borderTopLeftRadius ={20} 
-            borderTopRightRadius ={20} 
+            
             alignItems={'center'}>
             
               <Text 
