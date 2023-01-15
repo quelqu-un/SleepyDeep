@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { NativeBaseProvider, StatusBar } from "native-base";
 import { useFonts, 
   Ubuntu_300Light, 

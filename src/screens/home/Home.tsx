@@ -86,7 +86,9 @@ export function Home() {
       
       h: "100%",
       w: "100%"
-    }*/ >
+    }*/
+      marginBottom={10}
+    >
       <VStack flex={1}
         bg="#180F34" /*23154F */
       >
