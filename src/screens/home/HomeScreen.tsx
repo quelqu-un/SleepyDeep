@@ -1,6 +1,6 @@
 import { VStack, HStack, Text,  ScrollView, IconButton } from 'native-base';
 import React from 'react';
-import { FlatList, StyleSheet } from 'react-native';
+import { FlatList, StyleSheet, TouchableOpacity } from 'react-native';
 import { CardAnotation } from '../../components/CardAnotation';
 import { CardMusic } from '../../components/CardMusic';
 import { Image } from 'react-native';
@@ -80,7 +80,9 @@ export function HomeScreen() {
   function handleNewOrder() {
     navigation.navigate("musicHome");
   }
-
+  function handleNewNewOrder() {
+    navigation.navigate("musicplayer");
+  }
   return (
     <ScrollView /*_contentContainerStyle={{
       
@@ -93,7 +95,10 @@ export function HomeScreen() {
         bg="#180F34" /*23154F */
       >
         <HStack marginTop={10} paddingX={4} style={styles.title} >
-          <Image   style={styles.imageLogo} source={require('../../assets/images/moon1.png')} />
+        <TouchableOpacity  onPress={handleNewNewOrder}>
+        <Image   style={styles.imageLogo} source={require('../../assets/images/moon1.png')} />
+          </TouchableOpacity>
+         
           <Text
             fontFamily="nuvem"
             color={'#FFFFFF'}
