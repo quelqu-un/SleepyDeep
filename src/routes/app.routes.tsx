@@ -2,10 +2,10 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 
-import { Home } from '../screens/home/Home';
-import { Anotation } from '../screens/home/Anotation';
-import { AlarmComponent }  from '../screens/home/AlarmComponent';
-import { Search } from '../screens/home/Search';
+import { HomeScreen } from '../screens/home/HomeScreen';
+import { AnotationScreen } from '../screens/anotation/AnotationScreen';
+import { AlarmScreen }  from '../screens/alarm/AlarmScreen';
+import { SearchScreen } from '../screens/search/SearchScreen';
 
 import { NotePencil, MagnifyingGlass, Alarm, ListBullets } from 'phosphor-react-native';
 
@@ -52,7 +52,7 @@ function MainTab() {
       />
       <Tab.Screen 
         name="anotation" 
-        component={Anotation} 
+        component={AnotationScreen} 
         options={{
           headerShown: false,
           tabBarIcon: ({ color, size, focused }) => {
@@ -66,7 +66,7 @@ function MainTab() {
       />
       <Tab.Screen 
         name="alarm" 
-        component={AlarmComponent} 
+        component={AlarmScreen} 
         options={{
           headerShown: false,
           tabBarIcon: ({ color, size, focused }) => {
@@ -80,7 +80,7 @@ function MainTab() {
       />
       <Tab.Screen 
         name="search" 
-        component={Search} 
+        component={SearchScreen} 
         options={{
           headerShown: false,
           tabBarIcon: ({color, size, focused }) => {
@@ -106,8 +106,8 @@ function HomeTab() {
     }}
     >
 
-      <Screen.Screen name="home" component={Home} />
-      <Screen.Screen name="search1" component={Search} />
+      <Screen.Screen name="home" component={HomeScreen} />
+      <Screen.Screen name="search1" component={SearchScreen} />
 
     </Screen.Navigator>
   );

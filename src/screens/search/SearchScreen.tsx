@@ -7,7 +7,7 @@ import { useNavigation } from '@react-navigation/native';
 import { SearchBarComponent } from '../../components/SearchBar';
 
 
-export function Search() {
+export function SearchScreen() {
 
   const navigation = useNavigation();
 
