@@ -3,6 +3,8 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 
 import { HomeScreen } from '../screens/home/HomeScreen';
+
+import { MusicScreen } from '../screens/music/MusicScreen';
 import { AnotationScreen } from '../screens/anotation/AnotationScreen';
 import { AlarmScreen }  from '../screens/alarm/AlarmScreen';
 import { SearchScreen } from '../screens/search/SearchScreen';
@@ -108,6 +110,7 @@ function HomeTab() {
 
       <Screen.Screen name="home" component={HomeScreen} />
       <Screen.Screen name="search1" component={SearchScreen} />
+      <Screen.Screen name="musicHome" component={MusicScreen} />
 
     </Screen.Navigator>
   );
