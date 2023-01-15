@@ -1,13 +1,13 @@
 import { VStack, HStack, Text,  ScrollView, IconButton } from 'native-base';
 import React from 'react';
-import { FlatList, StyleSheet } from 'react-native';
+import { FlatList, GestureResponderEvent, StyleSheet } from 'react-native';
 import { CardAnotation } from '../../components/CardAnotation';
 import { CardMusic } from '../../components/CardMusic';
-import { Image } from 'react-native';
+import { Image,TouchableOpacity } from 'react-native';
 import { Globe } from 'phosphor-react-native';
 import { useNavigation } from '@react-navigation/native';
 
-export function HomeScreen() {
+export function MusicScreen() {
   let data = [[{
     id: '0',
     text: 'Ouvidos recentes',
@@ -78,8 +78,12 @@ export function HomeScreen() {
   const navigation = useNavigation();
 
   function handleNewOrder() {
-    navigation.navigate("musicHome");
+    navigation.navigate("home");
   }
+
+    function onPress(event: GestureResponderEvent): void {
+        throw new Error('Function not implemented.');
+    }
 
   return (
     <ScrollView /*_contentContainerStyle={{
@@ -93,24 +97,22 @@ export function HomeScreen() {
         bg="#180F34" /*23154F */
       >
         <HStack marginTop={10} paddingX={4} style={styles.title} >
-          <Image   style={styles.imageLogo} source={require('../../assets/images/moon1.png')} />
+        <TouchableOpacity  onPress={handleNewOrder}>
+          <Image   style={styles.imageLogo} source={require('../../assets/images/homeicon.png')} />
+          </TouchableOpacity>
           <Text
-            fontFamily="nuvem"
+                 marginBottom={5}
+            fontFamily={'bold'} 
+           
             color={'#FFFFFF'}
-            fontSize={20}>
-            SleepyDeep
+            fontSize={22}>
+            Chuva
           </Text>
-
-          <VStack marginTop = {-2} alignItems={'center'}>
-            <IconButton
-              marginBottom={-2}
-              icon={<Globe color="#FFFFFF" size={25} />}
-              onPress={handleNewOrder}
-            />
-
-            <Text color={'#FFFFFF'}>br</Text>
-
-          </VStack>
+          
+        
+          < Image   style={styles.imageLogo} source={require('../../assets/images/moonalone.png')} />
+      
+          
         </HStack>
 
         <Text paddingX={5} marginTop={8} marginBottom={4} fontFamily={'medium'} style={styles.secondtitle} >Músicas</Text>
@@ -144,36 +146,37 @@ export function HomeScreen() {
           />
 
         </HStack>
-        <Text paddingX={5} marginBottom={3} fontFamily={'medium'} style={styles.secondtitle} >Histórias para Dormir</Text>
+        
         <HStack >
 
-          <FlatList
-            data={data[2]}
-            horizontal={true}
-            keyExtractor={item => item.id}
-            renderItem={({ item }) =>
-              <CardMusic
-                data={item}
-              ></CardMusic>
-            }
-            contentContainerStyle={{ paddingBottom: 80 }}
-          />
+<FlatList
+  data={data[1]}
+  horizontal={true}
+  keyExtractor={item => item.id}
+  renderItem={({ item }) =>
+    <CardMusic
+      data={item}
+    ></CardMusic>
+  }
+  contentContainerStyle={{ paddingBottom: 80 }}
+/>
 
-        </HStack>
-        <Text paddingX={5} fontFamily={'medium'} marginBottom={3}  >Anotações</Text>
-        <HStack marginBottom={10}>
-          <FlatList
-            data={data[3]}
-            horizontal={true}
-            keyExtractor={item => item.id}
-            renderItem={({ item }) =>
-              <CardAnotation
-                data={item}
-              ></CardAnotation>
-            }
-            contentContainerStyle={{ paddingBottom: 40 }}
-          />
-        </HStack>
+</HStack>
+<HStack >
+
+<FlatList
+  data={data[1]}
+  horizontal={true}
+  keyExtractor={item => item.id}
+  renderItem={({ item }) =>
+    <CardMusic
+      data={item}
+    ></CardMusic>
+  }
+  contentContainerStyle={{ paddingBottom: 80 }}
+/>
+
+</HStack>
 
       </VStack>
 
@@ -187,7 +190,8 @@ const styles = StyleSheet.create({
   title: {
     color: "#FFFFFF",
     flexDirection: "row",
-    justifyContent: "space-between"
+    justifyContent: "space-between",
+    
   },
   secondtitle: {
     color: "#FFFFFF",
@@ -197,8 +201,8 @@ const styles = StyleSheet.create({
  
   },
   imageLogo: {
-    width: 30,
-    height: 30,
+    width: 40,
+    height: 40,
 
   },
 });
