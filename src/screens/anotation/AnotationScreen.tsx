@@ -4,28 +4,30 @@ import { StyleSheet } from 'react-native';
 import { Image } from 'react-native';
 import { Globe } from 'phosphor-react-native';
 
-export function AlarmComponent() {
+export function AnotationScreen() {
 
   return ( 
     <ScrollView >
       <VStack flex={1} 
         bg="#251751" 
         > 
-          <HStack marginTop={10}  paddingX = {4} style={styles.title} >
-              <Image  style={styles.imageLogo}  source={require('../../assets/images/moon.png')}/>
-              <Text 
-              fontFamily="bold" 
-              color={'#FFFFFF'}
-              fontSize={20}>
-                  Alarm
-              </Text>
 
-              <VStack alignItems={'center'}>
-              <Globe color="#FFFFFF" size={25}/>
-              <Text color={'#FFFFFF'}>br</Text>
+            <HStack marginTop={10}  paddingX = {4} style={styles.title} >
+                <Image  style={styles.imageLogo}  source={require('../../assets/images/moon.png')}/>
+                <Text 
+                fontFamily="bold" 
+                color={'#FFFFFF'}
+                fontSize={20}>
+                    Anotation
+                </Text>
 
-              </VStack>
-          </HStack>
+                <VStack alignItems={'center'}>
+                <Globe color="#FFFFFF" size={25}/>
+                <Text color={'#FFFFFF'}>br</Text>
+
+                </VStack>
+            </HStack>
+
         </VStack>
      
 

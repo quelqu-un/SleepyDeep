@@ -7,7 +7,7 @@ import { Image } from 'react-native';
 import { Globe } from 'phosphor-react-native';
 import { useNavigation } from '@react-navigation/native';
 
-export function Home() {
+export function HomeScreen() {
   let data = [[{
     id: '0',
     text: 'Ouvidos recentes',
