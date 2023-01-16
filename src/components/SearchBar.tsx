@@ -14,7 +14,19 @@ export function SearchBarComponent(){
             </Box>}>
             <VStack w="100%"   space={5} alignSelf="center">
                    
-               <Input marginTop={4} style={styles.lupa} marginLeft = {7} bg="#310569" placeholder="Pesquisar"   variant="filled" width="100%" borderRadius="10" py="1" px="3" InputLeftElement={<MagnifyingGlass  style={styles.lupa} color="#FFFFFF" size={25}/> }/>
+               <Input 
+               marginTop={4} 
+               style={styles.lupa} 
+               marginLeft = {7} 
+               bg="#310569" 
+               placeholder="Pesquisar" 
+               placeholderTextColor={"#FFFFFF"} 
+               variant="filled" 
+               width="100%" 
+               borderRadius="10" 
+               py="1" 
+               px="3" 
+               InputLeftElement={<MagnifyingGlass  style={styles.lupa} color="#FFFFFF" size={25}/> }/>
            </VStack>
            </VStack>   
        )

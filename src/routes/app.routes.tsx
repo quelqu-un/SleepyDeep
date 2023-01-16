@@ -129,12 +129,15 @@ export function AppRoutes() {
     >
 
       <Drawer.Screen 
-      name="Home" 
+      name="Chuva" 
       component={MainTab} 
       options={{
         drawerItemStyle: {
           paddingVertical: 6,
-          backgroundColor: "#2F2570"
+          backgroundColor: "#2F2570",
+        },
+        drawerLabelStyle: {
+          fontFamily: 'Ubuntu_400Regular'
         }
       }}
       />
@@ -146,6 +149,9 @@ export function AppRoutes() {
         drawerItemStyle: {
           paddingVertical: 6,
           backgroundColor: "#2F2570"
+        },
+        drawerLabelStyle: {
+          fontFamily: 'Ubuntu_400Regular'
         }
       }}
       />
@@ -157,6 +163,9 @@ export function AppRoutes() {
         drawerItemStyle: {
           paddingVertical: 6,
           backgroundColor: "#2F2570"
+        },
+        drawerLabelStyle: {
+          fontFamily: 'Ubuntu_400Regular'
         }
       }}
       />
@@ -168,6 +177,9 @@ export function AppRoutes() {
         drawerItemStyle: {
           paddingVertical: 6,
           backgroundColor: "#2F2570"
+        },
+        drawerLabelStyle: {
+          fontFamily: 'Ubuntu_400Regular'
         }
       }}
       />
@@ -179,6 +191,9 @@ export function AppRoutes() {
         drawerItemStyle: {
           paddingVertical: 6,
           backgroundColor: "#2F2570"
+        },
+        drawerLabelStyle: {
+          fontFamily: 'Ubuntu_400Regular'
         }
       }}
       />
@@ -190,6 +205,9 @@ export function AppRoutes() {
         drawerItemStyle: {
           paddingVertical: 6,
           backgroundColor: "#2F2570"
+        },
+        drawerLabelStyle: {
+          fontFamily: 'Ubuntu_400Regular'
         }
       }}
       />
@@ -201,6 +219,9 @@ export function AppRoutes() {
         drawerItemStyle: {
           paddingVertical: 6,
           backgroundColor: "#2E888D"
+        },
+        drawerLabelStyle: {
+          fontFamily: 'Ubuntu_400Regular'
         }
       }}
       />
@@ -212,6 +233,9 @@ export function AppRoutes() {
         drawerItemStyle: {
           paddingVertical: 6,
           backgroundColor: "#2E888D"
+        },
+        drawerLabelStyle: {
+          fontFamily: 'Ubuntu_400Regular'
         }
       }}
       />
@@ -223,6 +247,9 @@ export function AppRoutes() {
         drawerItemStyle: {
           paddingVertical: 6,
           backgroundColor: "#2E888D"
+        },
+        drawerLabelStyle: {
+          fontFamily: 'Ubuntu_400Regular'
         }
       }}
       />
@@ -234,6 +261,9 @@ export function AppRoutes() {
         drawerItemStyle: {
           paddingVertical: 6,
           backgroundColor: "#2E888D"
+        },
+        drawerLabelStyle: {
+          fontFamily: 'Ubuntu_400Regular'
         }
       }}
       />
@@ -245,9 +275,12 @@ export function AppRoutes() {
         drawerItemStyle: {
           paddingVertical: 6,
           backgroundColor: "#37DA1D"
-        } ,
+        },
+        drawerLabelStyle: {
+          fontFamily: 'Ubuntu_400Regular'
+        },
         drawerIcon: ({color}) => {
-          return <CurrencyDollar color="#FFFFFF" size={25}/>
+          return <CurrencyDollar color="#FFFFFF" size={16}/>
         }
       }}
       />

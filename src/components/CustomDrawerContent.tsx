@@ -6,18 +6,18 @@ export function CustomDrawerContent(props) {
     return (
         <DrawerContentScrollView 
         {...props}
-        style={{flex:1, backgroundColor: "#6728B7", height: '100%'}}
+        style={{flex:1, backgroundColor: "#4E2188", height: '100%'}}
         contentContainerStyle={{
-            backgroundColor: "#6728B7",
+            backgroundColor: "#4E2188",
         }}>
             <Text 
             marginLeft={4} 
             marginBottom={6}
             fontSize={16}
             color="#FFFFFF"
-            fontFamily={'bold'}
+            fontFamily={'medium'}
             >
-                Todas Categorias
+                Todas categorias
             </Text>
 
             <View>
