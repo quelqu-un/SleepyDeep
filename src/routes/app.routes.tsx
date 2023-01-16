@@ -10,7 +10,7 @@ import { AnotationScreen } from '../screens/anotation/AnotationScreen';
 import { AlarmScreen }  from '../screens/alarm/AlarmScreen';
 import { SearchScreen } from '../screens/search/SearchScreen';
 
-import { NotePencil, MagnifyingGlass, Alarm, ListBullets, CurrencyDollar } from 'phosphor-react-native';
+import { NotePencil, MagnifyingGlass, Alarm, House, CurrencyDollar } from 'phosphor-react-native';
 
 import React from 'react';
 import { CustomDrawerContent } from '../components/CustomDrawerContent';
@@ -41,19 +41,21 @@ function MainTab() {
     >
 
       <Tab.Screen 
-        name="all" 
+        name="home" 
         component={HomeTab} 
         options={{
           headerShown: false,
           tabBarIcon: ({ color, size, focused }) => {
             if(focused) {
-              return <ListBullets size={32} color="#FFFFFF"/>
+              return <House size={28} color="#FFFFFF"/>
             }
 
-            return <ListBullets size={32} color="#FFFFFF"/>
+            return <House size={28} color="#FFFFFF"/> 
+          },
           }
-        }}
+        }
       />
+
       <Tab.Screen 
         name="anotation" 
         component={AnotationScreen} 
@@ -68,6 +70,7 @@ function MainTab() {
           }
         }}
       />
+
       <Tab.Screen 
         name="alarm" 
         component={AlarmScreen} 
@@ -82,6 +85,7 @@ function MainTab() {
           }
         }}
       />
+
       <Tab.Screen 
         name="search" 
         component={SearchScreen} 
@@ -121,6 +125,8 @@ function HomeTab() {
 
 export function AppRoutes() {
   return (
+    
+
     <Drawer.Navigator 
     screenOptions={{ 
       headerShown: false,

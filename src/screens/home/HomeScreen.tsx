@@ -4,8 +4,8 @@ import { FlatList, StyleSheet, TouchableOpacity } from 'react-native';
 import { CardAnotation } from '../../components/CardAnotation';
 import { CardMusic } from '../../components/CardMusic';
 import { Image } from 'react-native';
-import { Globe } from 'phosphor-react-native';
-import { useNavigation } from '@react-navigation/native';
+import { Globe, ListBullets } from 'phosphor-react-native';
+import { DrawerActions, useNavigation } from '@react-navigation/native';
 
 export function HomeScreen() {
   let data = [[{
@@ -80,9 +80,15 @@ export function HomeScreen() {
   function handleNewOrder() {
     navigation.navigate("musicHome");
   }
+
   function handleNewNewOrder() {
     navigation.navigate("musicplayer");
   }
+
+  function handleDrawer() {
+    navigation.dispatch(DrawerActions.openDrawer());
+  }
+
   return (
     <ScrollView /*_contentContainerStyle={{
       
@@ -95,8 +101,12 @@ export function HomeScreen() {
         bg="#180F34" /*23154F */
       >
         <HStack marginTop={10} paddingX={4} style={styles.title} >
-        <TouchableOpacity  onPress={handleNewNewOrder}>
-        <Image   style={styles.imageLogo} source={require('../../assets/images/moon1.png')} />
+          <IconButton 
+            icon={<ListBullets color="#FFFFFF" size={25} />}
+            onPress={handleDrawer}
+          />
+          <TouchableOpacity  onPress={handleNewNewOrder}> 
+            <Image   style={styles.imageLogo} source={require('../../assets/images/moon1.png')} />
           </TouchableOpacity>
          
           <Text
