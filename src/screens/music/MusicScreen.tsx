@@ -116,6 +116,7 @@ export function MusicScreen() {
         </HStack>
 
         <Text paddingX={5} marginTop={8} marginBottom={4} fontFamily={'medium'} style={styles.secondtitle} >Músicas</Text>
+        
         <HStack marginBottom={10}>
           <FlatList
             data={data[0]}
