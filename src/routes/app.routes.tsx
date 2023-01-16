@@ -9,9 +9,10 @@ import { AnotationScreen } from '../screens/anotation/AnotationScreen';
 import { AlarmScreen }  from '../screens/alarm/AlarmScreen';
 import { SearchScreen } from '../screens/search/SearchScreen';
 
-import { NotePencil, MagnifyingGlass, Alarm, ListBullets } from 'phosphor-react-native';
+import { NotePencil, MagnifyingGlass, Alarm, ListBullets, CurrencyDollar } from 'phosphor-react-native';
 
 import React from 'react';
+import { CustomDrawerContent } from '../components/CustomDrawerContent';
 
 const Screen = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -120,15 +121,136 @@ export function AppRoutes() {
   return (
     <Drawer.Navigator 
     screenOptions={{ 
-      headerShown: false,  
+      headerShown: false,
+      drawerInactiveTintColor: "#FFFFFF",
+      drawerActiveTintColor: "#FFFFFF",
     }}
+    drawerContent={props => <CustomDrawerContent {...props} />}
     >
 
-      <Drawer.Screen name="main" component={MainTab} />
-      <Drawer.Screen name="main1" component={MainTab} />
-      <Drawer.Screen name="main2" component={MainTab} />
-      <Drawer.Screen name="main3" component={MainTab} />
-      <Drawer.Screen name="main4" component={MainTab} />
+      <Drawer.Screen 
+      name="Home" 
+      component={MainTab} 
+      options={{
+        drawerItemStyle: {
+          paddingVertical: 6,
+          backgroundColor: "#2F2570"
+        }
+      }}
+      />
+
+      <Drawer.Screen 
+      name="Músicas instrumental" 
+      component={MainTab} 
+      options={{
+        drawerItemStyle: {
+          paddingVertical: 6,
+          backgroundColor: "#2F2570"
+        }
+      }}
+      />
+
+      <Drawer.Screen 
+      name="Sons da natureza" 
+      component={MainTab} 
+      options={{
+        drawerItemStyle: {
+          paddingVertical: 6,
+          backgroundColor: "#2F2570"
+        }
+      }}
+      />
+
+      <Drawer.Screen 
+      name="ASMR" 
+      component={MainTab} 
+      options={{
+        drawerItemStyle: {
+          paddingVertical: 6,
+          backgroundColor: "#2F2570"
+        }
+      }}
+      />
+
+      <Drawer.Screen 
+      name="Histórias de Ninar" 
+      component={MainTab} 
+      options={{
+        drawerItemStyle: {
+          paddingVertical: 6,
+          backgroundColor: "#2F2570"
+        }
+      }}
+      />
+
+      <Drawer.Screen 
+      name="Sons de onda" 
+      component={MainTab} 
+      options={{
+        drawerItemStyle: {
+          paddingVertical: 6,
+          backgroundColor: "#2F2570"
+        }
+      }}
+      />
+
+      <Drawer.Screen 
+      name="Anotações" 
+      component={MainTab} 
+      options={{
+        drawerItemStyle: {
+          paddingVertical: 6,
+          backgroundColor: "#2E888D"
+        }
+      }}
+      />
+
+      <Drawer.Screen 
+      name="O que sonhei hoje" 
+      component={MainTab} 
+      options={{
+        drawerItemStyle: {
+          paddingVertical: 6,
+          backgroundColor: "#2E888D"
+        }
+      }}
+      />
+
+      <Drawer.Screen 
+      name="Estresse do dia" 
+      component={MainTab} 
+      options={{
+        drawerItemStyle: {
+          paddingVertical: 6,
+          backgroundColor: "#2E888D"
+        }
+      }}
+      />
+
+      <Drawer.Screen 
+      name="Metas do dia" 
+      component={MainTab} 
+      options={{
+        drawerItemStyle: {
+          paddingVertical: 6,
+          backgroundColor: "#2E888D"
+        }
+      }}
+      />
+
+      <Drawer.Screen 
+      name="Doar" 
+      component={MainTab} 
+      options={{
+        drawerItemStyle: {
+          paddingVertical: 6,
+          backgroundColor: "#37DA1D"
+        } ,
+        drawerIcon: ({color}) => {
+          return <CurrencyDollar color="#FFFFFF" size={25}/>
+        }
+      }}
+      />
 
     </Drawer.Navigator>
   );
