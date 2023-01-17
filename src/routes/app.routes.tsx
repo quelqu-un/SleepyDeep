@@ -14,6 +14,7 @@ import { NotePencil, MagnifyingGlass, Alarm, House, CurrencyDollar } from 'phosp
 
 import React from 'react';
 import { CustomDrawerContent } from '../components/CustomDrawerContent';
+import { MusicPlayer1 } from '../screens/music/MusicPlayer1';
 
 const Screen = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
