@@ -1,5 +1,6 @@
+import { useNavigation } from '@react-navigation/native';
 import { Text, useTheme, VStack, Pressable, IPressableProps } from 'native-base';
-import { Image } from 'react-native';
+import { Image, TouchableOpacity } from 'react-native';
 import { StyleSheet, View } from 'react-native';
 
 
@@ -30,9 +31,14 @@ const dataImages = [
 
 export function CardMusic({ data, ...rest }: Props) {
   const { colors } = useTheme();
+  const navigation = useNavigation();
+
+  function handleNewOrder() {
+    navigation.navigate("musicHome");
+  }
 
   return (
-    <Pressable {...rest} >
+    <TouchableOpacity  onPress={handleNewOrder} >
         <VStack width={100} height={95} marginLeft={4} marginRight={5} >
             <Image  style={styles.imagens} borderTopLeftRadius ={20} borderTopRightRadius ={20}  source={dataImages[data.id]} />
 
@@ -54,7 +60,7 @@ export function CardMusic({ data, ...rest }: Props) {
             </VStack>
 
         </VStack>
-    </Pressable>
+    </TouchableOpacity>
   );
 }
 

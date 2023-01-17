@@ -114,19 +114,15 @@ function HomeTab() {
     }}
     >
 
-      <Screen.Screen name="home" component={HomeScreen} />
-      <Screen.Screen name="search1" component={SearchScreen} />
-      <Screen.Screen name="musicHome" component={MusicScreen} />
-      <Screen.Screen name="musicplayer" component={MusicPlayer} />
+      <Screen.Screen name="home" component={HomeDrawer} />
+      
 
     </Screen.Navigator>
   );
 }
 
-export function AppRoutes() {
+function HomeDrawer() {
   return (
-    
-
     <Drawer.Navigator 
     screenOptions={{ 
       headerShown: false,
@@ -137,8 +133,8 @@ export function AppRoutes() {
     >
 
       <Drawer.Screen 
-      name="Chuva" 
-      component={MainTab} 
+      name="Chuvas" 
+      component={HomeScreen} 
       options={{
         drawerItemStyle: {
           paddingVertical: 6,
@@ -294,5 +290,20 @@ export function AppRoutes() {
       />
 
     </Drawer.Navigator>
+  );
+}
+
+export function AppRoutes() {
+  return(
+    <Screen.Navigator 
+    screenOptions={{ 
+      headerShown: false 
+    }}
+    >
+      <Screen.Screen name="home" component={MainTab} />
+      <Screen.Screen name="search1" component={SearchScreen} />
+      <Screen.Screen name="musicHome" component={MusicScreen} />
+      <Screen.Screen name="musicplayer" component={MusicPlayer} />
+    </Screen.Navigator>
   );
 }
