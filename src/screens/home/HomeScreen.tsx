@@ -1,11 +1,13 @@
 import { VStack, HStack, Text,  ScrollView, IconButton } from 'native-base';
 import React from 'react';
-import { FlatList, StyleSheet, TouchableOpacity } from 'react-native';
+import { FlatList, StyleSheet, TouchableOpacity, SafeAreaView,} from 'react-native';
 import { CardAnotation } from '../../components/CardAnotation';
 import { CardMusic } from '../../components/CardMusic';
 import { Image } from 'react-native';
 import { Globe } from 'phosphor-react-native';
 import { useNavigation } from '@react-navigation/native';
+
+
 
 export function HomeScreen() {
   let data = [[{
@@ -81,9 +83,13 @@ export function HomeScreen() {
     navigation.navigate("musicHome");
   }
   function handleNewNewOrder() {
-    navigation.navigate("musicplayer");
+    navigation.navigate("musicplayer1");
   }
   return (
+
+    <SafeAreaView style={styles.container}>
+
+   
     <ScrollView /*_contentContainerStyle={{
       
       h: "100%",
@@ -184,7 +190,7 @@ export function HomeScreen() {
 
 
     </ScrollView>
-
+    </SafeAreaView>
   );
 }
 
@@ -201,9 +207,15 @@ const styles = StyleSheet.create({
     
  
   },
+  container: {
+    
+    color: "#FFFFFF",
+  },
   imageLogo: {
     width: 30,
     height: 30,
 
   },
+  
 });
+export default HomeScreen;

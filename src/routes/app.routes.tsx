@@ -14,6 +14,7 @@ import { NotePencil, MagnifyingGlass, Alarm, ListBullets, CurrencyDollar } from 
 
 import React from 'react';
 import { CustomDrawerContent } from '../components/CustomDrawerContent';
+import { MusicPlayer1 } from '../screens/music/MusicPlayer1';
 
 const Screen = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -114,6 +115,8 @@ function HomeTab() {
       <Screen.Screen name="search1" component={SearchScreen} />
       <Screen.Screen name="musicHome" component={MusicScreen} />
       <Screen.Screen name="musicplayer" component={MusicPlayer} />
+      <Screen.Screen name="musicplayer1" component={MusicPlayer1} />
+
 
     </Screen.Navigator>
   );

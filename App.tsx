@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { StyleSheet } from 'react-native';
 import { NativeBaseProvider, StatusBar } from "native-base";
 import { useFonts, 
@@ -14,6 +14,8 @@ import { THEME } from './src/styles/theme';
 import { Routes } from './src/routes';
 import { Loading } from './src/components/Loading';
 
+
+
 export default function App() {
   const [fontsLoaded] = useFonts({
     Ubuntu_300Light, 
@@ -23,6 +25,7 @@ export default function App() {
     Modak_400Regular,
   });
 
+
   if (!fontsLoaded) {
     return null;
   }
@@ -30,10 +33,8 @@ export default function App() {
   return (
     <NativeBaseProvider theme={THEME}>
       <StatusBar
-        barStyle="light-content"
-        backgroundColor="transparent"
-        translucent
-      />
+      barStyle='light-content'
+     />
       {fontsLoaded ? <Routes /> : <Loading />}
     </NativeBaseProvider>
   );
