@@ -305,6 +305,7 @@ export function AppRoutes() {
       <Screen.Screen name="search1" component={SearchScreen} />
       <Screen.Screen name="musicHome" component={MusicScreen} />
       <Screen.Screen name="musicplayer" component={MusicPlayer} />
+      <Screen.Screen name="musicplayer1" component={MusicPlayer1} />
     </Screen.Navigator>
   );
 }
