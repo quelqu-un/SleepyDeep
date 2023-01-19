@@ -24,57 +24,49 @@ const songs = [
 export function MusicPlayer1() {
   const navigation = useNavigation();
 
-//   const songs = [
-//     require('../../assets/audio/aboutu.mpeg'),
-//     require('../../assets/audio/gabrielenjoadinho.mp3')
-//     // {
-//     //   id: 1,
-//     //   title: 'About You',
-     
-//     //   img: require('../assets/images/music_0.png'),
-//     //   source: require('../../assets/audio/aboutu.mpeg'),
-//     // },
-//     // {
-//     //   id: 2,
-//     //   title: 'Gabriel é o cara!!!!!!!!',
-//     //   img: require('../assets/images/music_1.png'),
-//     //   source: require('../../assets/audio/gabrielenjoadinho.mp3'),
-//     // },
-// ];
-
   const [songIndex, setsongIndex] = useState(0);
   const [playPause, setplayPause] = useState(true);
   const [musicIndex, setmusicIndex] = useState(0);
+  const [musicCheck, setmusicCheck] = useState(true);
 
   const scrollX = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
-    Audio.setAudioModeAsync({
-      allowsRecordingIOS: false,
-      // interruptionModeIOS: Audio.INTERRUPTION_MODE_IOS_DO_NOT_MIX,
-      playsInSilentModeIOS: true,
-      //	interruptionModeAndroid: Audio.INTTERUPTION_MODE_ANDROID_DUCK_OTHERS,
-      shouldDuckAndroid: true,
-      staysActiveInBackground: true,
-      //	playsThroughEarpieceAndroid: true, 
-    });
+    if(musicCheck) {
+      Audio.setAudioModeAsync({
+        allowsRecordingIOS: false,
+        // interruptionModeIOS: Audio.INTERRUPTION_MODE_IOS_DO_NOT_MIX,
+        playsInSilentModeIOS: true,
+        //	interruptionModeAndroid: Audio.INTTERUPTION_MODE_ANDROID_DUCK_OTHERS,
+        shouldDuckAndroid: true,
+        staysActiveInBackground: true,
+        //	playsThroughEarpieceAndroid: true, 
+      });
+  
+      this.sound = new Audio.Sound();
+  
+      const status = {
+        shouldPlay: false
+      };
+      
+      this.sound.loadAsync(songs[musicIndex], status, false);
+  
+      scrollX.addListener(({ value }) => {
+        const index = Math.round(value / width);
+        setsongIndex(index);
+      });
 
-    this.sound = new Audio.Sound();
+      setmusicCheck(false);
+    }
 
-    const status = {
-      shouldPlay: false
-    };
-
-    // console.log(songs[musicIndex].source)
-    // console.log(songs[musicIndex])
-    if(musicIndex !== 0)
+    if(!musicCheck) {
+      const status = {
+        shouldPlay: true
+      };
       this.sound.unloadAsync();
-    this.sound.loadAsync(songs[musicIndex], status, false);
-
-    scrollX.addListener(({ value }) => {
-      const index = Math.round(value / width);
-      setsongIndex(index)
-    });
+      this.sound.loadAsync(songs[musicIndex], status, false);
+      this.sound.playAsync();
+    }
 
   }, [musicIndex]);
 
@@ -88,11 +80,21 @@ export function MusicPlayer1() {
   }
 
   function nextMusic() {
-    setmusicIndex(musicIndex+1)
+    this.sound.pauseAsync();
+    if(musicIndex === (songs.length-1)) {
+      setmusicIndex(0);
+    } else {
+      setmusicIndex(musicIndex + 1);
+    }
   }
 
   function backMusic() {
-    setmusicIndex(musicIndex-1)
+    this.sound.pauseAsync();
+    if(musicIndex === 0) {
+      setmusicIndex(songs.length-1);
+    } else {
+      setmusicIndex(musicIndex-1);
+    }
   }
 
   function handleNewOrder() {
@@ -165,7 +167,7 @@ export function MusicPlayer1() {
               <IconButton
                 marginLeft={10}
                 icon={<SkipBack color="#FFFFFF" size={28} />}
-                onPress={nextMusic}
+                onPress={backMusic}
               />
             </TouchableOpacity>
 
@@ -184,7 +186,7 @@ export function MusicPlayer1() {
               <IconButton
                 marginRight={10}
                 icon={<SkipForward color="#FFFFFF" size={28} />}
-                onPress={backMusic}
+                onPress={nextMusic}
               />
             </TouchableOpacity>
           </HStack>
