@@ -36,8 +36,8 @@ export function CardAnotation({ data, ...rest }: Props) {
                 <Text paddingX={2} 
               paddingY={1} 
               color="#FFFFFF" 
-              fontSize={12.5}
-              fontFamily={'regular'}>
+              fontSize={12}
+              fontFamily={'robolight'}>
                 {data.text}
                 </Text>
             </VStack>

@@ -53,7 +53,7 @@ export function CardMusic({ data, ...rest }: Props) {
               paddingY={1.5} 
               color="#FFFFFF" 
               fontSize={10}
-              fontFamily={'regular'}>
+              fontFamily={'robolight'}>
                 {data.text}
               </Text>
 

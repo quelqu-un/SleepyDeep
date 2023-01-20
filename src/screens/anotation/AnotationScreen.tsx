@@ -1,35 +1,47 @@
-import { VStack, HStack, Text, ScrollView } from 'native-base';
+import { VStack, HStack, Text, ScrollView, IconButton, Center } from 'native-base';
 import React from 'react';
 import { StyleSheet } from 'react-native';
-import { Image } from 'react-native';
-import { Globe } from 'phosphor-react-native';
+import { Image,  ImageBackground} from 'react-native';
+import { Globe, ArrowLeft } from 'phosphor-react-native';
+import { useNavigation } from '@react-navigation/native';
+import { SearchBarComponent } from '../../components/SearchBar';
+
 
 export function AnotationScreen() {
+  const navigation = useNavigation();
+
+  function handleNewOrder() {
+    navigation.goBack();
+  }
 
   return ( 
     <ScrollView >
-      <VStack flex={1} 
+     <VStack flex={1} 
         bg="#251751" 
         > 
+             
+            <HStack marginTop={2}  paddingX = {4} style={styles.title} >
 
-            <HStack marginTop={10}  paddingX = {4} style={styles.title} >
-                <Image  style={styles.imageLogo}  source={require('../../assets/images/moon.png')}/>
+          
+              <IconButton
+                  marginTop = {-2}
+                icon={<ArrowLeft  color="#FFFFFF" size={25} />}
+                 onPress={handleNewOrder}
+              />
+
                 <Text 
-                fontFamily="bold" 
+                marginRight={5}
+                fontFamily="robobold" 
+                textAlign= "center"
                 color={'#FFFFFF'}
-                fontSize={20}>
-                    Anotation
+                fontSize={18}>
+                    Anotação
                 </Text>
 
-                <VStack alignItems={'center'}>
-                <Globe color="#FFFFFF" size={25}/>
-                <Text color={'#FFFFFF'}>br</Text>
-
-                </VStack>
+               <Image style={styles.imageLogo} source={require('../../assets/images/moon.png')} />
             </HStack>
-
+           
         </VStack>
-     
 
     </ScrollView>
     
@@ -48,8 +60,8 @@ const styles = StyleSheet.create({
    
   },
   imageLogo:{
-      width: 30,
-      height: 30,
+      width: 25,
+      height: 25,
     
   },
 });

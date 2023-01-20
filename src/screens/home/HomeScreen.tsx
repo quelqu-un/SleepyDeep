@@ -106,35 +106,40 @@ export function HomeScreen() {
       <VStack flex={1}
         bg="#180F34" /*23154F */
       >
-        <HStack marginTop={10} paddingX={4} style={styles.title} >
-          <IconButton 
+        <HStack marginTop={5} paddingX={2} style={styles.title} >
+          <IconButton  marginTop={-4}
             icon={<ListBullets color="#FFFFFF" size={25} />}
             onPress={handleDrawer}
+            
           />
-          <TouchableOpacity  onPress={handleNewNewOrder}> 
-            <Image   style={styles.imageLogo} source={require('../../assets/images/moon1.png')} />
-          </TouchableOpacity>
-         
-          <Text
+          <HStack>
+          <Text 
+            marginTop ={-1}
             fontFamily="nuvem"
             color={'#FFFFFF'}
             fontSize={20}>
             SleepyDeep
           </Text>
 
-          <VStack marginTop = {-2} alignItems={'center'}>
+          <TouchableOpacity  onPress={handleNewNewOrder}> 
+            <Image   style={styles.imageLogo} source={require('../../assets/images/moon1.png')} />
+          </TouchableOpacity>
+          
+          </HStack>
+       
+          <VStack marginTop = {-4} alignItems={'center'}>
             <IconButton
-              marginBottom={-2}
+              marginBottom={-3}
               icon={<Globe color="#FFFFFF" size={25} />}
               onPress={handleNewOrder}
             />
 
-            <Text color={'#FFFFFF'}>br</Text>
+            <Text fontSize={12} color={'#FFFFFF'}>br</Text>
 
           </VStack>
         </HStack>
 
-        <Text paddingX={5} marginTop={8} marginBottom={4} fontFamily={'medium'} style={styles.secondtitle} >Músicas</Text>
+        <Text paddingX={5} marginTop={8} marginBottom={4} fontFamily={'robomedium'} style={styles.secondtitle} >Músicas</Text>
         <HStack marginBottom={10}>
           <FlatList
             data={data[0]}
@@ -165,7 +170,7 @@ export function HomeScreen() {
           />
 
         </HStack>
-        <Text paddingX={5} marginBottom={3} fontFamily={'medium'} style={styles.secondtitle} >Histórias para Dormir</Text>
+        <Text paddingX={5} marginBottom={3} fontFamily={'robomedium'}  style={styles.secondtitle} >Histórias para Dormir</Text>
         <HStack >
 
           <FlatList
@@ -181,7 +186,7 @@ export function HomeScreen() {
           />
 
         </HStack>
-        <Text paddingX={5} fontFamily={'medium'} marginBottom={3}  >Anotações</Text>
+        <Text paddingX={5} fontFamily={'robomedium'} marginBottom={3}  >Anotações</Text>
         <HStack marginBottom={10}>
           <FlatList
             data={data[3]}
@@ -215,15 +220,16 @@ const styles = StyleSheet.create({
     alignContent: "center",
     fontSize: 11,
     
- 
   },
   container: {
     
     color: "#FFFFFF",
   },
   imageLogo: {
-    width: 30,
-    height: 30,
+    width: 20,
+    height: 20,
+    marginRight: -2,
+    marginLeft: 5,
 
   },
   
