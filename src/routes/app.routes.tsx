@@ -10,11 +10,13 @@ import { AnotationScreen } from '../screens/anotation/AnotationScreen';
 import { AlarmScreen }  from '../screens/alarm/AlarmScreen';
 import { SearchScreen } from '../screens/search/SearchScreen';
 
-import { NotePencil, MagnifyingGlass, Alarm, House, CurrencyDollar } from 'phosphor-react-native';
+import { NotePencil, MagnifyingGlass, Alarm, House, CurrencyDollar, ArrowLeft } from 'phosphor-react-native';
 
 import React from 'react';
 import { CustomDrawerContent } from '../components/CustomDrawerContent';
 import { MusicPlayer1 } from '../screens/music/MusicPlayer1';
+import { useNavigation } from '@react-navigation/native';
+import { IconButton } from 'native-base';
 
 const Screen = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -37,10 +39,11 @@ function MainTab() {
         shadowRadius: 10,
         position: 'absolute',
         borderColor: '#2F2570',
+       
       }
     }}
     >
-
+  
       <Tab.Screen 
         name="home" 
         component={HomeTab} 
@@ -123,7 +126,8 @@ function HomeTab() {
 }
 
 function HomeDrawer() {
-  return (
+  const fontFamily = "robomedium"
+  return ( 
     <Drawer.Navigator 
     screenOptions={{ 
       headerShown: false,
@@ -133,6 +137,7 @@ function HomeDrawer() {
     drawerContent={props => <CustomDrawerContent {...props} />}
     >
 
+        
       <Drawer.Screen 
       name="Chuvas" 
       component={HomeScreen} 
@@ -142,7 +147,7 @@ function HomeDrawer() {
           backgroundColor: "#2F2570",
         },
         drawerLabelStyle: {
-          fontFamily: 'Ubuntu_400Regular'
+          fontFamily: fontFamily
         }
       }}
       />
@@ -156,7 +161,7 @@ function HomeDrawer() {
           backgroundColor: "#2F2570"
         },
         drawerLabelStyle: {
-          fontFamily: 'Ubuntu_400Regular'
+          fontFamily: fontFamily
         }
       }}
       />
@@ -170,7 +175,7 @@ function HomeDrawer() {
           backgroundColor: "#2F2570"
         },
         drawerLabelStyle: {
-          fontFamily: 'Ubuntu_400Regular'
+          fontFamily: fontFamily
         }
       }}
       />
@@ -184,7 +189,7 @@ function HomeDrawer() {
           backgroundColor: "#2F2570"
         },
         drawerLabelStyle: {
-          fontFamily: 'Ubuntu_400Regular'
+          fontFamily: fontFamily
         }
       }}
       />
@@ -198,7 +203,7 @@ function HomeDrawer() {
           backgroundColor: "#2F2570"
         },
         drawerLabelStyle: {
-          fontFamily: 'Ubuntu_400Regular'
+          fontFamily: fontFamily
         }
       }}
       />
@@ -212,7 +217,7 @@ function HomeDrawer() {
           backgroundColor: "#2F2570"
         },
         drawerLabelStyle: {
-          fontFamily: 'Ubuntu_400Regular'
+          fontFamily: fontFamily
         }
       }}
       />
@@ -226,7 +231,7 @@ function HomeDrawer() {
           backgroundColor: "#2E888D"
         },
         drawerLabelStyle: {
-          fontFamily: 'Ubuntu_400Regular'
+          fontFamily: fontFamily
         }
       }}
       />
@@ -240,7 +245,7 @@ function HomeDrawer() {
           backgroundColor: "#2E888D"
         },
         drawerLabelStyle: {
-          fontFamily: 'Ubuntu_400Regular'
+          fontFamily: fontFamily
         }
       }}
       />
@@ -254,7 +259,7 @@ function HomeDrawer() {
           backgroundColor: "#2E888D"
         },
         drawerLabelStyle: {
-          fontFamily: 'Ubuntu_400Regular'
+          fontFamily: fontFamily
         }
       }}
       />
@@ -268,7 +273,7 @@ function HomeDrawer() {
           backgroundColor: "#2E888D"
         },
         drawerLabelStyle: {
-          fontFamily: 'Ubuntu_400Regular'
+          fontFamily: fontFamily
         }
       }}
       />
@@ -282,7 +287,7 @@ function HomeDrawer() {
           backgroundColor: "#37DA1D"
         },
         drawerLabelStyle: {
-          fontFamily: 'Ubuntu_400Regular'
+          fontFamily: fontFamily
         },
         drawerIcon: ({color}) => {
           return <CurrencyDollar color="#FFFFFF" size={16}/>

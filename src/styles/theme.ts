@@ -30,6 +30,10 @@ export const THEME = extendTheme({
     medium: 'Ubuntu_500Medium',
     bold: 'Ubuntu_700Bold',
     nuvem: 'Modak_400Regular',
+    robolight: 'Roboto_400Regular',
+    robomedium: 'Roboto_500Medium',
+    robobold: 'Roboto_700Bold'
+
   },
   fontSizes: {
     16: 16,

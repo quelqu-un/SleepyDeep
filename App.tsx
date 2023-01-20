@@ -8,6 +8,7 @@ import { useFonts,
   Ubuntu_700Bold, 
 } from '@expo-google-fonts/ubuntu';
 import { Modak_400Regular } from '@expo-google-fonts/modak';
+import { Roboto_400Regular, Roboto_500Medium,Roboto_700Bold } from '@expo-google-fonts/roboto';
 import { THEME } from './src/styles/theme';
 import { Routes } from './src/routes';
 import { Loading } from './src/components/Loading';
@@ -21,6 +22,9 @@ export default function App() {
     Ubuntu_500Medium,
     Ubuntu_700Bold,
     Modak_400Regular,
+    Roboto_400Regular,
+    Roboto_500Medium,
+    Roboto_700Bold,
   });
 
 

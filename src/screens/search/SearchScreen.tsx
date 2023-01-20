@@ -23,20 +23,21 @@ export function SearchScreen() {
         bg="#251751" 
         > 
              
-            <HStack marginTop={10}  paddingX = {4} style={styles.title} >
+            <HStack marginTop={2}  paddingX = {4} style={styles.title} >
 
           
               <IconButton
-                  marginTop = {-1}
-                icon={<ArrowLeft  color="#FFFFFF" size={28} />}
+                  marginTop = {-2}
+                icon={<ArrowLeft  color="#FFFFFF" size={25} />}
                  onPress={handleNewOrder}
               />
 
                 <Text 
-                fontFamily="bold" 
+                marginRight={5}
+                fontFamily="robobold" 
                 textAlign= "center"
                 color={'#FFFFFF'}
-                fontSize={20}>
+                fontSize={18}>
                     Pesquisar
                 </Text>
 
@@ -57,7 +58,8 @@ const styles = StyleSheet.create({
   title: {
     color: "#FFFFFF",
     flexDirection: "row",
-    justifyContent: "space-between"
+    justifyContent: "space-between",
+
     
   },
   secondtitle:{
@@ -67,8 +69,8 @@ const styles = StyleSheet.create({
    
   },
   imageLogo:{
-      width: 30,
-      height: 30,
+      width: 25,
+      height: 25,
     
   },
   image: {
