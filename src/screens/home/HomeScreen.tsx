@@ -65,12 +65,12 @@ export function HomeScreen() {
     },
     {
       id: '1',
-      text: 'Metas do dia',
+      text: 'Estresse do dia',
       recent: true
     },
     {
       id: '2',
-      text: 'Estresse do dia',
+      text: 'Metas do dia ',
       recent: true
     },
   ],
@@ -170,6 +170,7 @@ export function HomeScreen() {
           />
 
         </HStack>
+        
         <Text paddingX={5} marginBottom={3} fontFamily={'robomedium'}  style={styles.secondtitle} >Histórias para Dormir</Text>
         <HStack >
 
@@ -194,6 +195,7 @@ export function HomeScreen() {
             keyExtractor={item => item.id}
             renderItem={({ item }) =>
               <CardAnotation
+              cor = {"#1DC0B7"}
                 data={item}
               ></CardAnotation>
             }

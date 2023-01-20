@@ -1,6 +1,7 @@
-import { Text, useTheme, VStack, Pressable, IPressableProps } from 'native-base';
+import { Text, useTheme, VStack, Pressable, IPressableProps ,} from 'native-base';
+import { useState } from 'react';
 import { Image } from 'react-native';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View,TextInput } from 'react-native';
 
 export type CardAnotationProps = {
   id: string;
@@ -20,16 +21,21 @@ const dataImages = [
    
 ]
 
-export function CardAnotation({ data, ...rest }: Props) {
+export function CardAnotation({ data, cor, ...rest }) {
   const { colors } = useTheme();
+  const [userName, setUserName] = useState('');
 
   return (
-    <Pressable {...rest} >
-        <VStack width={100} height={100} marginLeft={4} marginRight={5} >
-            <Image  style={styles.imagens}  borderBottomLeftRadius={20} 
-            borderBottomRightRadius={20} borderTopLeftRadius ={20} borderTopRightRadius ={20}  source={dataImages[data.id]} />
-
-            <VStack style={styles.legenda}  
+    <Pressable {...rest}  >
+        <VStack  marginLeft={4} marginRight={5} marginBottom = {-5} >
+           
+            <VStack style={styles.legenda} 
+             borderBottomLeftRadius={20} 
+             borderBottomRightRadius={20}
+            borderTopLeftRadius={20} 
+            borderTopRightRadius={20}
+            bg={cor}
+            alignItems={'center'}
               
                >
 
@@ -40,7 +46,23 @@ export function CardAnotation({ data, ...rest }: Props) {
               fontFamily={'robolight'}>
                 {data.text}
                 </Text>
+
+                <VStack style={styles.input}
+                 borderBottomLeftRadius={20} 
+                borderBottomRightRadius={20}
+                bg="#FFFFFF">
+               
+                </VStack>
+                
             </VStack>
+
+             {/* <TextInput
+          value={userName}
+          onChangeText={(userName) => setUserName(userName)}
+          placeholder={'Texto aqui'}
+          style={styles.input}
+        />
+              */}
 
         </VStack>
     </Pressable>
@@ -55,8 +77,14 @@ const styles = StyleSheet.create({
     } ,
      legenda: {
         color: "#FFFFFF",
-        width: 120,
+        width: 180,
         
-     }
+     },
+     input: {
+      width: 180,
+      height: 120,
+      padding: 10,
+      backgroundColor:"#251751" ,
+    },
   });
   

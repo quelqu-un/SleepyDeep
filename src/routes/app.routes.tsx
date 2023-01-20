@@ -126,7 +126,7 @@ function HomeTab() {
 }
 
 function HomeDrawer() {
-  const fontFamily = "robomedium"
+  const fontFamily = "Roboto_500Medium"
   return ( 
     <Drawer.Navigator 
     screenOptions={{ 
