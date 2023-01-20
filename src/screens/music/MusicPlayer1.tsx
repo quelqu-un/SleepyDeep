@@ -1,11 +1,11 @@
-import { VStack, HStack, Text, ScrollView, IconButton, } from 'native-base';
+import { VStack, HStack, Text, ScrollView, IconButton, Actionsheet, useDisclose } from 'native-base';
 import React, { useEffect, useState, useRef } from 'react';
 
 import { Animated, Dimensions, FlatList, GestureResponderEvent, ImageBackground, SafeAreaView, StyleSheet, View } from 'react-native';
 import { CardAnotation } from '../../components/CardAnotation';
 import { CardMusic } from '../../components/CardMusic';
 import { Image, TouchableOpacity, } from 'react-native';
-import { Globe, ArrowLeft, SkipBack, SkipForward, Pause, Timer, Repeat, Play } from 'phosphor-react-native';
+import { Globe, ArrowLeft, SkipBack, SkipForward, Pause, Timer, Repeat, Play, Check } from 'phosphor-react-native';
 import { useNavigation } from '@react-navigation/native';
 
 // import songs from '../../model/Data';
@@ -13,68 +13,107 @@ import { Audio } from 'expo-av'
 
 import Slider from '@react-native-community/slider';
 
-
 const { width } = Dimensions.get('window');
 
 const songs = [
-  require('../../assets/audio/gabrielenjoadinho.mp3'),
-  require('../../assets/audio/aboutu.mpeg')
+  require('../../assets/audio/aboutu.mpeg'),
+  require('../../assets/audio/enjoadinho.mp4'),
 ];
 
 export function MusicPlayer1() {
+  const {
+    isOpen,
+    onOpen,
+    onClose
+  } = useDisclose();
+
+  const _30MIN = 1800000;
+  const _1H = 3600000;
+  const _6H = 21600000;
+  
   const navigation = useNavigation();
 
   const [songIndex, setsongIndex] = useState(0);
   const [playPause, setplayPause] = useState(true);
-  const [musicIndex, setmusicIndex] = useState(0);
-  const [musicCheck, setmusicCheck] = useState(true);
+  const [musicIndex, setMusicIndex] = useState(0);
+  const [musicCheck, setMusicCheck] = useState(true);
+  const [startTime, setStartTime] = useState(performance.now());
+  const [currentTime, setCurrentTime] = useState(20000);
+  const [timerr, setTimerr] = useState<any>();
+  const [options, setOptions] = useState(30);
 
   const scrollX = useRef(new Animated.Value(0)).current;
 
-  useEffect(() => {
-    if(musicCheck) {
-      Audio.setAudioModeAsync({
-        allowsRecordingIOS: false,
-        // interruptionModeIOS: Audio.INTERRUPTION_MODE_IOS_DO_NOT_MIX,
-        playsInSilentModeIOS: true,
-        //	interruptionModeAndroid: Audio.INTTERUPTION_MODE_ANDROID_DUCK_OTHERS,
-        shouldDuckAndroid: true,
-        staysActiveInBackground: true,
-        //	playsThroughEarpieceAndroid: true, 
-      });
+  let TimerR = function(callback, delay) {
+    let timerId, start, remaining = delay;
+
+    this.pause = function() {
+        window.clearTimeout(timerId);
+        timerId = null;
+        remaining -= Date.now() - start;
+    };
+
+    this.resume = function() {
+        if (timerId) {
+            return;
+        }
+
+        start = Date.now();
+        timerId = window.setTimeout(callback, remaining);
+    };
+
+    this.resume();
+  }
+
+  // useEffect(() => {
+  //   if(musicCheck) {
+  //     Audio.setAudioModeAsync({
+  //       allowsRecordingIOS: false,
+  //       // interruptionModeIOS: Audio.INTERRUPTION_MODE_IOS_DO_NOT_MIX,
+  //       playsInSilentModeIOS: true,
+  //       //	interruptionModeAndroid: Audio.INTTERUPTION_MODE_ANDROID_DUCK_OTHERS,
+  //       shouldDuckAndroid: true,
+  //       staysActiveInBackground: true,
+  //       //	playsThroughEarpieceAndroid: true, 
+  //     });
   
-      this.sound = new Audio.Sound();
+  //     this.sound = new Audio.Sound();
   
-      const status = {
-        shouldPlay: false
-      };
+  //     const status = {
+  //       shouldPlay: true,
+  //       isLooping: true,
+  //     };
       
-      this.sound.loadAsync(songs[musicIndex], status, false);
+  //     this.sound.loadAsync(songs[musicIndex], status, false);
   
-      scrollX.addListener(({ value }) => {
-        const index = Math.round(value / width);
-        setsongIndex(index);
-      });
+  //     scrollX.addListener(({ value }) => {
+  //       const index = Math.round(value / width);
+  //       setsongIndex(index);
+  //     });
 
-      setmusicCheck(false);
-    }
+  //     setMusicCheck(false);
+  //   }
+    
+  //   if(!musicCheck) {
+  //     const status = {
+  //       shouldPlay: true
+  //     };
+  //     this.sound.unloadAsync();
+  //     this.sound.loadAsync(songs[musicIndex], status, false);
+  //     this.sound.playAsync();
+  //   }
 
-    if(!musicCheck) {
-      const status = {
-        shouldPlay: true
-      };
-      this.sound.unloadAsync();
-      this.sound.loadAsync(songs[musicIndex], status, false);
-      this.sound.playAsync();
-    }
+  //   setStartTime(performance.now());
 
-  }, [musicIndex]);
+  // }, [musicIndex]);
 
   function playSound() {
     if(playPause) {
       this.sound.playAsync();
+      timerr.resume();
     } else {
       this.sound.pauseAsync();
+      timerr.pause();
     }
     setplayPause(!playPause);
   }
@@ -82,23 +121,64 @@ export function MusicPlayer1() {
   function nextMusic() {
     this.sound.pauseAsync();
     if(musicIndex === (songs.length-1)) {
-      setmusicIndex(0);
+      setMusicIndex(0);
     } else {
-      setmusicIndex(musicIndex + 1);
+      setMusicIndex(musicIndex + 1);
     }
   }
 
   function backMusic() {
     this.sound.pauseAsync();
     if(musicIndex === 0) {
-      setmusicIndex(songs.length-1);
+      setMusicIndex(songs.length-1);
     } else {
-      setmusicIndex(musicIndex-1);
+      setMusicIndex(musicIndex-1);
     }
   }
 
+  function pauseTimer() {
+    this.sound.pauseAsync();
+    setplayPause(!playPause);
+    this.sound.setIsLoopingAsync(false);
+  }
+
+  function timerMusic() {
+    // console.log(this.sound.getStatusAsync().then((status) => {
+    //   console.log(status)
+    // }));
+
+    // let timer = new TimerR(function() {
+    //   pauseTimer();
+    // }, 20000);
+    setTimerr(new TimerR(function() {
+        pauseTimer();
+      }, 10000));
+    
+    // timer.pause();
+    // // Do some stuff...
+    // timer.resume();
+    // Reconhencer tempo que deve pausar
+
+    // tempo de quando iniciou (inicial - agora)
+    // tempo final (tempo recebido como "parâmetro" - tempo inicial)
+    // se tempo final for menor ou igual que o inicial não chamar a função
+
+    // const endTime = performance.now();
+    // const inicialTime = endTime - startTime;
+    // const finalTime = currentTime - inicialTime;
+
+    // this.sound.setIsLoopingAsync(true);
+    // setTimeout(pauseTimer, finalTime);
+  }
+
   function handleNewOrder() {
-    navigation.navigate("home");
+    onOpen();
+    // navigation.navigate("home");
+  }
+
+  function setTimeOptions(time) {
+    setOptions(time);
+    onClose();
   }
 
   return (
@@ -162,55 +242,103 @@ export function MusicPlayer1() {
 
           {/* Icons Controls  */}
           <HStack marginTop={50} style={styles.musicControlsContainer}>
-            <TouchableOpacity onPress={() => { }}>
 
-              <IconButton
-                marginLeft={10}
-                icon={<SkipBack color="#FFFFFF" size={28} />}
-                onPress={backMusic}
-              />
-            </TouchableOpacity>
+            <IconButton
+              marginLeft={10}
+              icon={<SkipBack color="#FFFFFF" size={28} />}
+              onPress={backMusic}
+            />
 
-            <TouchableOpacity onPress={() => { }}>
-              <IconButton
+            <IconButton
 
-                icon={
-                playPause ? <Play color="#FFFFFF" size={28}/> : 
-                <Pause color="#FFFFFF" size={28}/>
-                }
-                onPress={playSound}
-              />
-            </TouchableOpacity>
+              icon={
+              playPause ? <Play color="#FFFFFF" size={28}/> : 
+              <Pause color="#FFFFFF" size={28}/>
+              }
+              onPress={playSound}
+            />
 
-            <TouchableOpacity onPress={() => { }}>
-              <IconButton
-                marginRight={10}
-                icon={<SkipForward color="#FFFFFF" size={28} />}
-                onPress={nextMusic}
-              />
-            </TouchableOpacity>
+            <IconButton
+              marginRight={10}
+              icon={<SkipForward color="#FFFFFF" size={28} />}
+              onPress={nextMusic}
+            />
+
           </HStack>
 
           <HStack marginLeft={150}>
-            <TouchableOpacity onPress={() => { }}>
 
-              <IconButton
-                marginTop={180}
-                icon={<Timer color="#FFFFFF" size={32} />}
-                onPress={handleNewOrder}
-              />
-            </TouchableOpacity>
+            <IconButton
+              marginTop={180}
+              icon={<Timer color="#FFFFFF" size={32} />}
+              onPress={handleNewOrder}
+            />
 
-            <TouchableOpacity onPress={() => { }}>
-              <IconButton
-                marginTop={180}
-                icon={<Repeat color="#FFFFFF" size={32} />}
-                onPress={handleNewOrder}
-              />
-            </TouchableOpacity>
+            <IconButton
+              marginTop={180}
+              icon={<Repeat color="#FFFFFF" size={32} />}
+              onPress={timerMusic}
+            />
+
           </HStack>
         </VStack>
       </ScrollView>
+
+      <Actionsheet isOpen={isOpen} onClose={onClose} hideDragIndicator >
+        <Actionsheet.Content borderTopRadius="20" bg="#251751" padding={0}>
+
+          <Actionsheet.Item 
+          bg={options === _30MIN ? "#5548E1" : "#251751"}
+          _pressed={{
+            bg: options === _30MIN ? "#5548E1" : "#3A3487"
+          }}
+          endIcon={options === _30MIN ? <Check color="#FFFFFF" size={24}/> : null}
+          onPressOut={() => setTimeOptions(_30MIN)}>
+            <Text color="#FFFFFF">
+              30 minutos
+            </Text>
+          </Actionsheet.Item>
+
+          <Actionsheet.Item 
+          bg={options === _1H ? "#5548E1" : "#251751"}
+          _pressed={{
+            bg: options === _1H ? "#5548E1" : "#3A3487"
+          }}
+          endIcon={options === _1H ? <Check color="#FFFFFF" size={24}/> : null}
+          onPressOut={() => setTimeOptions(_1H)}>
+            <Text color="#FFFFFF">
+              1 hora
+            </Text>
+          </Actionsheet.Item>
+
+          <Actionsheet.Item 
+          bg={options === _6H ? "#5548E1" : "#251751"}
+          _pressed={{
+            bg: options === _6H ? "#5548E1" : "#3A3487"
+          }}
+          endIcon={options === _6H ? <Check color="#FFFFFF" size={24}/> : null}
+          onPressOut={() => setTimeOptions(_6H)}>
+            <Text color="#FFFFFF">
+              6 horas
+            </Text>
+          </Actionsheet.Item>
+
+          <Actionsheet.Item 
+          bg={options !== _30MIN && options !== _1H && options !== _6H && options > 0 ? "#5548E1" : "#251751"}
+          _pressed={{
+            bg: options !== _30MIN && options !== _1H && options !== _6H && options > 0  ? "#5548E1" : "#3A3487"
+          }}
+          endIcon={options !== _30MIN && options !== _1H && options !== _6H && options > 0 ? 
+          <Check color="#FFFFFF" size={24}/> : null}
+          onPressOut={() => setTimeOptions(20)}>
+            <Text color="#FFFFFF">
+              Personalizar
+            </Text>
+          </Actionsheet.Item>
+
+        </Actionsheet.Content>
+      </Actionsheet>
+
     </SafeAreaView>
   )
 }
