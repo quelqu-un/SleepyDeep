@@ -96,16 +96,16 @@ export function MusicScreen() {
       <VStack flex={1}
         bg="#180F34" /*23154F */
       >
-        <HStack marginTop={10} paddingX={4} style={styles.title} >
+        <HStack paddingTop={3} 
+         paddingX={4} style={styles.title} >
         <TouchableOpacity  onPress={handleNewOrder}>
           <Image   style={styles.imageLogo} source={require('../../assets/images/homeicon.png')} />
           </TouchableOpacity>
           <Text
                  marginBottom={5}
-            fontFamily={'bold'} 
-           
+            fontFamily={'robobold'} 
             color={'#FFFFFF'}
-            fontSize={22}>
+            fontSize={19}>
             Chuva
           </Text>
           
@@ -202,8 +202,9 @@ const styles = StyleSheet.create({
  
   },
   imageLogo: {
-    width: 40,
-    height: 40,
+    width: 35,
+    height: 35,
+    marginTop: -5,
 
   },
 });
