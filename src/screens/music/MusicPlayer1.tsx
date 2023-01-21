@@ -33,87 +33,81 @@ export function MusicPlayer1() {
   
   const navigation = useNavigation();
 
-  const [songIndex, setsongIndex] = useState(0);
-  const [playPause, setplayPause] = useState(true);
-  const [musicIndex, setMusicIndex] = useState(0);
-  const [musicCheck, setMusicCheck] = useState(true);
-  const [startTime, setStartTime] = useState(performance.now());
-  const [currentTime, setCurrentTime] = useState(20000);
-  const [timerr, setTimerr] = useState<any>();
-  const [options, setOptions] = useState(30);
-
-  const scrollX = useRef(new Animated.Value(0)).current;
-
-  let TimerR = function(callback, delay) {
+  let TimerControl = function(callback, delay) {
     let timerId, start, remaining = delay;
 
     this.pause = function() {
-        window.clearTimeout(timerId);
-        timerId = null;
-        remaining -= Date.now() - start;
+      window.clearTimeout(timerId);
+      timerId = null;
+      remaining -= Date.now() - start;
     };
 
     this.resume = function() {
-        if (timerId) {
-            return;
-        }
+      if(timerId) {
+        return;
+      }
 
-        start = Date.now();
-        timerId = window.setTimeout(callback, remaining);
+      start = Date.now();
+      timerId = window.setTimeout(callback, remaining);
     };
 
     this.resume();
   }
 
-  // useEffect(() => {
-  //   if(musicCheck) {
-  //     Audio.setAudioModeAsync({
-  //       allowsRecordingIOS: false,
-  //       // interruptionModeIOS: Audio.INTERRUPTION_MODE_IOS_DO_NOT_MIX,
-  //       playsInSilentModeIOS: true,
-  //       //	interruptionModeAndroid: Audio.INTTERUPTION_MODE_ANDROID_DUCK_OTHERS,
-  //       shouldDuckAndroid: true,
-  //       staysActiveInBackground: true,
-  //       //	playsThroughEarpieceAndroid: true, 
-  //     });
+  const [playPause, setplayPause] = useState(false);
+  const [musicIndex, setMusicIndex] = useState(0);
+  const [musicCheck, setMusicCheck] = useState(true);
+  const [timerControl, setTimerControl] = useState<any>(new TimerControl(function() {
+    pauseTimer();
+  }, _1H));
+  const [options, setOptions] = useState(_1H);
+
+  useEffect(() => {
+    if(musicCheck) {
+      Audio.setAudioModeAsync({
+        allowsRecordingIOS: false,
+        // interruptionModeIOS: Audio.INTERRUPTION_MODE_IOS_DO_NOT_MIX,
+        playsInSilentModeIOS: true,
+        //	interruptionModeAndroid: Audio.INTTERUPTION_MODE_ANDROID_DUCK_OTHERS,
+        shouldDuckAndroid: true,
+        staysActiveInBackground: true,
+        //	playsThroughEarpieceAndroid: true, 
+      });
   
-  //     this.sound = new Audio.Sound();
+      this.sound = new Audio.Sound();
   
-  //     const status = {
-  //       shouldPlay: true,
-  //       isLooping: true,
-  //     };
+      const status = {
+        shouldPlay: true,
+        isLooping: true,
+      };
       
-  //     this.sound.loadAsync(songs[musicIndex], status, false);
-  
-  //     scrollX.addListener(({ value }) => {
-  //       const index = Math.round(value / width);
-  //       setsongIndex(index);
-  //     });
+      this.sound.loadAsync(songs[musicIndex], status, false);
 
-  //     setMusicCheck(false);
-  //   }
+      setMusicCheck(false);
+    }
     
-  //   if(!musicCheck) {
-  //     const status = {
-  //       shouldPlay: true
-  //     };
-  //     this.sound.unloadAsync();
-  //     this.sound.loadAsync(songs[musicIndex], status, false);
-  //     this.sound.playAsync();
-  //   }
-
-  //   setStartTime(performance.now());
-
-  // }, [musicIndex]);
+    if(!musicCheck) {
+      const status = {
+        shouldPlay: true,
+        isLooping: true
+      };
+      this.sound.unloadAsync();
+      this.sound.loadAsync(songs[musicIndex], status, false);
+      this.sound.playAsync();
+    }
+  }, [musicIndex]);
 
   function playSound() {
     if(playPause) {
       this.sound.playAsync();
-      timerr.resume();
+      if(timerControl!== null) {
+        timerControl.resume();
+      }
     } else {
       this.sound.pauseAsync();
-      timerr.pause();
+      if(timerControl!== null) {
+        timerControl.pause();
+      }
     }
     setplayPause(!playPause);
   }
@@ -139,45 +133,21 @@ export function MusicPlayer1() {
   function pauseTimer() {
     this.sound.pauseAsync();
     setplayPause(!playPause);
-    this.sound.setIsLoopingAsync(false);
+    setTimerControl(null);
   }
 
-  function timerMusic() {
-    // console.log(this.sound.getStatusAsync().then((status) => {
-    //   console.log(status)
-    // }));
-
-    // let timer = new TimerR(function() {
-    //   pauseTimer();
-    // }, 20000);
-    setTimerr(new TimerR(function() {
-        pauseTimer();
-      }, 10000));
-    
-    // timer.pause();
-    // // Do some stuff...
-    // timer.resume();
-    // Reconhencer tempo que deve pausar
-
-    // tempo de quando iniciou (inicial - agora)
-    // tempo final (tempo recebido como "parâmetro" - tempo inicial)
-    // se tempo final for menor ou igual que o inicial não chamar a função
-
-    // const endTime = performance.now();
-    // const inicialTime = endTime - startTime;
-    // const finalTime = currentTime - inicialTime;
-
-    // this.sound.setIsLoopingAsync(true);
-    // setTimeout(pauseTimer, finalTime);
-  }
-
-  function handleNewOrder() {
-    onOpen();
-    // navigation.navigate("home");
+  function hadleGoBack() {
+    navigation.goBack();
+    this.sound.unloadAsync();
   }
 
   function setTimeOptions(time) {
     setOptions(time);
+
+    setTimerControl(new TimerControl(function() {
+      pauseTimer();
+    }, time));
+
     onClose();
   }
 
@@ -194,7 +164,7 @@ export function MusicPlayer1() {
               <IconButton
                 marginTop={-1}
                 icon={<ArrowLeft color="#FFFFFF" size={28} />}
-                onPress={handleNewOrder}
+                onPress={hadleGoBack}
               />
               <Text
                 marginBottom={2}
@@ -214,7 +184,7 @@ export function MusicPlayer1() {
         <VStack style={styles.mainContainer} >
 
           <Text style={[styles.songContent, styles.songTitle]}>
-            {songs[songIndex].title}
+            gabriel
           </Text>
 
           {/* SLIDER */}
@@ -271,13 +241,7 @@ export function MusicPlayer1() {
             <IconButton
               marginTop={180}
               icon={<Timer color="#FFFFFF" size={32} />}
-              onPress={handleNewOrder}
-            />
-
-            <IconButton
-              marginTop={180}
-              icon={<Repeat color="#FFFFFF" size={32} />}
-              onPress={timerMusic}
+              onPress={onOpen}
             />
 
           </HStack>
@@ -340,7 +304,7 @@ export function MusicPlayer1() {
       </Actionsheet>
 
     </SafeAreaView>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
