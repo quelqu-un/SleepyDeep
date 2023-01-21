@@ -60,36 +60,41 @@ export function AnotationScreen() {
      <VStack flex={1} 
         bg="#180F34"       
         > 
-            <HStack paddingTop={5}  paddingX = {4} style={styles.title}     >
+           
+          <HStack paddingTop={5}  paddingX = {4} style={styles.title}     >
 
-          
             <TouchableOpacity  onPress={handleNewOrder}>
-          <Image   style={styles.imageLogoHome} source={require('../../assets/images/homeicon.png')} />
-          </TouchableOpacity>
-            <HStack >
-            <Text 
-               marginTop ={-1}
+            <IconButton
+                  marginTop = {-2}
+                icon={<ArrowLeft  color="#FFFFFF" size={25} />}
+                 onPress={handleNewOrder}
+              />
+            </TouchableOpacity>
+
+
+             <HStack >
+               <Text 
+                marginTop ={-1}
                 fontFamily="robobold" 
                 textAlign= "center"
                 color={'#FFFFFF'}
                 fontSize={18}>
                     Anotação
-                </Text>
+               </Text>
                 <Image style={styles.imageLogo} source={require('../../assets/images/moon.png')} />
-            </HStack>
+             </HStack>
               
                 <IconButton
               marginTop = {-3}
               marginRight={-2}
               icon={<PlusCircle color="#FFFFFF" size={28} />}
               onPress={handleNewOrder}
-            />
+            />   
 
-              
-            </HStack>
+          </HStack>
            
             
-            <View 
+            <VStack 
             marginTop={30}>
              <TouchableOpacity  onPress={handleNewOrder}> 
             <Text paddingX={5} fontFamily={'robolight'} marginBottom={3}  style={styles.secondtitle} >O que eu sonhei hoje</Text>
@@ -110,7 +115,7 @@ export function AnotationScreen() {
             contentContainerStyle={{ paddingBottom: 40 }}
           />
         </HStack>
-            </View>
+            </VStack>
           
             <TouchableOpacity  onPress={handleNewOrder}> 
         <Text paddingX={5} fontFamily={'robolight'} marginBottom={3} style={styles.secondtitle}> Estresse do dia </Text>

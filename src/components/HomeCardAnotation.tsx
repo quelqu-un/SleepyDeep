@@ -1,8 +1,7 @@
 import { Text, useTheme, VStack, Pressable, IPressableProps ,} from 'native-base';
 import { useState } from 'react';
-import { Image, TouchableOpacity } from 'react-native';
+import { Image } from 'react-native';
 import { StyleSheet, View,TextInput } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
 
 export type CardAnotationProps = {
   id: string;
@@ -22,17 +21,11 @@ const dataImages = [
    
 ]
 
-export function CardAnotation({ data, cor, ...rest }) {
+export function HomeCardAnotation({ data, cor, ...rest }) {
   const { colors } = useTheme();
   const [userName, setUserName] = useState('');
-  const navigation = useNavigation();
 
-  function handleNewOrder() {
-    navigation.navigate("textHome");
-  }
-  
   return (
-   
     <Pressable {...rest}  >
         <VStack  marginLeft={4} marginRight={5} marginBottom = {-5} >
            
@@ -45,30 +38,29 @@ export function CardAnotation({ data, cor, ...rest }) {
             alignItems={'center'}
               
                >
-             <TouchableOpacity  onPress={handleNewOrder} >
+
                 <Text paddingX={2} 
               paddingY={1} 
-              marginLeft= {2}
               color="#FFFFFF" 
               fontSize={12}
               fontFamily={'robolight'}>
                 {data.text}
                 </Text>
 
-                <VStack style={styles.input}
-                 borderBottomLeftRadius={20} 
-                borderBottomRightRadius={20}
-                bg="#FFFFFF">           
-                </VStack>
-                </TouchableOpacity>
-                
+                <Image  style={styles.imagens} borderBottomLeftRadius ={20} borderBottomRightRadius ={20}  source={dataImages[data.id]} />
+
             </VStack>
 
-          
+             {/* <TextInput
+          value={userName}
+          onChangeText={(userName) => setUserName(userName)}
+          placeholder={'Texto aqui'}
+          style={styles.input}
+        />
+              */}
 
         </VStack>
     </Pressable>
-   
   );
 }
 const styles = StyleSheet.create({
@@ -80,13 +72,12 @@ const styles = StyleSheet.create({
     } ,
      legenda: {
         color: "#FFFFFF",
-        width: 180,
-        
+        width: 120,
         
      },
      input: {
-      width: 180,
-      height: 120,
+      width: 120,
+      height: 80,
       padding: 10,
       backgroundColor:"#251751" ,
     },

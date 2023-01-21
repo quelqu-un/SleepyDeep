@@ -1,7 +1,7 @@
 import { VStack, HStack, Text,  ScrollView, IconButton } from 'native-base';
 import React from 'react';
 import { FlatList, StyleSheet, TouchableOpacity, SafeAreaView,} from 'react-native';
-import { CardAnotation } from '../../components/CardAnotation';
+import { HomeCardAnotation } from '../../components/HomeCardAnotation';
 import { CardMusic } from '../../components/CardMusic';
 import { Image } from 'react-native';
 import { Globe, ListBullets } from 'phosphor-react-native';
@@ -80,7 +80,7 @@ export function HomeScreen() {
   const navigation = useNavigation();
 
   function handleNewOrder() {
-    navigation.navigate("musicHome");
+    navigation.navigate("textHome");
   }
 
   function handleNewNewOrder() {
@@ -93,14 +93,10 @@ export function HomeScreen() {
 
   return (
 
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView >
 
    
-    <ScrollView /*_contentContainerStyle={{
-      
-      h: "100%",
-      w: "100%"
-    }*/
+    <ScrollView 
       marginBottom={10}
     >
       <VStack flex={1}
@@ -194,10 +190,10 @@ export function HomeScreen() {
             horizontal={true}
             keyExtractor={item => item.id}
             renderItem={({ item }) =>
-              <CardAnotation
+              <HomeCardAnotation
               cor = {"#1DC0B7"}
                 data={item}
-              ></CardAnotation>
+              ></HomeCardAnotation>
             }
             contentContainerStyle={{ paddingBottom: 40 }}
           />

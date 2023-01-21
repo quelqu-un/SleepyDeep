@@ -86,15 +86,18 @@ export function MusicScreen() {
     }
 
   return (
-    <ScrollView /*_contentContainerStyle={{
+    <VStack height={"100%"}  bg="#180F34">
+    <ScrollView  
+    // _contentContainerStyle={{
       
-      h: "100%",
-      w: "100%"
-    }*/
-      marginBottom={10}
+    //   h: "100%",
+    //   w: "100%",
+    // }}
+   
     >
       <VStack flex={1}
-        bg="#180F34" /*23154F */
+      
+        /*23154F */
       >
         <HStack paddingTop={3} 
          paddingX={4} style={styles.title} >
@@ -183,7 +186,7 @@ export function MusicScreen() {
 
 
     </ScrollView>
-
+    </VStack>
   );
 }
 

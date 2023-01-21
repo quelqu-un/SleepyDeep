@@ -9,6 +9,8 @@ import { MusicPlayer } from '../screens/music/MusicPlayer';
 import { AnotationScreen } from '../screens/anotation/AnotationScreen';
 import { AlarmScreen }  from '../screens/alarm/AlarmScreen';
 import { SearchScreen } from '../screens/search/SearchScreen';
+import { TextInputAnotation } from '../screens/anotation/TextInputAnotation';
+
 
 import { NotePencil, MagnifyingGlass, Alarm, House, CurrencyDollar, ArrowLeft } from 'phosphor-react-native';
 
@@ -311,6 +313,7 @@ export function AppRoutes() {
       <Screen.Screen name="musicHome" component={MusicScreen} />
       <Screen.Screen name="musicplayer" component={MusicPlayer} />
       <Screen.Screen name="musicplayer1" component={MusicPlayer1} />
+      <Screen.Screen name="textHome" component={TextInputAnotation} />
     </Screen.Navigator>
   );
 }
