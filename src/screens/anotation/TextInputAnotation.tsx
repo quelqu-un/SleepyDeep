@@ -63,6 +63,7 @@ export function TextInputAnotation(props) {
 
                     <View style={styles.enjoadinho} >
                     <TextInput
+                            
                             editable
                             multiline
                             value={value}

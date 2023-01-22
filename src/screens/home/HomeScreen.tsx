@@ -80,7 +80,7 @@ export function HomeScreen() {
   const navigation = useNavigation();
 
   function handleNewOrder() {
-    navigation.navigate("textHome");
+    navigation.navigate("allAnotation");
   }
 
   function handleNewNewOrder() {

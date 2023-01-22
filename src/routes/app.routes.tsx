@@ -10,7 +10,7 @@ import { AnotationScreen } from '../screens/anotation/AnotationScreen';
 import { AlarmScreen }  from '../screens/alarm/AlarmScreen';
 import { SearchScreen } from '../screens/search/SearchScreen';
 import { TextInputAnotation } from '../screens/anotation/TextInputAnotation';
-
+import { AllAnotation } from '../screens/anotation/AllAnotation';
 
 import { NotePencil, MagnifyingGlass, Alarm, House, CurrencyDollar, ArrowLeft } from 'phosphor-react-native';
 
@@ -19,6 +19,7 @@ import { CustomDrawerContent } from '../components/CustomDrawerContent';
 import { MusicPlayer1 } from '../screens/music/MusicPlayer1';
 import { useNavigation } from '@react-navigation/native';
 import { IconButton } from 'native-base';
+
 
 const Screen = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -314,6 +315,7 @@ export function AppRoutes() {
       <Screen.Screen name="musicplayer" component={MusicPlayer} />
       <Screen.Screen name="musicplayer1" component={MusicPlayer1} />
       <Screen.Screen name="textHome" component={TextInputAnotation} />
+      <Screen.Screen name="allAnotation" component={AllAnotation} />
     </Screen.Navigator>
   );
 }
