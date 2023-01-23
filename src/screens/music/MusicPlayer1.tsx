@@ -5,11 +5,11 @@ import { Animated, Dimensions, FlatList, GestureResponderEvent, ImageBackground,
 import { CardAnotation } from '../../components/CardAnotation';
 import { CardMusic } from '../../components/CardMusic';
 import { Image, TouchableOpacity, } from 'react-native';
-import { Globe, ArrowLeft, SkipBack, SkipForward, Pause, Timer, Repeat, Play, Check } from 'phosphor-react-native';
+import { Globe, ArrowLeft, SkipBack, SkipForward, Pause, Timer, Repeat, Play, Check, SelectionPlus } from 'phosphor-react-native';
 import { useNavigation } from '@react-navigation/native';
 
 // import songs from '../../model/Data';
-import { Audio } from 'expo-av'
+import { Audio } from 'expo-av';
 
 import Slider from '@react-native-community/slider';
 
@@ -32,6 +32,8 @@ export function MusicPlayer1() {
   const _30MIN = 1800000;
   const _1H = 3600000;
   const _6H = 21600000;
+
+  const _1S = 1000;
 
   const navigation = useNavigation();
 
@@ -65,42 +67,55 @@ export function MusicPlayer1() {
   const [options, setOptions] = useState(_1H);
   const [onChangeValue, setOnChangeValue] = useState(1);
   const [onChangeEndValue, setOnChangeEndValue] = useState(1);
+  const [onChangeValueFinal, setOnChangeValueFinal] = useState(1);
+  const [onChangeValueFinalControl, setOnChangeValueFinalControl] = useState(true);
 
+  const [countTime, setCountTime] = useState(0);
+  const [countHour, setCountHour] = useState(0);
+  const [countMinute, setCountMinute] = useState(0);
+  const [countSeconds, setCountSeconds] = useState(0);
+
+
+  // useEffect(() => {
+  //   if (musicCheck) {
+  //     Audio.setAudioModeAsync({
+  //       allowsRecordingIOS: false,
+  //       // interruptionModeIOS: Audio.INTERRUPTION_MODE_IOS_DO_NOT_MIX,
+  //       playsInSilentModeIOS: true,
+  //       //	interruptionModeAndroid: Audio.INTTERUPTION_MODE_ANDROID_DUCK_OTHERS,
+  //       shouldDuckAndroid: true,
+  //       staysActiveInBackground: true,
+  //       //	playsThroughEarpieceAndroid: true, 
+  //     });
+
+  //     this.sound = new Audio.Sound();
+
+  //     const status = {
+  //       shouldPlay: true,
+  //       isLooping: true,
+  //     };
+
+  //     this.sound.loadAsync(songs[musicIndex], status, false);
+
+  //     setMusicCheck(false);
+  //   }
+
+  //   if (!musicCheck) {
+  //     const status = {
+  //       shouldPlay: true,
+  //       isLooping: true
+  //     };
+  //     this.sound.unloadAsync();
+  //     this.sound.loadAsync(songs[musicIndex], status, false);
+  //     this.sound.playAsync();
+  //   }
+  // }, [musicIndex]);
 
   useEffect(() => {
-    if (musicCheck) {
-      Audio.setAudioModeAsync({
-        allowsRecordingIOS: false,
-        // interruptionModeIOS: Audio.INTERRUPTION_MODE_IOS_DO_NOT_MIX,
-        playsInSilentModeIOS: true,
-        //	interruptionModeAndroid: Audio.INTTERUPTION_MODE_ANDROID_DUCK_OTHERS,
-        shouldDuckAndroid: true,
-        staysActiveInBackground: true,
-        //	playsThroughEarpieceAndroid: true, 
-      });
-
-      this.sound = new Audio.Sound();
-
-      const status = {
-        shouldPlay: true,
-        isLooping: true,
-      };
-
-      this.sound.loadAsync(songs[musicIndex], status, false);
-
-      setMusicCheck(false);
-    }
-
-    if (!musicCheck) {
-      const status = {
-        shouldPlay: true,
-        isLooping: true
-      };
-      this.sound.unloadAsync();
-      this.sound.loadAsync(songs[musicIndex], status, false);
-      this.sound.playAsync();
-    }
-  }, [musicIndex]);
+    setCountHour(Math.floor(countTime/3600));
+    setCountMinute(Math.floor(countTime/60));
+    updateTime();
+  },[countTime]);
 
   function playSound() {
     if (playPause) {
@@ -158,12 +173,90 @@ export function MusicPlayer1() {
     onClose();
   }
 
+  function setTimeOptionsCustom() {
+    setOptions(onChangeEndValue*60*1000);
+    setOnChangeValueFinal(onChangeEndValue);
+
+    setOnChangeValueFinalControl(true);
+
+    setTimerControl(new TimerControl(function () {
+      pauseTimer();
+    }, options));
+
+    customOptions.onClose();
+  }
+
+  function updateTime() {
+    if(countTime < (options/1000)) {
+      if(countMinute < 59) {
+        if(countSeconds < 59) {
+          setTimeout(() => { 
+            setCountTime(countTime+1); 
+            setCountSeconds(countSeconds+1);
+          }, _1S); 
+        } else {
+          setTimeout(() => { 
+            setCountTime(countTime+1); 
+            setCountSeconds(0);
+            setCountMinute(countMinute+1)
+          }, _1S); 
+        }
+      } else {
+        if(countSeconds < 59) {
+          setTimeout(() => { 
+            setCountTime(countTime+1); 
+            setCountSeconds(countSeconds+1);
+          }, _1S); 
+        } else {
+          setTimeout(() => { 
+            setCountTime(countTime+1); 
+            setCountSeconds(0);
+            setCountMinute(0);
+            setCountHour(countHour+1);
+          }, _1S); 
+        } 
+      }
+    }
+  }  
+
+  let convertTime = minutes => {
+    if (minutes) {
+      const hrs = minutes / 60;
+      const minute = hrs.toString().split('.')[0];
+      const percent = parseInt(hrs.toString().split('.')[1].slice(0, 2));
+      const sec = Math.ceil((60 * percent) / 100);
+      if (parseInt(minute) < 10 && sec < 10) {
+        return `0${minute}:0${sec}`;
+      }
+  
+      if (sec == 60) {
+        return `${minute + 1}:00`;
+      }
+  
+      if (parseInt(minute) < 10) {
+        return `0${minute}:${sec}`;
+      }
+  
+      if (sec < 10) {
+        return `${minute}:0${sec}`;
+      }
+  
+      return `${minute}:${sec}`;
+    }
+  };
+  
+  console.log(convertTime(3601))
+
+  // função para ficar chamando de segundo em segundo o getStatus
+  // estado geral que controla a contagem de segundos geral
+  // função que converter milisegundos para segundos no formato desejado
+  // slider, pause e player vão ser controlado por AV
+
+  // resolver erro após clicar na seta para voltar
+
   return (
     <VStack height={"100%"} bg="#180F34">
       
-
-      
-
       <ScrollView
         marginBottom={10}
       >
@@ -203,20 +296,25 @@ export function MusicPlayer1() {
           <VStack>
             <Slider
               style={styles.progressBar}
-              value={10}
+              value={countTime}
               minimumValue={0}
               maximumValue={100}
+              step={1}
               thumbTintColor="#FFD369"
               minimumTrackTintColor="#FFD369"
               maximumTrackTintColor="#fff"
-              onSlidingComplete={() => { }}
+              onSlidingComplete={v => {
+                v && setCountTime(Math.floor(v));
+              }}
             />
 
 
             {/* music duration  */}
 
             <HStack style={styles.progressLevelDuration}>
-              <Text style={styles.progressLabelText}>00:00</Text>
+              <Text style={styles.progressLabelText}>
+                {countHour}:{countMinute}:{countSeconds}
+              </Text>
             </HStack>
 
           </VStack>
@@ -329,32 +427,32 @@ export function MusicPlayer1() {
             </Text>
           </VStack>
 
-            <Text 
-              color="#FFFFFF" 
-              textAlign="center" 
-              fontFamily={'robolight'}
-              fontSize={14}>
-              {onChangeEndValue}
-              {onChangeEndValue === 1 ? ' hora' : ' horas'}
-            </Text>
+          <Text 
+            color="#FFFFFF" 
+            textAlign="center" 
+            fontFamily={'robolight'}
+            fontSize={14}>
+            {onChangeValueFinalControl ? onChangeValueFinal : onChangeEndValue}
+            {onChangeEndValue === 1 ? ' hora' : ' horas'}
+          </Text>
 
-            <Slider
-              style={styles.progressBar}
-              value={1}
-              onValueChange={()=>onChangeValue}
-              minimumValue={1}
-              maximumValue={10}
-              step={1}
-              thumbTintColor="#B7AEFF"
-              minimumTrackTintColor="#B7AEFF"
-              maximumTrackTintColor="#fff"
-              onSlidingComplete={v => {
-                v && setOnChangeEndValue(Math.floor(v));
-              }}
-              onSlidingStart={v => {
-                setOnChangeValue(Math.floor(v));
-              }}
-            />
+          <Slider
+            style={styles.progressBar}
+            value={onChangeValueFinal}
+            minimumValue={1}
+            maximumValue={10}
+            step={1}
+            thumbTintColor="#B7AEFF"
+            minimumTrackTintColor="#B7AEFF"
+            maximumTrackTintColor="#fff"
+            onSlidingComplete={v => {
+              v && setOnChangeEndValue(Math.floor(v));
+              setOnChangeValueFinalControl(false);
+            }}
+            onSlidingStart={v => {
+              setOnChangeValue(Math.floor(v));
+            }}
+          />
 
           <VStack
              bg="#251751"
@@ -381,7 +479,7 @@ export function MusicPlayer1() {
               width={140}
               bg="#5548E1"
               borderRadius={6}
-              onPress={customOptions.onClose}>
+              onPress={setTimeOptionsCustom}>
                 <Text
                 color="#FFFFFF"
                 >
