@@ -28,7 +28,7 @@ export function TextInputAnotation(props) {
             }}
             >         
                    
-                    <HStack marginTop={2}  paddingX={4} style={styles.title} >
+                    <HStack paddingTop={4}  paddingX={4} style={styles.title} >
 
 
                         <IconButton
@@ -105,7 +105,8 @@ const styles = StyleSheet.create({
         color: "#FFFFFF",
         flexDirection: "row",
         justifyContent: "space-between",
-        backgroundColor: "#180F34"
+        backgroundColor: "#180F34",
+        marginBottom: 10,
     },
     secondtitle: {
         color: "#FFFFFF",
