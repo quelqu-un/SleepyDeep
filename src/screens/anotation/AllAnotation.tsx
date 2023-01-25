@@ -68,7 +68,8 @@ export function AllAnotation() {
     }
 
     return (
-        <VStack flex={1} height={"100%"} bg="#180F34" >
+        <VStack flex={1} alignItems = {'center'}
+         height={"100%"} bg="#180F34" >
 
 
             <ScrollView _contentContainerStyle={{

@@ -19,6 +19,7 @@ import { CustomDrawerContent } from '../components/CustomDrawerContent';
 import { MusicPlayer1 } from '../screens/music/MusicPlayer1';
 import { useNavigation } from '@react-navigation/native';
 import { IconButton } from 'native-base';
+import { GravationScreen } from '../screens/anotation/GravationScreen';
 
 
 const Screen = createNativeStackNavigator();
@@ -316,6 +317,7 @@ export function AppRoutes() {
       <Screen.Screen name="musicplayer1" component={MusicPlayer1} />
       <Screen.Screen name="textHome" component={TextInputAnotation} />
       <Screen.Screen name="allAnotation" component={AllAnotation} />
+      <Screen.Screen name="gravation" component={GravationScreen} />
     </Screen.Navigator>
   );
 }
