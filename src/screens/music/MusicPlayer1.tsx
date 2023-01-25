@@ -16,8 +16,8 @@ import Slider from '@react-native-community/slider';
 const { width } = Dimensions.get('window');
 
 const songs = [
-  require('../../assets/audio/aboutu.mpeg'),
   require('../../assets/audio/enjoadinho.mp4'),
+  require('../../assets/audio/aboutu.mpeg'),
 ];
 
 export function MusicPlayer1() {
@@ -65,67 +65,81 @@ export function MusicPlayer1() {
     pauseTimer();
   }, _1H));
   const [options, setOptions] = useState(_1H);
+
   const [onChangeValue, setOnChangeValue] = useState(1);
   const [onChangeEndValue, setOnChangeEndValue] = useState(1);
   const [onChangeValueFinal, setOnChangeValueFinal] = useState(1);
   const [onChangeValueFinalControl, setOnChangeValueFinalControl] = useState(true);
+  const [control, setControl] = useState<any>({
+    isBuffering: 0,
+    durationMillis: 0,
+    positionMillis: 0,
+  });
+  const [currentPosition, setCurrentPosition] = useState(1);
+  const [rr, setRr] = useState(0);
 
-  const [countTime, setCountTime] = useState(0);
-  const [countHour, setCountHour] = useState(0);
-  const [countMinute, setCountMinute] = useState(0);
-  const [countSeconds, setCountSeconds] = useState(0);
-
-
-  // useEffect(() => {
-  //   if (musicCheck) {
-  //     Audio.setAudioModeAsync({
-  //       allowsRecordingIOS: false,
-  //       // interruptionModeIOS: Audio.INTERRUPTION_MODE_IOS_DO_NOT_MIX,
-  //       playsInSilentModeIOS: true,
-  //       //	interruptionModeAndroid: Audio.INTTERUPTION_MODE_ANDROID_DUCK_OTHERS,
-  //       shouldDuckAndroid: true,
-  //       staysActiveInBackground: true,
-  //       //	playsThroughEarpieceAndroid: true, 
-  //     });
-
-  //     this.sound = new Audio.Sound();
-
-  //     const status = {
-  //       shouldPlay: true,
-  //       isLooping: true,
-  //     };
-
-  //     this.sound.loadAsync(songs[musicIndex], status, false);
-
-  //     setMusicCheck(false);
-  //   }
-
-  //   if (!musicCheck) {
-  //     const status = {
-  //       shouldPlay: true,
-  //       isLooping: true
-  //     };
-  //     this.sound.unloadAsync();
-  //     this.sound.loadAsync(songs[musicIndex], status, false);
-  //     this.sound.playAsync();
-  //   }
-  // }, [musicIndex]);
 
   useEffect(() => {
-    setCountHour(Math.floor(countTime/3600));
-    setCountMinute(Math.floor(countTime/60));
-    updateTime();
-  },[countTime]);
+    if (musicCheck) {
+      Audio.setAudioModeAsync({
+        allowsRecordingIOS: false,
+        // interruptionModeIOS: Audio.INTERRUPTION_MODE_IOS_DO_NOT_MIX,
+        playsInSilentModeIOS: true,
+        //	interruptionModeAndroid: Audio.INTTERUPTION_MODE_ANDROID_DUCK_OTHERS,
+        shouldDuckAndroid: true,
+        staysActiveInBackground: true,
+        //	playsThroughEarpieceAndroid: true, 
+      });
+
+      this.sound = new Audio.Sound();
+
+      const status = {
+        shouldPlay: true,
+        isLooping: true,
+      };
+
+      this.sound.setOnPlaybackStatusUpdate(onPlaybackStatusUpdate)
+      this.sound.loadAsync(songs[musicIndex], status, true)
+      // this.sound.loadAsync(songs[musicIndex], status, false);
+
+      setMusicCheck(false);
+    }
+
+    if (!musicCheck) {
+      const status = {
+        shouldPlay: true,
+        isLooping: true
+      };
+      this.sound.unloadAsync();
+      this.sound.loadAsync(songs[musicIndex], status, false);
+      this.sound.playAsync();
+    }
+  }, [musicIndex]);
+
+  useEffect(() => {
+    if(control.positionMillis >= (control.durationMillis-600))
+      setCurrentPosition(currentPosition+1)
+    
+    console.log(currentPosition)
+    console.log(control);
+
+    setRr((control.durationMillis*currentPosition)+(control.positionMillis))
+
+  }, [control]);
+
+  const onPlaybackStatusUpdate = status => {
+    setControl(status)
+  }
 
   function playSound() {
     if (playPause) {
       this.sound.playAsync();
-      if (timerControl !== null) {
+      if(timerControl !== null) {
         timerControl.resume();
       }
     } else {
       this.sound.pauseAsync();
-      if (timerControl !== null) {
+      if(timerControl !== null) {
         timerControl.pause();
       }
     }
@@ -136,8 +150,10 @@ export function MusicPlayer1() {
     this.sound.pauseAsync();
     if (musicIndex === (songs.length - 1)) {
       setMusicIndex(0);
+      setplayPause(false);
     } else {
       setMusicIndex(musicIndex + 1);
+      setplayPause(false);
     }
   }
 
@@ -145,8 +161,10 @@ export function MusicPlayer1() {
     this.sound.pauseAsync();
     if (musicIndex === 0) {
       setMusicIndex(songs.length - 1);
+      setplayPause(false);
     } else {
       setMusicIndex(musicIndex - 1);
+      setplayPause(false);
     }
   }
 
@@ -158,9 +176,6 @@ export function MusicPlayer1() {
 
   function hadleGoBack() {
     customOptions.onOpen();
-
-    // navigation.goBack();
-    // this.sound.unloadAsync();
   }
 
   function setTimeOptions(time) {
@@ -175,49 +190,16 @@ export function MusicPlayer1() {
 
   function setTimeOptionsCustom() {
     setOptions(onChangeEndValue*60*1000);
-    setOnChangeValueFinal(onChangeEndValue);
+    // setOnChangeValueFinal(onChangeEndValue);
 
-    setOnChangeValueFinalControl(true);
+    // setOnChangeValueFinalControl(true);
 
     setTimerControl(new TimerControl(function () {
       pauseTimer();
     }, options));
 
     customOptions.onClose();
-  }
-
-  function updateTime() {
-    if(countTime < (options/1000)) {
-      if(countMinute < 59) {
-        if(countSeconds < 59) {
-          setTimeout(() => { 
-            setCountTime(countTime+1); 
-            setCountSeconds(countSeconds+1);
-          }, _1S); 
-        } else {
-          setTimeout(() => { 
-            setCountTime(countTime+1); 
-            setCountSeconds(0);
-            setCountMinute(countMinute+1)
-          }, _1S); 
-        }
-      } else {
-        if(countSeconds < 59) {
-          setTimeout(() => { 
-            setCountTime(countTime+1); 
-            setCountSeconds(countSeconds+1);
-          }, _1S); 
-        } else {
-          setTimeout(() => { 
-            setCountTime(countTime+1); 
-            setCountSeconds(0);
-            setCountMinute(0);
-            setCountHour(countHour+1);
-          }, _1S); 
-        } 
-      }
-    }
-  }  
+  } 
 
   let convertTime = minutes => {
     if (minutes) {
@@ -241,18 +223,9 @@ export function MusicPlayer1() {
         return `${minute}:0${sec}`;
       }
   
-      return `${minute}:${sec}`;
+      return `${(minutes % 60).toString()}:${minute}:${sec}`;
     }
   };
-  
-  console.log(convertTime(3601))
-
-  // função para ficar chamando de segundo em segundo o getStatus
-  // estado geral que controla a contagem de segundos geral
-  // função que converter milisegundos para segundos no formato desejado
-  // slider, pause e player vão ser controlado por AV
-
-  // resolver erro após clicar na seta para voltar
 
   return (
     <VStack height={"100%"} bg="#180F34">
@@ -285,35 +258,33 @@ export function MusicPlayer1() {
           </ImageBackground>
         </VStack>
 
-        <VStack style={styles.mainContainer} >
-
-          <Text style={[styles.songContent, styles.songTitle]}>
-            gabriel
-          </Text>
+        <VStack style={styles.mainContainer}>
 
           {/* SLIDER */}
 
           <VStack>
             <Slider
               style={styles.progressBar}
-              value={countTime}
+              value={rr}
               minimumValue={0}
-              maximumValue={100}
-              step={1}
+              maximumValue={_1H}
               thumbTintColor="#FFD369"
               minimumTrackTintColor="#FFD369"
               maximumTrackTintColor="#fff"
+              onSlidingStart={v => {
+                playSound();
+              }}
               onSlidingComplete={v => {
-                v && setCountTime(Math.floor(v));
+                this.sound.setPositionAsync(v%control.durationMillis);
+                playSound();
               }}
             />
-
 
             {/* music duration  */}
 
             <HStack style={styles.progressLevelDuration}>
               <Text style={styles.progressLabelText}>
-                {countHour}:{countMinute}:{countSeconds}
+                {/* {convertTime(control.positionMillis/1000)} */}
               </Text>
             </HStack>
 
