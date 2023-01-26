@@ -1,19 +1,15 @@
-import { VStack, HStack, Text, ScrollView, IconButton, Actionsheet, useDisclose, Button, Input } from 'native-base';
-import React, { useEffect, useState, useRef } from 'react';
+import { VStack, HStack, Text, ScrollView, IconButton, Actionsheet, useDisclose, Button } from 'native-base';
+import React, { useEffect, useState } from 'react';
 
-import { Animated, Dimensions, FlatList, GestureResponderEvent, ImageBackground, Platform, KeyboardAvoidingView, StyleSheet, View } from 'react-native';
-import { CardAnotation } from '../../components/CardAnotation';
-import { CardMusic } from '../../components/CardMusic';
-import { Image, TouchableOpacity, } from 'react-native';
-import { Globe, ArrowLeft, SkipBack, SkipForward, Pause, Timer, Repeat, Play, Check, SelectionPlus } from 'phosphor-react-native';
+import { ImageBackground, StyleSheet } from 'react-native';
+import { Image } from 'react-native';
+import { ArrowLeft, SkipBack, SkipForward, Pause, Timer, Check, Play } from 'phosphor-react-native';
 import { useNavigation } from '@react-navigation/native';
+import Slider from '@react-native-community/slider';
 
 import { Audio } from 'expo-av';
-
-import Slider from '@react-native-community/slider';
 import { Sound } from 'expo-av/build/Audio';
 
-const { width } = Dimensions.get('window');
 
 const songs = [
   require('../../assets/audio/aboutu.mpeg'),
@@ -24,38 +20,16 @@ export function MusicPlayer1() {
   const timerOptions = useDisclose();
   const customOptions = useDisclose();
 
-  // const _30MIN = 1800000;
-  const _30MIN = 20000;
+  const _30MIN = 1800000;
   const _1H = 3600000;
   const _6H = 21600000;
 
   const navigation = useNavigation();
 
-  const TimerControl = (callback, delay) => {
-    let timerId, start, remaining = delay;
-
-    this.pause = function () {
-      window.clearTimeout(timerId);
-      timerId = null;
-      remaining -= Date.now() - start;
-    };
-
-    this.resume = function () {
-      if (timerId) {
-        return;
-      }
-
-      start = Date.now();
-      timerId = window.setTimeout(callback, remaining);
-    };
-
-    this.resume();
-  }
-
   const [sound, setSound] = useState<Sound>(new Audio.Sound());
-  const [playPause, setplayPause] = useState(false);
-  const [musicIndex, setMusicIndex] = useState(0);
-  const [musicCheck, setMusicCheck] = useState(true);
+  const [playPause, setplayPause] = useState<boolean>(false);
+  const [musicIndex, setMusicIndex] = useState<number>(0);
+  const [musicCheck, setMusicCheck] = useState<boolean>(true);
   const [control, setControl] = useState<any>({
     isBuffering: 0,
     durationMillis: 0,
@@ -64,20 +38,13 @@ export function MusicPlayer1() {
   const [soundTimer, setSoundTimer] = useState<boolean>(true);
 
   const [options, setOptions] = useState<number>(0);
-  const [timerControl, setTimerControl] = useState<any>(null);
   const [countTimer, setCountTimer] = useState<number>(-1);
-  const [countControl, setCountControl] = useState<boolean>(false);
+  const [countControl, setCountControl] = useState<number>(0);
 
-  // const [timerControl, setTimerControl] = useState<any>(new TimerControl(function () {
-  //   pauseTimer();
-  // }, _1H));
-
-  const [onChangeValue, setOnChangeValue] = useState(1);
-  const [onChangeEndValue, setOnChangeEndValue] = useState(1);
-  const [onChangeValueFinal, setOnChangeValueFinal] = useState(1);
-  const [onChangeValueFinalControl, setOnChangeValueFinalControl] = useState(true);
-  
-
+  const [onChangeValue, setOnChangeValue] = useState<number>(1);
+  const [onChangeEndValue, setOnChangeEndValue] = useState<number>(1);
+  const [onChangeValueFinal, setOnChangeValueFinal] = useState<number>(1);
+  const [onChangeValueFinalControl, setOnChangeValueFinalControl] = useState<boolean>(true); 
 
   useEffect(() => {
     if (musicCheck) {
@@ -118,18 +85,29 @@ export function MusicPlayer1() {
   }, [sound]);
 
   useEffect(() => {
-    if(countControl) {
+    if(countControl === 1) {
       if(countTimer < (options/1000)) {
         setTimeout(() => setCountTimer(countTimer+1), 1000);
       } else if(countTimer >= (options/1000)) {
         sound.pauseAsync();
         sound.setPositionAsync(0);
-        setplayPause(!playPause);
-        setCountControl(false);
+        setCountControl(0);
         setCountTimer(-1);
         setSoundTimer(true);
-        setOptions(0);
+        if(options > 0) {
+          setplayPause(!playPause);
+          setOptions(0);
+        } else {
+          setOptions(0);
+          sound.playAsync();
+        }
       }
+    } else if(countControl === 2) {
+      setCountControl(1);
+      setCountTimer(0);
+    } else if(countControl === 3) {
+      setCountControl(0);
+      setCountTimer(-1);
     }
   }
   , [countTimer]);
@@ -142,13 +120,13 @@ export function MusicPlayer1() {
     if (playPause) {
       sound.playAsync();
       if(countTimer > 0) {
-        setCountControl(true);
+        setCountControl(1);
         setCountTimer(countTimer-1);
       }
     } else {
       sound.pauseAsync();
       if(countTimer > 0) {
-        setCountControl(false);
+        setCountControl(0);
       }
     }
     setplayPause(!playPause);
@@ -156,6 +134,13 @@ export function MusicPlayer1() {
 
   const nextMusic = () => {
     sound.pauseAsync();
+    setOptions(0);
+    setSoundTimer(true);
+    setCountControl(3);
+    setOnChangeValue(1);
+    setOnChangeEndValue(1);
+    setOnChangeValueFinal(1);
+    setOnChangeValueFinalControl(true);
     if (musicIndex === (songs.length - 1)) {
       setMusicIndex(0);
       setplayPause(false);
@@ -167,6 +152,13 @@ export function MusicPlayer1() {
 
   const backMusic = () => {
     sound.pauseAsync();
+    setOptions(0);
+    setSoundTimer(true);
+    setCountControl(3);
+    setOnChangeValue(1);
+    setOnChangeEndValue(1);
+    setOnChangeValueFinal(1);
+    setOnChangeValueFinalControl(true);
     if (musicIndex === 0) {
       setMusicIndex(songs.length - 1);
       setplayPause(false);
@@ -184,15 +176,17 @@ export function MusicPlayer1() {
       setplayPause(!playPause);
     }
     sound.setPositionAsync(0);
-    setCountControl(true);
+    if(countTimer>0) {
+      setCountControl(2);
+    } else {
+      setCountControl(1);
+    }
     setSoundTimer(false);
     sound.playAsync();
     setplayPause(false);
-    if(countTimer > 0) {
-      setCountTimer(0);
-    } else {
+    if(!(countTimer > 0) || playPause) {
       setCountTimer(countTimer+1);
-    }
+    } 
     timerOptions.onClose();
   }
 
@@ -204,17 +198,26 @@ export function MusicPlayer1() {
       setplayPause(!playPause);
     }
     sound.setPositionAsync(0);
-    setCountControl(true);
+    if(countTimer>0) {
+      setCountControl(2);
+    } else {
+      setCountControl(1);
+    }
     setSoundTimer(false);
     sound.playAsync();
     setplayPause(false);
-    setCountTimer(countTimer+1);
+    if(!(countTimer > 0)) {
+      setCountTimer(countTimer+1);
+    } 
 
     customOptions.onClose();
   } 
 
   const convertTime = sec => {
-    let dateObj = new Date(sec * 1000);
+    let dateObj:any = new Date(sec * 1000);
+    if(isNaN(dateObj)) {
+      return '00:00:00'
+    }
     let hours = dateObj.getUTCHours();
     let minutes = dateObj.getUTCMinutes();
     let seconds = dateObj.getSeconds();
@@ -263,8 +266,6 @@ export function MusicPlayer1() {
 
         <VStack style={styles.mainContainer}>
 
-          {/* SLIDER */}
-
           <VStack>
             { soundTimer ?
             <Slider
@@ -285,8 +286,6 @@ export function MusicPlayer1() {
             /> : null
             }
 
-            {/* music duration  */}
-
             <HStack style={styles.progressLevelDuration}>
               <Text style={styles.progressLabelText}>
                 {soundTimer ? convertTime(control.positionMillis/1000) : null}
@@ -296,7 +295,6 @@ export function MusicPlayer1() {
 
           </VStack>
 
-          {/* Icons Controls  */}
           <HStack marginTop={50} style={styles.musicControlsContainer}>
 
             <IconButton
@@ -343,7 +341,13 @@ export function MusicPlayer1() {
               bg: options === _30MIN ? "#5548E1" : "#3A3487"
             }}
             endIcon={options === _30MIN ? <Check color="#FFFFFF" size={24} /> : null}
-            onPressOut={() => setTimeOptions(_30MIN)}>
+            onPressOut={() => { 
+              if(options === _30MIN) {
+                setTimeOptions(0);
+              } else {
+                setTimeOptions(_30MIN);
+              }
+            }}>
             <Text color="#FFFFFF">
               30 minutos
             </Text>
@@ -355,7 +359,13 @@ export function MusicPlayer1() {
               bg: options === _1H ? "#5548E1" : "#3A3487"
             }}
             endIcon={options === _1H ? <Check color="#FFFFFF" size={24} /> : null}
-            onPressOut={() => setTimeOptions(_1H)}>
+            onPressOut={() => { 
+              if(options === _1H) {
+                setTimeOptions(0);
+              } else {
+                setTimeOptions(_1H);
+              }
+            }}>
             <Text color="#FFFFFF">
               1 hora
             </Text>
@@ -367,7 +377,13 @@ export function MusicPlayer1() {
               bg: options === _6H ? "#5548E1" : "#3A3487"
             }}
             endIcon={options === _6H ? <Check color="#FFFFFF" size={24} /> : null}
-            onPressOut={() => setTimeOptions(_6H)}>
+            onPressOut={() => { 
+              if(options === _6H) {
+                setTimeOptions(0);
+              } else {
+                setTimeOptions(_6H);
+              }
+            }}>
             <Text color="#FFFFFF">
               6 horas
             </Text>
@@ -419,14 +435,14 @@ export function MusicPlayer1() {
           <Slider
             style={styles.progressBar}
             value={onChangeValueFinalControl ? onChangeValueFinal : onChangeEndValue}
-            minimumValue={1}
+            minimumValue={0}
             maximumValue={10}
             step={1}
             thumbTintColor="#B7AEFF"
             minimumTrackTintColor="#B7AEFF"
             maximumTrackTintColor="#fff"
             onSlidingComplete={v => {
-              v && setOnChangeEndValue(Math.floor(v));
+              setOnChangeEndValue(Math.floor(v));
               setOnChangeValueFinalControl(false);
             }}
             onSlidingStart={v => {
@@ -485,65 +501,18 @@ const styles = StyleSheet.create({
     justifyContent: "space-between"
 
   },
-  secondtitle: {
-    color: "#FFFFFF",
-    alignContent: "center",
-  },
-  container: {
-    flex: 1,
-    color: "#FFFFFF",
-  },
   imageLogo: {
     width: 35,
     height: 35,
-
   },
   image: {
     flex: 1,
     justifyContent: 'center',
-  },
-  bottomSection: {
-    borderTopColor: '#393E46',
-    borderWidth: 1,
-    width: width,
-    alignItems: 'center',
-    paddingVertical: 15,
-  },
-  bottomIconContainer: {
-    alignContent: 'center',
-    alignItems: 'center',
-    flex: 1,
-
-  }, mainContainer: {
+  }, 
+  mainContainer: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-  },
-
-  mainWrapper: {
-    width: width,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 25,
-  },
-  imageWrapper: {
-    width: 300,
-    height: 340,
-    marginBottom: 20,
-
-    marginTop: 20,
-  },
-  mainImageWrapper: {
-    width: width,
-    justifyContent: 'center',
-    alignItems: 'center',
-
-    marginTop: 20,
-  },
-  musicImage: {
-    width: '100%',
-    height: '100%',
-    borderRadius: 15,
   },
   elevation: {
     elevation: 5,
@@ -555,19 +524,6 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.5,
     shadowRadius: 3.84,
-  },
-  songContent: {
-    textAlign: 'center',
-    color: '#EEEEEE',
-  },
-  songTitle: {
-    fontSize: 18,
-    fontWeight: '600',
-  },
-
-  songArtist: {
-    fontSize: 16,
-    fontWeight: '300',
   },
   progressBar: {
     width: 350,
@@ -582,7 +538,6 @@ const styles = StyleSheet.create({
   },
   progressLabelText: {
     color: '#FFF',
-
   },
   musicControlsContainer: {
     flexDirection: 'row',
