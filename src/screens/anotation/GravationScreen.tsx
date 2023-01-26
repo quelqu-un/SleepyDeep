@@ -1,124 +1,262 @@
-import React, { useState, useRef, useEffect } from "react";
-import { View, StyleSheet, Button, Text } from "react-native";
-import { Audio } from "expo-av";
 
-export  function GravationScreen() {
-  // Refs for the audio
-  const AudioRecorder = useRef(new Audio.Recording());
-  const AudioPlayer = useRef(new Audio.Sound());
+import { StatusBar } from 'expo-status-bar';
+import React from 'react';
+import { Audio } from 'expo-av';
+import { VStack, HStack, Text, ScrollView, IconButton, Center, View, Flex, Spacer, Button, Input, } from 'native-base';
+import { Pressable, StyleSheet, TextInput } from 'react-native';
+import { Image, ImageBackground } from 'react-native';
+import { Globe, ArrowLeft, Trash, Microphone, PlayCircle, MagnifyingGlass } from 'phosphor-react-native';
+import { useNavigation } from '@react-navigation/native';
+import { SearchBarComponent } from '../../components/SearchBar';
+import { background } from 'native-base/lib/typescript/theme/styled-system';
 
-  // States for UI
-  const [RecordedURI, SetRecordedURI] = useState<string>("");
-  const [AudioPermission, SetAudioPermission] = useState<boolean>(false);
-  const [IsRecording, SetIsRecording] = useState<boolean>(false);
-  const [IsPLaying, SetIsPLaying] = useState<boolean>(false);
+//import * as Sharing from 'expo-sharing';
 
-  // Initial Load to get the audio permission
-  useEffect(() => {
-    GetPermission();
-  }, []);
+export function GravationScreen() {
+  const [recording, setRecording] = React.useState<any>();
+  const [recordings, setRecordings] = React.useState([]);
+  const [message, setMessage] = React.useState("");
+  const navigation = useNavigation();
 
-  // Function to get the audio permission
-  const GetPermission = async () => {
-    const getAudioPerm = await Audio.requestPermissionsAsync();
-    SetAudioPermission(getAudioPerm.granted);
-  };
-
-  // Function to start recording
-  const StartRecording = async () => {
+  function handleNewOrder() {
+    navigation.goBack();
+  }
+  async function startRecording() {
     try {
-      // Check if user has given the permission to record
-      if (AudioPermission === true) {
-        try {
-          // Prepare the Audio Recorder
-          await AudioRecorder.current.prepareToRecordAsync(
-            Audio.RecordingOptionsPresets.HIGH_QUALITY
-          );
+      const permission = await Audio.requestPermissionsAsync();
 
-          // Start recording
-          await AudioRecorder.current.startAsync();
-          SetIsRecording(true);
-        } catch (error) {
-          console.log(error);
-        }
+      if (permission.status === "granted") {
+        await Audio.setAudioModeAsync({
+          allowsRecordingIOS: true,
+          playsInSilentModeIOS: true
+        });
+
+        const { recording } = await Audio.Recording.createAsync(
+          Audio.RecordingOptionsPresets.HIGH_QUALITY
+        );
+
+        setRecording(recording);
       } else {
-        // If user has not given the permission to record, then ask for permission
-        GetPermission();
+        setMessage("Please grant permission to app to access microphone");
       }
-    } catch (error) {}
-  };
+    } catch (err) {
+      console.error('Failed to start recording', err);
+    }
+  }
 
-  // Function to stop recording
-  const StopRecording = async () => {
-    try {
-      // Stop recording
-      await AudioRecorder.current.stopAndUnloadAsync();
+  async function stopRecording() {
+    setRecording(undefined);
+    await recording.stopAndUnloadAsync();
 
-      // Get the recorded URI here
-      const result = AudioRecorder.current.getURI();
-      if (result) SetRecordedURI(result);
+    let updatedRecordings = [...recordings];
+    const { sound, status } = await recording.createNewLoadedSoundAsync();
+    updatedRecordings.push({
+      sound: sound,
+      duration: getDurationFormatted(status.durationMillis),
+      file: recording.getURI()
+    });
 
-      // Reset the Audio Recorder
-      AudioRecorder.current = new Audio.Recording();
-      SetIsRecording(false);
-    } catch (error) {}
-  };
+    setRecordings(updatedRecordings);
+  }
 
-  // Function to play the recorded audio
-  const PlayRecordedAudio = async () => {
-    try {
-      // Load the Recorded URI
-      await AudioPlayer.current.loadAsync({ uri: RecordedURI }, {}, true);
+  function getDurationFormatted(millis) {
+    const minutes = millis / 1000 / 60;
+    const minutesDisplay = Math.floor(minutes);
+    const seconds = Math.round((minutes - minutesDisplay) * 60);
+    const secondsDisplay = seconds < 10 ? `0${seconds}` : seconds;
+    return `${minutesDisplay}:${secondsDisplay}`;
+  }
 
-      // Get Player Status
-      const playerStatus = await AudioPlayer.current.getStatusAsync();
+  function getRecordingLines() {
 
-      // Play if song is loaded successfully
-      if (playerStatus.isLoaded) {
-        if (playerStatus.isPlaying === false) {
-          AudioPlayer.current.playAsync();
-          SetIsPLaying(true);
-        }
-      }
-    } catch (error) {}
-  };
+    return recordings.map((recordingLine, index) => {
+      return (
 
-  // Function to stop the playing audio
-  const StopPlaying = async () => {
-    try {
-      //Get Player Status
-      const playerStatus = await AudioPlayer.current.getStatusAsync();
+        <VStack style={styles.legenda} bg="#32206A"
+        >
 
-      // If song is playing then stop it
-      if (playerStatus.isLoaded === true)
-        await AudioPlayer.current.unloadAsync();
+          <View key={index} style={styles.row}>
 
-      SetIsPLaying(false);
-    } catch (error) {}
-  };
+
+            <IconButton
+              icon={<PlayCircle color="#FFFFFF" size={28} />}
+              onPress={() => recordingLine.sound.replayAsync()}
+
+            />
+
+            <Text style={styles.fill}>Recording {index + 1} - {recordingLine.duration}</Text>
+
+            <VStack style={styles.folha}>
+              <IconButton
+                marginTop={-1}
+                icon={<Trash color="#FFFFFF" size={20} />}
+                onPress={handleNewOrder}
+              />
+              <Text
+
+                marginTop={2}
+                color="#FFFFFF"
+                fontSize={9}
+                fontFamily={'robolight'}>
+                21/05/2025
+              </Text>
+            </VStack>
+          </View>
+
+        </VStack>
+      );
+    });
+  }
 
   return (
-    <View style={styles.container}>
-      <Button
-        title={IsRecording ? "Stop Recording" : "Start Recording"}
-        color={IsRecording ? "red" : "green"}
-        onPress={IsRecording ? StopRecording : StartRecording}
+    <VStack flex={1} height={"100%"} bg="#180F34"  >
+
+
+
+
+      <HStack paddingTop = {2}paddingX={4} style={styles.title} >
+
+
+        <IconButton
+          marginTop={-2}
+          icon={<ArrowLeft color="#FFFFFF" size={25} />}
+          onPress={handleNewOrder}
+        />
+
+        <Text
+          marginRight={5}
+          fontFamily="robobold"
+          textAlign="center"
+          color={'#FFFFFF'}
+          fontSize={18}>
+          Título
+        </Text>
+
+
+        <IconButton
+          marginTop={-2}
+          icon={<Trash color="#FFFFFF" size={25} />}
+          onPress={handleNewOrder}
+        />
+
+      </HStack>
+
+   
+
+      <View  style={styles.container}>
+        <Text>{message}</Text>
+        <IconButton
+          onPress={recording ? stopRecording : startRecording}
+          icon={<Microphone style={styles.microphone} color="#FFFFFF" size={25} />}
       />
-      <Button
-        title={IsPLaying ? "Stop Sound" : "Play Sound"}
-        color={IsPLaying ? "red" : "orange"}
-        onPress={IsPLaying ? StopPlaying : PlayRecordedAudio}
-      />
-      <Text>{RecordedURI}</Text>
-    </View>
+        <Text marginBottom={10}> {recording ? 'Stop Recording' : 'Start Recording'}  </Text>
+        {getRecordingLines()}
+      </View>
+
+
+      <Spacer />
+
+      <HStack marginBottom={5} flexDirection={'row'} justifyContent={'center'}
+      >
+
+        <Pressable style={styles.button} onPress={handleNewOrder}>
+          <Text style={styles.text}>Salvar</Text>
+        </Pressable>
+      </HStack>
+    </VStack>
   );
 }
 
 const styles = StyleSheet.create({
+
   container: {
     flex: 1,
-    justifyContent: "center",
-    backgroundColor: "#ecf0f1",
-    padding: 8,
+    backgroundColor: "#180F34",
+    alignItems: 'center',
+    //justifyContent: 'center',
+    
   },
+  title: {
+    color: "#FFFFFF",
+    flexDirection: "row",
+    justifyContent: "space-between",
+
+  },
+  secondtitle: {
+    color: "#FFFFFF",
+    alignContent: "center",
+
+  },
+  button: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingVertical: 12,
+    paddingHorizontal: 32,
+    borderRadius: 20,
+    elevation: 3,
+    backgroundColor: "#5C4EBC",
+  },
+  text: {
+    fontSize: 16,
+    lineHeight: 21,
+    fontWeight: 'bold',
+    letterSpacing: 0.25,
+    color: 'white',
+  },
+  imageLogo: {
+    width: 25,
+    height: 25,
+  },
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginTop: 10,
+  },
+  fill: {
+    flex: 1,
+    //margin: 16,
+  },
+
+  microphone: {
+
+    marginRight: 1,
+  },
+  data: {
+    marginLeft: 20,
+    marginTop: 20,
+    marginBottom: 15,
+    backgroundColor: "#5C4EBC",
+    borderRadius: 20,
+    paddingTop: 5,
+    paddingBottom: 5,
+    textAlign: 'center',
+    width: 110,
+    fontSize: 12,
+    letterSpacing: 1.1,
+  },
+  legenda: {
+    color: "#FFFFFF",
+    width: 370,
+    height: 65,
+    paddingX: "50",
+    borderRadius: 10,
+    marginTop: 10,
+
+  },
+  folha: {
+    width: 54,
+    height: 35,
+    left: 1,
+    bottom: 14,
+    borderBottomLeftRadius: 10,
+    borderBottomRightRadius: 210,
+    borderTopLeftRadius: 150,
+    borderTopRightRadius: 46,
+    //borderLeftRa
+    // border-radius: 26px 26px 200px 0px,
+    backgroundColor: "#2E888D",
+  },
+
 });
