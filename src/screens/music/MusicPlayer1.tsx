@@ -1,19 +1,15 @@
-import { VStack, HStack, Text, ScrollView, IconButton, Actionsheet, useDisclose, Button, Input } from 'native-base';
-import React, { useEffect, useState, useRef } from 'react';
+import { VStack, HStack, Text, ScrollView, IconButton, Actionsheet, useDisclose, Button } from 'native-base';
+import React, { useEffect, useState } from 'react';
 
-import { Animated, Dimensions, FlatList, GestureResponderEvent, ImageBackground, Platform, KeyboardAvoidingView, StyleSheet, View } from 'react-native';
-import { CardAnotation } from '../../components/CardAnotation';
-import { CardMusic } from '../../components/CardMusic';
-import { Image, TouchableOpacity, } from 'react-native';
-import { Globe, ArrowLeft, SkipBack, SkipForward, Pause, Timer, Repeat, Play, Check } from 'phosphor-react-native';
+import { ImageBackground, StyleSheet } from 'react-native';
+import { Image } from 'react-native';
+import { ArrowLeft, SkipBack, SkipForward, Pause, Timer, Check, Play } from 'phosphor-react-native';
 import { useNavigation } from '@react-navigation/native';
-
-// import songs from '../../model/Data';
-import { Audio } from 'expo-av'
-
 import Slider from '@react-native-community/slider';
 
-const { width } = Dimensions.get('window');
+import { Audio } from 'expo-av';
+import { Sound } from 'expo-av/build/Audio';
+
 
 const songs = [
   require('../../assets/audio/aboutu.mpeg'),
@@ -21,12 +17,7 @@ const songs = [
 ];
 
 export function MusicPlayer1() {
-  const {
-    isOpen,
-    onOpen,
-    onClose
-  } = useDisclose();
-
+  const timerOptions = useDisclose();
   const customOptions = useDisclose();
 
   const _30MIN = 1800000;
@@ -35,58 +26,42 @@ export function MusicPlayer1() {
 
   const navigation = useNavigation();
 
-  let TimerControl = function (callback, delay) {
-    let timerId, start, remaining = delay;
+  const [sound, setSound] = useState<Sound>(new Audio.Sound());
+  const [playPause, setplayPause] = useState<boolean>(false);
+  const [musicIndex, setMusicIndex] = useState<number>(0);
+  const [musicCheck, setMusicCheck] = useState<boolean>(true);
+  const [control, setControl] = useState<any>({
+    isBuffering: 0,
+    durationMillis: 0,
+    positionMillis: 0,
+  });
+  const [soundTimer, setSoundTimer] = useState<boolean>(true);
 
-    this.pause = function () {
-      window.clearTimeout(timerId);
-      timerId = null;
-      remaining -= Date.now() - start;
-    };
+  const [options, setOptions] = useState<number>(0);
+  const [countTimer, setCountTimer] = useState<number>(-1);
+  const [countControl, setCountControl] = useState<number>(0);
 
-    this.resume = function () {
-      if (timerId) {
-        return;
-      }
-
-      start = Date.now();
-      timerId = window.setTimeout(callback, remaining);
-    };
-
-    this.resume();
-  }
-
-  const [playPause, setplayPause] = useState(false);
-  const [musicIndex, setMusicIndex] = useState(0);
-  const [musicCheck, setMusicCheck] = useState(true);
-  const [timerControl, setTimerControl] = useState<any>(new TimerControl(function () {
-    pauseTimer();
-  }, _1H));
-  const [options, setOptions] = useState(_1H);
-  const [onChangeValue, setOnChangeValue] = useState(1);
-  const [onChangeEndValue, setOnChangeEndValue] = useState(1);
-
+  const [onChangeValue, setOnChangeValue] = useState<number>(1);
+  const [onChangeEndValue, setOnChangeEndValue] = useState<number>(1);
+  const [onChangeValueFinal, setOnChangeValueFinal] = useState<number>(1);
+  const [onChangeValueFinalControl, setOnChangeValueFinalControl] = useState<boolean>(true); 
 
   useEffect(() => {
     if (musicCheck) {
       Audio.setAudioModeAsync({
         allowsRecordingIOS: false,
-        // interruptionModeIOS: Audio.INTERRUPTION_MODE_IOS_DO_NOT_MIX,
         playsInSilentModeIOS: true,
-        //	interruptionModeAndroid: Audio.INTTERUPTION_MODE_ANDROID_DUCK_OTHERS,
         shouldDuckAndroid: true,
-        staysActiveInBackground: true,
-        //	playsThroughEarpieceAndroid: true, 
+        staysActiveInBackground: true, 
       });
-
-      this.sound = new Audio.Sound();
 
       const status = {
         shouldPlay: true,
         isLooping: true,
       };
 
-      this.sound.loadAsync(songs[musicIndex], status, false);
+      sound.setOnPlaybackStatusUpdate(onPlaybackStatusUpdate)
+      sound.loadAsync(songs[musicIndex], status, true)
 
       setMusicCheck(false);
     }
@@ -96,74 +71,172 @@ export function MusicPlayer1() {
         shouldPlay: true,
         isLooping: true
       };
-      this.sound.unloadAsync();
-      this.sound.loadAsync(songs[musicIndex], status, false);
-      this.sound.playAsync();
+      sound.unloadAsync();
+      sound.loadAsync(songs[musicIndex], status, false);
+      sound.playAsync();
     }
   }, [musicIndex]);
 
-  function playSound() {
+  useEffect(() => {
+    return sound
+    ? () => {
+        sound.unloadAsync();
+      } : undefined;
+  }, [sound]);
+
+  useEffect(() => {
+    if(countControl === 1) {
+      if(countTimer < (options/1000)) {
+        setTimeout(() => setCountTimer(countTimer+1), 1000);
+      } else if(countTimer >= (options/1000)) {
+        sound.pauseAsync();
+        sound.setPositionAsync(0);
+        setCountControl(0);
+        setCountTimer(-1);
+        setSoundTimer(true);
+        if(options > 0) {
+          setplayPause(!playPause);
+          setOptions(0);
+        } else {
+          setOptions(0);
+          sound.playAsync();
+        }
+      }
+    } else if(countControl === 2) {
+      setCountControl(1);
+      setCountTimer(0);
+    } else if(countControl === 3) {
+      setCountControl(0);
+      setCountTimer(-1);
+    }
+  }
+  , [countTimer]);
+
+  const onPlaybackStatusUpdate = status => {
+    setControl(status);
+  }
+
+  const playPauseSound = () => {
     if (playPause) {
-      this.sound.playAsync();
-      if (timerControl !== null) {
-        timerControl.resume();
+      sound.playAsync();
+      if(countTimer > 0) {
+        setCountControl(1);
+        setCountTimer(countTimer-1);
       }
     } else {
-      this.sound.pauseAsync();
-      if (timerControl !== null) {
-        timerControl.pause();
+      sound.pauseAsync();
+      if(countTimer > 0) {
+        setCountControl(0);
       }
     }
     setplayPause(!playPause);
   }
 
-  function nextMusic() {
-    this.sound.pauseAsync();
+  const nextMusic = () => {
+    sound.pauseAsync();
+    setOptions(0);
+    setSoundTimer(true);
+    setCountControl(3);
+    setOnChangeValue(1);
+    setOnChangeEndValue(1);
+    setOnChangeValueFinal(1);
+    setOnChangeValueFinalControl(true);
     if (musicIndex === (songs.length - 1)) {
       setMusicIndex(0);
+      setplayPause(false);
     } else {
       setMusicIndex(musicIndex + 1);
+      setplayPause(false);
     }
   }
 
-  function backMusic() {
-    this.sound.pauseAsync();
+  const backMusic = () => {
+    sound.pauseAsync();
+    setOptions(0);
+    setSoundTimer(true);
+    setCountControl(3);
+    setOnChangeValue(1);
+    setOnChangeEndValue(1);
+    setOnChangeValueFinal(1);
+    setOnChangeValueFinalControl(true);
     if (musicIndex === 0) {
       setMusicIndex(songs.length - 1);
+      setplayPause(false);
     } else {
       setMusicIndex(musicIndex - 1);
+      setplayPause(false);
     }
   }
 
-  function pauseTimer() {
-    this.sound.pauseAsync();
-    setplayPause(!playPause);
-    setTimerControl(null);
-  }
-
-  function hadleGoBack() {
-    customOptions.onOpen();
-
-    // navigation.goBack();
-    // this.sound.unloadAsync();
-  }
-
-  function setTimeOptions(time) {
+  const setTimeOptions = time => {
     setOptions(time);
 
-    setTimerControl(new TimerControl(function () {
-      pauseTimer();
-    }, time));
+    if(!playPause) {
+      sound.pauseAsync();
+      setplayPause(!playPause);
+    }
+    sound.setPositionAsync(0);
+    if(countTimer>0) {
+      setCountControl(2);
+    } else {
+      setCountControl(1);
+    }
+    setSoundTimer(false);
+    sound.playAsync();
+    setplayPause(false);
+    if(!(countTimer > 0) || playPause) {
+      setCountTimer(countTimer+1);
+    } 
+    timerOptions.onClose();
+  }
 
-    onClose();
+  const setTimeOptionsCustom = () => {
+    setOptions(onChangeEndValue*60*1000);
+    
+    if(!playPause) {
+      sound.pauseAsync();
+      setplayPause(!playPause);
+    }
+    sound.setPositionAsync(0);
+    if(countTimer>0) {
+      setCountControl(2);
+    } else {
+      setCountControl(1);
+    }
+    setSoundTimer(false);
+    sound.playAsync();
+    setplayPause(false);
+    if(!(countTimer > 0)) {
+      setCountTimer(countTimer+1);
+    } 
+
+    customOptions.onClose();
+  } 
+
+  const convertTime = sec => {
+    let dateObj:any = new Date(sec * 1000);
+    if(isNaN(dateObj)) {
+      return '00:00:00'
+    }
+    let hours = dateObj.getUTCHours();
+    let minutes = dateObj.getUTCMinutes();
+    let seconds = dateObj.getSeconds();
+
+    let timeString = hours.toString().padStart(2, '0') + ':' + 
+    minutes.toString().padStart(2, '0') + ':' + 
+    seconds.toString().padStart(2, '0');
+
+    return timeString;
+  }
+
+  const hadleGoBack = () => {
+    sound.unloadAsync();
+    navigation.goBack();
   }
 
   return (
     <VStack height={"100%"} bg="#180F34">
       
-
-      
-
       <ScrollView
         marginBottom={10}
       >
@@ -180,48 +253,48 @@ export function MusicPlayer1() {
               <Text
                 marginBottom={2}
                 fontFamily={'bold'}
-
                 color={'#FFFFFF'}
                 fontSize={20}>
                 Título da música
               </Text>
 
-              < Image style={styles.imageLogo} source={require('../../assets/images/moonalone.png')} />
+              <Image style={styles.imageLogo} source={require('../../assets/images/moonalone.png')} />
 
             </HStack>
           </ImageBackground>
         </VStack>
 
-        <VStack style={styles.mainContainer} >
-
-          <Text style={[styles.songContent, styles.songTitle]}>
-            gabriel
-          </Text>
-
-          {/* SLIDER */}
+        <VStack style={styles.mainContainer}>
 
           <VStack>
+            { soundTimer ?
             <Slider
               style={styles.progressBar}
-              value={10}
+              value={control.positionMillis}
               minimumValue={0}
-              maximumValue={100}
+              maximumValue={control.durationMillis}
               thumbTintColor="#FFD369"
               minimumTrackTintColor="#FFD369"
               maximumTrackTintColor="#fff"
-              onSlidingComplete={() => { }}
-            />
-
-
-            {/* music duration  */}
+              onSlidingStart={v => {
+                playPauseSound();
+              }}
+              onSlidingComplete={v => {
+                sound.setPositionAsync(v);
+                playPauseSound();
+              }}
+            /> : null
+            }
 
             <HStack style={styles.progressLevelDuration}>
-              <Text style={styles.progressLabelText}>00:00</Text>
+              <Text style={styles.progressLabelText}>
+                {soundTimer ? convertTime(control.positionMillis/1000) : null}
+                {soundTimer ? null : convertTime(countTimer)}
+              </Text>
             </HStack>
 
           </VStack>
 
-          {/* Icons Controls  */}
           <HStack marginTop={50} style={styles.musicControlsContainer}>
 
             <IconButton
@@ -236,7 +309,7 @@ export function MusicPlayer1() {
                 playPause ? <Play color="#FFFFFF" size={28} /> :
                   <Pause color="#FFFFFF" size={28} />
               }
-              onPress={playSound}
+              onPress={playPauseSound}
             />
 
             <IconButton
@@ -252,14 +325,14 @@ export function MusicPlayer1() {
             <IconButton
               marginTop={180}
               icon={<Timer color="#FFFFFF" size={32} />}
-              onPress={onOpen}
+              onPress={timerOptions.onOpen}
             />
 
           </HStack>
         </VStack>
       </ScrollView>
       
-      <Actionsheet isOpen={isOpen} onClose={onClose} hideDragIndicator>
+      <Actionsheet isOpen={timerOptions.isOpen} onClose={timerOptions.onClose} hideDragIndicator>
         <Actionsheet.Content borderTopRadius="20" bg="#251751" padding={0}>
 
           <Actionsheet.Item
@@ -268,7 +341,13 @@ export function MusicPlayer1() {
               bg: options === _30MIN ? "#5548E1" : "#3A3487"
             }}
             endIcon={options === _30MIN ? <Check color="#FFFFFF" size={24} /> : null}
-            onPressOut={() => setTimeOptions(_30MIN)}>
+            onPressOut={() => { 
+              if(options === _30MIN) {
+                setTimeOptions(0);
+              } else {
+                setTimeOptions(_30MIN);
+              }
+            }}>
             <Text color="#FFFFFF">
               30 minutos
             </Text>
@@ -280,7 +359,13 @@ export function MusicPlayer1() {
               bg: options === _1H ? "#5548E1" : "#3A3487"
             }}
             endIcon={options === _1H ? <Check color="#FFFFFF" size={24} /> : null}
-            onPressOut={() => setTimeOptions(_1H)}>
+            onPressOut={() => { 
+              if(options === _1H) {
+                setTimeOptions(0);
+              } else {
+                setTimeOptions(_1H);
+              }
+            }}>
             <Text color="#FFFFFF">
               1 hora
             </Text>
@@ -292,7 +377,13 @@ export function MusicPlayer1() {
               bg: options === _6H ? "#5548E1" : "#3A3487"
             }}
             endIcon={options === _6H ? <Check color="#FFFFFF" size={24} /> : null}
-            onPressOut={() => setTimeOptions(_6H)}>
+            onPressOut={() => { 
+              if(options === _6H) {
+                setTimeOptions(0);
+              } else {
+                setTimeOptions(_6H);
+              }
+            }}>
             <Text color="#FFFFFF">
               6 horas
             </Text>
@@ -305,7 +396,10 @@ export function MusicPlayer1() {
             }}
             endIcon={options !== _30MIN && options !== _1H && options !== _6H && options > 0 ?
               <Check color="#FFFFFF" size={24} /> : null}
-            onPressOut={() => setTimeOptions(20)}>
+            onPressOut={() => {
+              timerOptions.onClose();
+              customOptions.onOpen();
+            }}>
             <Text color="#FFFFFF">
               Personalizar
             </Text>
@@ -329,32 +423,32 @@ export function MusicPlayer1() {
             </Text>
           </VStack>
 
-            <Text 
-              color="#FFFFFF" 
-              textAlign="center" 
-              fontFamily={'robolight'}
-              fontSize={14}>
-              {onChangeEndValue}
-              {onChangeEndValue === 1 ? ' hora' : ' horas'}
-            </Text>
+          <Text 
+            color="#FFFFFF" 
+            textAlign="center" 
+            fontFamily={'robolight'}
+            fontSize={14}>
+            {onChangeValueFinalControl ? onChangeValueFinal : onChangeEndValue}
+            {onChangeEndValue === 1 ? ' hora' : ' horas'}
+          </Text>
 
-            <Slider
-              style={styles.progressBar}
-              value={1}
-              onValueChange={()=>onChangeValue}
-              minimumValue={1}
-              maximumValue={10}
-              step={1}
-              thumbTintColor="#B7AEFF"
-              minimumTrackTintColor="#B7AEFF"
-              maximumTrackTintColor="#fff"
-              onSlidingComplete={v => {
-                v && setOnChangeEndValue(Math.floor(v));
-              }}
-              onSlidingStart={v => {
-                setOnChangeValue(Math.floor(v));
-              }}
-            />
+          <Slider
+            style={styles.progressBar}
+            value={onChangeValueFinalControl ? onChangeValueFinal : onChangeEndValue}
+            minimumValue={0}
+            maximumValue={10}
+            step={1}
+            thumbTintColor="#B7AEFF"
+            minimumTrackTintColor="#B7AEFF"
+            maximumTrackTintColor="#fff"
+            onSlidingComplete={v => {
+              setOnChangeEndValue(Math.floor(v));
+              setOnChangeValueFinalControl(false);
+            }}
+            onSlidingStart={v => {
+              setOnChangeValue(Math.floor(v));
+            }}
+          />
 
           <VStack
              bg="#251751"
@@ -381,7 +475,7 @@ export function MusicPlayer1() {
               width={140}
               bg="#5548E1"
               borderRadius={6}
-              onPress={customOptions.onClose}>
+              onPress={setTimeOptionsCustom}>
                 <Text
                 color="#FFFFFF"
                 >
@@ -407,65 +501,18 @@ const styles = StyleSheet.create({
     justifyContent: "space-between"
 
   },
-  secondtitle: {
-    color: "#FFFFFF",
-    alignContent: "center",
-  },
-  container: {
-    flex: 1,
-    color: "#FFFFFF",
-  },
   imageLogo: {
     width: 35,
     height: 35,
-
   },
   image: {
     flex: 1,
     justifyContent: 'center',
-  },
-  bottomSection: {
-    borderTopColor: '#393E46',
-    borderWidth: 1,
-    width: width,
-    alignItems: 'center',
-    paddingVertical: 15,
-  },
-  bottomIconContainer: {
-    alignContent: 'center',
-    alignItems: 'center',
-    flex: 1,
-
-  }, mainContainer: {
+  }, 
+  mainContainer: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-  },
-
-  mainWrapper: {
-    width: width,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 25,
-  },
-  imageWrapper: {
-    width: 300,
-    height: 340,
-    marginBottom: 20,
-
-    marginTop: 20,
-  },
-  mainImageWrapper: {
-    width: width,
-    justifyContent: 'center',
-    alignItems: 'center',
-
-    marginTop: 20,
-  },
-  musicImage: {
-    width: '100%',
-    height: '100%',
-    borderRadius: 15,
   },
   elevation: {
     elevation: 5,
@@ -477,19 +524,6 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.5,
     shadowRadius: 3.84,
-  },
-  songContent: {
-    textAlign: 'center',
-    color: '#EEEEEE',
-  },
-  songTitle: {
-    fontSize: 18,
-    fontWeight: '600',
-  },
-
-  songArtist: {
-    fontSize: 16,
-    fontWeight: '300',
   },
   progressBar: {
     width: 350,
@@ -504,7 +538,6 @@ const styles = StyleSheet.create({
   },
   progressLabelText: {
     color: '#FFF',
-
   },
   musicControlsContainer: {
     flexDirection: 'row',
