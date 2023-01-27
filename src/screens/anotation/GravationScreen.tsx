@@ -5,7 +5,7 @@ import { Audio } from 'expo-av';
 import { VStack, HStack, Text, ScrollView, IconButton, Center, View, Flex, Spacer, Button, Input, } from 'native-base';
 import { Pressable, StyleSheet, TextInput } from 'react-native';
 import { Image, ImageBackground } from 'react-native';
-import { Globe, ArrowLeft, Trash, Microphone, PlayCircle, MagnifyingGlass } from 'phosphor-react-native';
+import { Globe, ArrowLeft, Trash, Microphone, PlayCircle, MagnifyingGlass, PauseCircle } from 'phosphor-react-native';
 import { useNavigation } from '@react-navigation/native';
 import { SearchBarComponent } from '../../components/SearchBar';
 import { background } from 'native-base/lib/typescript/theme/styled-system';
@@ -129,16 +129,11 @@ export function GravationScreen() {
           textAlign="center"
           color={'#FFFFFF'}
           fontSize={18}>
-          Título
+          Gravador
         </Text>
 
 
-        <IconButton
-          marginTop={-2}
-          icon={<Trash color="#FFFFFF" size={25} />}
-          onPress={handleNewOrder}
-        />
-
+        <Image style={styles.imageLogo} source={require('../../assets/images/moon.png')} />
       </HStack>
 
    
@@ -147,9 +142,33 @@ export function GravationScreen() {
         <Text>{message}</Text>
         <IconButton
           onPress={recording ? stopRecording : startRecording}
-          icon={<Microphone style={styles.microphone} color="#FFFFFF" size={25} />}
-      />
+
+          
+          icon={recording ? <Microphone style={styles.microphone} color="#FD0541" size={25} />:
+                  <Microphone style={styles.microphone} color="#FFFFFF"   size={25} />
+        }
+      /> 
         <Text marginBottom={10}> {recording ? 'Stop Recording' : 'Start Recording'}  </Text>
+        <VStack style={styles.legenda} bg="#32206A"
+        > 
+         <View  style={styles.row}>
+         <IconButton
+              marginLeft={3}
+              icon={<PauseCircle color="#FFFFFF" size={28} />}
+            />
+          <View style={styles.Otobutton}>
+          <Text style={styles.Durationtext}>Duração</Text>
+          </View>
+<       VStack marginTop = {-1} style={styles.folha}>
+              
+               
+               < Image   style={styles.imageFolha} source={require('../../assets/images/moonalone.png')} />
+
+            </VStack>
+
+            </View>
+
+        </VStack>
         {getRecordingLines()}
       </View>
 
@@ -176,6 +195,15 @@ const styles = StyleSheet.create({
     //justifyContent: 'center',
     
   },
+  imageLogo: {
+    width: 30,
+    height: 30,
+  },
+  imageFolha: {
+      width: 32,
+      height: 32,
+      marginLeft: 10,
+  },
   title: {
     color: "#FFFFFF",
     flexDirection: "row",
@@ -197,6 +225,16 @@ const styles = StyleSheet.create({
     elevation: 3,
     backgroundColor: "#5C4EBC",
   },
+  Otobutton: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingVertical: 10,
+    paddingHorizontal: 13,
+    borderRadius: 20,
+    elevation: 3,
+    backgroundColor: "#5C4EBC",
+  },
   text: {
     fontSize: 16,
     lineHeight: 21,
@@ -204,10 +242,14 @@ const styles = StyleSheet.create({
     letterSpacing: 0.25,
     color: 'white',
   },
-  imageLogo: {
-    width: 25,
-    height: 25,
+  Durationtext: {
+    fontSize: 13,
+    lineHeight: 21,
+    fontWeight: 'bold',
+    letterSpacing: 0.25,
+    color: 'white',
   },
+ 
   row: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -220,8 +262,8 @@ const styles = StyleSheet.create({
   },
 
   microphone: {
-
-    marginRight: 1,
+    //  color: "#FD0541",
+      marginRight: 1,
   },
   data: {
     marginLeft: 20,
