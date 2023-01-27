@@ -34,7 +34,7 @@ export function CardMusic({ data, ...rest }: Props) {
   const navigation = useNavigation();
 
   function handleNewOrder() {
-    navigation.navigate("musicHome");
+    navigation.navigate("music");
   }
 
   return (

@@ -16,9 +16,6 @@ import { NotePencil, MagnifyingGlass, Alarm, House, CurrencyDollar, ArrowLeft } 
 
 import React from 'react';
 import { CustomDrawerContent } from '../components/CustomDrawerContent';
-import { MusicPlayer1 } from '../screens/music/MusicPlayer1';
-import { useNavigation } from '@react-navigation/native';
-import { IconButton } from 'native-base';
 import { GravationScreen } from '../screens/anotation/GravationScreen';
 
 
@@ -49,7 +46,7 @@ function MainTab() {
     >
   
       <Tab.Screen 
-        name="home" 
+        name="homeMainTab" 
         component={HomeTab} 
         options={{
           headerShown: false,
@@ -95,7 +92,7 @@ function MainTab() {
       />
 
       <Tab.Screen 
-        name="search" 
+        name="searchMainTab" 
         component={SearchScreen} 
         options={{
           headerShown: false,
@@ -122,7 +119,7 @@ function HomeTab() {
     }}
     >
 
-      <Screen.Screen name="home" component={HomeDrawer} />
+      <Screen.Screen name="homeHomeTab" component={HomeDrawer} />
       
 
     </Screen.Navigator>
@@ -311,11 +308,10 @@ export function AppRoutes() {
     }}
     >
       <Screen.Screen name="home" component={MainTab} />
-      <Screen.Screen name="search1" component={SearchScreen} />
-      <Screen.Screen name="musicHome" component={MusicScreen} />
+      <Screen.Screen name="search" component={SearchScreen} />
+      <Screen.Screen name="music" component={MusicScreen} />
       <Screen.Screen name="musicplayer" component={MusicPlayer} />
-      <Screen.Screen name="musicplayer1" component={MusicPlayer1} />
-      <Screen.Screen name="textHome" component={TextInputAnotation} />
+      <Screen.Screen name="anotationText" component={TextInputAnotation} />
       <Screen.Screen name="allAnotation" component={AllAnotation} />
       <Screen.Screen name="gravation" component={GravationScreen} />
     </Screen.Navigator>

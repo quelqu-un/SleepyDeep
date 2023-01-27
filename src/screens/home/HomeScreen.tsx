@@ -84,7 +84,7 @@ export function HomeScreen() {
   }
 
   function handleNewNewOrder() {
-    navigation.navigate("musicplayer1");
+    navigation.navigate("musicplayer");
   }
 
   function handleDrawer() {

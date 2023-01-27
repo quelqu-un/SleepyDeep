@@ -28,7 +28,7 @@ export function CardAnotation({ data, cor, ...rest }) {
   const navigation = useNavigation();
 
   function handleNewOrder() {
-    navigation.navigate("textHome");
+    navigation.navigate("anotationText");
   }
   
   return (
