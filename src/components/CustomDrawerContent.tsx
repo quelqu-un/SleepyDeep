@@ -61,7 +61,5 @@ const styles = StyleSheet.create({
     color: "#FFFFFF",
     flexDirection: "row",
     justifyContent: "space-between",
-
-    
   },
 });

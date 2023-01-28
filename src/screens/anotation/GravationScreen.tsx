@@ -114,7 +114,7 @@ export function GravationScreen() {
 
 
 
-      <HStack paddingTop = {2}paddingX={4} style={styles.title} >
+      <HStack paddingTop={2} paddingX={4} style={styles.title} >
 
 
         <IconButton
@@ -136,37 +136,37 @@ export function GravationScreen() {
         <Image style={styles.imageLogo} source={require('../../assets/images/moon.png')} />
       </HStack>
 
-   
 
-      <View  style={styles.container}>
+
+      <View style={styles.container}>
         <Text>{message}</Text>
         <IconButton
           onPress={recording ? stopRecording : startRecording}
 
-          
-          icon={recording ? <Microphone style={styles.microphone} color="#FD0541" size={25} />:
-                  <Microphone style={styles.microphone} color="#FFFFFF"   size={25} />
-        }
-      /> 
+
+          icon={recording ? <Microphone style={styles.microphone} color="#FD0541" size={25} /> :
+            <Microphone style={styles.microphone} color="#FFFFFF" size={25} />
+          }
+        />
         <Text marginBottom={10}> {recording ? 'Stop Recording' : 'Start Recording'}  </Text>
         <VStack style={styles.legenda} bg="#32206A"
-        > 
-         <View  style={styles.row}>
-         <IconButton
+        >
+          <View style={styles.row}>
+            <IconButton
               marginLeft={3}
               icon={<PauseCircle color="#FFFFFF" size={28} />}
             />
-          <View style={styles.Otobutton}>
-          <Text style={styles.Durationtext}>Duração</Text>
-          </View>
-<       VStack marginTop = {-1} style={styles.folha}>
-              
-               
-               < Image   style={styles.imageFolha} source={require('../../assets/images/moonalone.png')} />
+            <View style={styles.Otobutton}>
+              <Text style={styles.Durationtext}>Duração</Text>
+            </View>
+            <       VStack marginTop={-1} style={styles.folha}>
+
+
+              < Image style={styles.imageFolha} source={require('../../assets/images/moonalone.png')} />
 
             </VStack>
 
-            </View>
+          </View>
 
         </VStack>
         {getRecordingLines()}
@@ -193,16 +193,16 @@ const styles = StyleSheet.create({
     backgroundColor: "#180F34",
     alignItems: 'center',
     //justifyContent: 'center',
-    
+
   },
   imageLogo: {
     width: 30,
     height: 30,
   },
   imageFolha: {
-      width: 32,
-      height: 32,
-      marginLeft: 10,
+    width: 32,
+    height: 32,
+    marginLeft: 10,
   },
   title: {
     color: "#FFFFFF",
@@ -249,7 +249,7 @@ const styles = StyleSheet.create({
     letterSpacing: 0.25,
     color: 'white',
   },
- 
+
   row: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -263,7 +263,7 @@ const styles = StyleSheet.create({
 
   microphone: {
     //  color: "#FD0541",
-      marginRight: 1,
+    marginRight: 1,
   },
   data: {
     marginLeft: 20,

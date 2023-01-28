@@ -1,9 +1,9 @@
-import { VStack, HStack, Text, ScrollView, IconButton, Actionsheet, useDisclose, Button } from 'native-base';
+import { VStack, HStack, Text, ScrollView, IconButton, Actionsheet, useDisclose, Button, Spacer } from 'native-base';
 import React, { useEffect, useState } from 'react';
 
 import { ImageBackground, StyleSheet } from 'react-native';
 import { Image } from 'react-native';
-import { ArrowLeft, SkipBack, SkipForward, Pause, Timer, Check, Play } from 'phosphor-react-native';
+import { ArrowLeft, SkipBack, SkipForward, Pause, Timer, Check, Play, X } from 'phosphor-react-native';
 import { useNavigation } from '@react-navigation/native';
 import Slider from '@react-native-community/slider';
 
@@ -44,7 +44,7 @@ export function MusicPlayer() {
   const [onChangeValue, setOnChangeValue] = useState<number>(1);
   const [onChangeEndValue, setOnChangeEndValue] = useState<number>(1);
   const [onChangeValueFinal, setOnChangeValueFinal] = useState<number>(1);
-  const [onChangeValueFinalControl, setOnChangeValueFinalControl] = useState<boolean>(true); 
+  const [onChangeValueFinalControl, setOnChangeValueFinalControl] = useState<boolean>(true);
 
   useEffect(() => {
     if (musicCheck) {
@@ -52,7 +52,7 @@ export function MusicPlayer() {
         allowsRecordingIOS: false,
         playsInSilentModeIOS: true,
         shouldDuckAndroid: true,
-        staysActiveInBackground: true, 
+        staysActiveInBackground: true,
       });
 
       const status = {
@@ -79,22 +79,22 @@ export function MusicPlayer() {
 
   useEffect(() => {
     return sound
-    ? () => {
+      ? () => {
         sound.unloadAsync();
       } : undefined;
   }, [sound]);
 
   useEffect(() => {
-    if(countControl === 1) {
-      if(countTimer < (options/1000)) {
-        setTimeout(() => setCountTimer(countTimer+1), 1000);
-      } else if(countTimer >= (options/1000)) {
+    if (countControl === 1) {
+      if (countTimer < (options / 1000)) {
+        setTimeout(() => setCountTimer(countTimer + 1), 1000);
+      } else if (countTimer >= (options / 1000)) {
         sound.pauseAsync();
         sound.setPositionAsync(0);
         setCountControl(0);
         setCountTimer(-1);
         setSoundTimer(true);
-        if(options > 0) {
+        if (options > 0) {
           setplayPause(!playPause);
           setOptions(0);
         } else {
@@ -102,15 +102,15 @@ export function MusicPlayer() {
           sound.playAsync();
         }
       }
-    } else if(countControl === 2) {
+    } else if (countControl === 2) {
       setCountControl(1);
       setCountTimer(0);
-    } else if(countControl === 3) {
+    } else if (countControl === 3) {
       setCountControl(0);
       setCountTimer(-1);
     }
   }
-  , [countTimer]);
+    , [countTimer]);
 
   const onPlaybackStatusUpdate = status => {
     setControl(status);
@@ -119,13 +119,13 @@ export function MusicPlayer() {
   const playPauseSound = () => {
     if (playPause) {
       sound.playAsync();
-      if(countTimer > 0) {
+      if (countTimer > 0) {
         setCountControl(1);
-        setCountTimer(countTimer-1);
+        setCountTimer(countTimer - 1);
       }
     } else {
       sound.pauseAsync();
-      if(countTimer > 0) {
+      if (countTimer > 0) {
         setCountControl(0);
       }
     }
@@ -171,12 +171,12 @@ export function MusicPlayer() {
   const setTimeOptions = time => {
     setOptions(time);
 
-    if(!playPause) {
+    if (!playPause) {
       sound.pauseAsync();
       setplayPause(!playPause);
     }
     sound.setPositionAsync(0);
-    if(countTimer>0) {
+    if (countTimer > 0) {
       setCountControl(2);
     } else {
       setCountControl(1);
@@ -184,21 +184,21 @@ export function MusicPlayer() {
     setSoundTimer(false);
     sound.playAsync();
     setplayPause(false);
-    if(!(countTimer > 0) || playPause) {
-      setCountTimer(countTimer+1);
-    } 
+    if (!(countTimer > 0) || playPause) {
+      setCountTimer(countTimer + 1);
+    }
     timerOptions.onClose();
   }
 
   const setTimeOptionsCustom = () => {
-    setOptions(onChangeEndValue*60*1000);
-    
-    if(!playPause) {
+    setOptions(onChangeEndValue * 60 * 1000);
+
+    if (!playPause) {
       sound.pauseAsync();
       setplayPause(!playPause);
     }
     sound.setPositionAsync(0);
-    if(countTimer>0) {
+    if (countTimer > 0) {
       setCountControl(2);
     } else {
       setCountControl(1);
@@ -206,25 +206,25 @@ export function MusicPlayer() {
     setSoundTimer(false);
     sound.playAsync();
     setplayPause(false);
-    if(!(countTimer > 0)) {
-      setCountTimer(countTimer+1);
-    } 
+    if (!(countTimer > 0)) {
+      setCountTimer(countTimer + 1);
+    }
 
     customOptions.onClose();
-  } 
+  }
 
   const convertTime = sec => {
-    let dateObj:any = new Date(sec * 1000);
-    if(isNaN(dateObj)) {
+    let dateObj: any = new Date(sec * 1000);
+    if (isNaN(dateObj)) {
       return '00:00:00'
     }
     let hours = dateObj.getUTCHours();
     let minutes = dateObj.getUTCMinutes();
     let seconds = dateObj.getSeconds();
 
-    let timeString = hours.toString().padStart(2, '0') + ':' + 
-    minutes.toString().padStart(2, '0') + ':' + 
-    seconds.toString().padStart(2, '0');
+    let timeString = hours.toString().padStart(2, '0') + ':' +
+      minutes.toString().padStart(2, '0') + ':' +
+      seconds.toString().padStart(2, '0');
 
     return timeString;
   }
@@ -236,38 +236,44 @@ export function MusicPlayer() {
 
   return (
     <VStack height={"100%"} bg="#180F34">
-      
+
       <ScrollView
-        marginBottom={10}
+        _contentContainerStyle={{
+          h: "100%",
+          w: "100%",
+          alignItems: 'center',
+        }}
       >
-        <VStack
-        >
-          <ImageBackground source={require('../../assets/images/sleepbg.png')} resizeMode="cover" style={styles.image}>
-            <HStack marginTop={10} paddingX={4} style={styles.title} >
+        <VStack width={'100%'} height={'60px'} justifyContent={'center'} marginTop={'7px'}>
+          <HStack paddingX={4} style={styles.title}>
 
-              <IconButton
-                marginTop={-1}
-                icon={<ArrowLeft color="#FFFFFF" size={28} />}
-                onPress={hadleGoBack}
-              />
-              <Text
-                marginBottom={2}
-                fontFamily={'bold'}
-                color={'#FFFFFF'}
-                fontSize={20}>
-                Título da música
-              </Text>
+            <IconButton
+              marginTop={-1}
+              icon={<ArrowLeft color="#FFFFFF" size={28} />}
+              onPress={hadleGoBack}
+            />
+            <Text
+              fontFamily={'bold'}
+              color={'#FFFFFF'}
+              fontSize={20}>
+              Título da música
+            </Text>
 
-              <Image style={styles.imageLogo} source={require('../../assets/images/moonalone.png')} />
+            <Image style={styles.imageLogo} source={require('../../assets/images/moonalone.png')} />
 
-            </HStack>
-          </ImageBackground>
+          </HStack>
+        </VStack>
+        
+        <VStack borderWidth={3} borderColor={"#FFFFFF"} width={'220px'} height={'220px'} 
+        borderRadius={'full'} justifyContent={'center'} alignItems={'center'} marginTop={"80px"}>
+          <Text fontFamily={'robomedium'} fontSize={40} color={'#B7AEFF'}>
+            {soundTimer ? convertTime(control.positionMillis / 1000) : null}
+            {soundTimer ? null : convertTime(countTimer)}
+          </Text>
         </VStack>
 
-        <VStack style={styles.mainContainer}>
-
-          <VStack>
-            { soundTimer ?
+        <VStack>
+          {soundTimer ?
             <Slider
               style={styles.progressBar}
               value={control.positionMillis}
@@ -284,148 +290,203 @@ export function MusicPlayer() {
                 playPauseSound();
               }}
             /> : null
-            }
+          }
 
-            <HStack style={styles.progressLevelDuration}>
-              <Text style={styles.progressLabelText}>
-                {soundTimer ? convertTime(control.positionMillis/1000) : null}
-                {soundTimer ? null : convertTime(countTimer)}
-              </Text>
-            </HStack>
+          {/* <HStack style={styles.progressLevelDuration}>
+            <Text style={styles.progressLabelText}>
+              {soundTimer ? convertTime(control.positionMillis / 1000) : null}
+              {soundTimer ? null : convertTime(countTimer)}
+            </Text>
+          </HStack> */}
 
-          </VStack>
-
-          <HStack marginTop={50} style={styles.musicControlsContainer}>
-
-            <IconButton
-              marginLeft={10}
-              icon={<SkipBack color="#FFFFFF" size={28} />}
-              onPress={backMusic}
-            />
-
-            <IconButton
-
-              icon={
-                playPause ? <Play color="#FFFFFF" size={28} /> :
-                  <Pause color="#FFFFFF" size={28} />
-              }
-              onPress={playPauseSound}
-            />
-
-            <IconButton
-              marginRight={10}
-              icon={<SkipForward color="#FFFFFF" size={28} />}
-              onPress={nextMusic}
-            />
-
-          </HStack>
-
-          <HStack marginLeft={150}>
-
-            <IconButton
-              marginTop={180}
-              icon={<Timer color="#FFFFFF" size={32} />}
-              onPress={timerOptions.onOpen}
-            />
-
-          </HStack>
         </VStack>
+        
+        <HStack marginTop={50} style={styles.musicControlsContainer}>
+
+          <IconButton
+            marginLeft={10}
+            icon={<SkipBack color="#FFFFFF" size={28} />}
+            onPress={backMusic}
+          />
+
+          <IconButton
+
+            icon={
+              playPause ? <Play color="#FFFFFF" size={28} /> :
+                <Pause color="#FFFFFF" size={28} />
+            }
+            onPress={playPauseSound}
+          />
+
+          <IconButton
+            marginRight={10}
+            icon={<SkipForward color="#FFFFFF" size={28} />}
+            onPress={nextMusic}
+          />
+
+        </HStack>
+
+        <Spacer />
+
+        <HStack flexDirection={'row'} justifyContent={'center'} marginBottom={'60px'}>
+
+          <IconButton
+            icon={<Timer color="#FFFFFF" size={32} />}
+            onPress={timerOptions.onOpen}
+          />
+
+        </HStack>
+
       </ScrollView>
-      
+
       <Actionsheet isOpen={timerOptions.isOpen} onClose={timerOptions.onClose} hideDragIndicator>
         <Actionsheet.Content borderTopRadius="20" bg="#251751" padding={0}>
 
-          <Actionsheet.Item
+          <Button
+            width={'100%'}
             bg={options === _30MIN ? "#5548E1" : "#251751"}
-            _pressed={{
-              bg: options === _30MIN ? "#5548E1" : "#3A3487"
-            }}
-            endIcon={options === _30MIN ? <Check color="#FFFFFF" size={24} /> : null}
-            onPressOut={() => { 
-              if(options === _30MIN) {
+            style={styles.buttonPadding}
+            flexDirection={'row'}
+            justifyContent={'flex-start'}
+            paddingLeft={12}
+            paddingRight={8}
+            // marginY={'2'}
+            onPressOut={() => {
+              if (options === _30MIN) {
                 setTimeOptions(0);
               } else {
                 setTimeOptions(_30MIN);
               }
             }}>
-            <Text color="#FFFFFF">
-              30 minutos
-            </Text>
-          </Actionsheet.Item>
+            <HStack alignItems={'center'} width={'100%'}>
+              <Text color="#FFFFFF" width={'90%'}>
+                30 minutos
+              </Text>
 
-          <Actionsheet.Item
+              {options === _30MIN ?
+                <IconButton
+                  width={'10%'}
+                  position={'relative'}
+                  right={'0'}
+                  icon={<Check color="#FFFFFF" size={16} />}
+                  onPress={() => { }}
+                /> : null}
+            </HStack>
+          </Button>
+
+          <Button
+            width={'100%'}
             bg={options === _1H ? "#5548E1" : "#251751"}
-            _pressed={{
-              bg: options === _1H ? "#5548E1" : "#3A3487"
-            }}
-            endIcon={options === _1H ? <Check color="#FFFFFF" size={24} /> : null}
-            onPressOut={() => { 
-              if(options === _1H) {
+            flexDirection={'row'}
+            justifyContent={'flex-start'}
+            paddingLeft={12}
+            paddingRight={8}
+            style={styles.buttonPadding}
+            onPressOut={() => {
+              if (options === _1H) {
                 setTimeOptions(0);
               } else {
                 setTimeOptions(_1H);
               }
             }}>
-            <Text color="#FFFFFF">
-              1 hora
-            </Text>
-          </Actionsheet.Item>
+            <HStack alignItems={'center'} width={'100%'}>
+              <Text color="#FFFFFF" width={'90%'}>
+                1 hora
+              </Text>
 
-          <Actionsheet.Item
+              {options === _1H ?
+                <IconButton
+                  width={'10%'}
+                  position={'relative'}
+                  right={'0'}
+                  icon={<Check color="#FFFFFF" size={16} />}
+                  onPress={() => { }}
+                /> : null}
+            </HStack>
+          </Button>
+
+          <Button
+            width={'100%'}
             bg={options === _6H ? "#5548E1" : "#251751"}
-            _pressed={{
-              bg: options === _6H ? "#5548E1" : "#3A3487"
-            }}
-            endIcon={options === _6H ? <Check color="#FFFFFF" size={24} /> : null}
-            onPressOut={() => { 
-              if(options === _6H) {
+            flexDirection={'row'}
+            justifyContent={'flex-start'}
+            paddingLeft={12}
+            paddingRight={8}
+            style={styles.buttonPadding}
+            onPressOut={() => {
+              if (options === _6H) {
                 setTimeOptions(0);
               } else {
                 setTimeOptions(_6H);
               }
             }}>
-            <Text color="#FFFFFF">
-              6 horas
-            </Text>
-          </Actionsheet.Item>
+            <HStack alignItems={'center'} width={'100%'}>
+              <Text color="#FFFFFF" width={'90%'}>
+                6 horas
+              </Text>
 
-          <Actionsheet.Item
+              {options === _6H ?
+                <IconButton
+                  width={'10%'}
+                  position={'relative'}
+                  right={'0'}
+                  icon={<Check color="#FFFFFF" size={16} />}
+                  onPress={() => { }}
+                /> : null}
+            </HStack>
+          </Button>
+
+          <Button
+            width={'100%'}
             bg={options !== _30MIN && options !== _1H && options !== _6H && options > 0 ? "#5548E1" : "#251751"}
-            _pressed={{
-              bg: options !== _30MIN && options !== _1H && options !== _6H && options > 0 ? "#5548E1" : "#3A3487"
-            }}
-            endIcon={options !== _30MIN && options !== _1H && options !== _6H && options > 0 ?
-              <Check color="#FFFFFF" size={24} /> : null}
+            flexDirection={'row'}
+            justifyContent={'flex-start'}
+            paddingLeft={12}
+            paddingRight={8}
+            style={styles.buttonPadding}
             onPressOut={() => {
               timerOptions.onClose();
               customOptions.onOpen();
             }}>
-            <Text color="#FFFFFF">
-              Personalizar
-            </Text>
-          </Actionsheet.Item>
+            <HStack alignItems={'center'} width={'100%'}>
+              <Text color="#FFFFFF" width={'90%'}>
+                Personalizar
+              </Text>
+
+              {options !== _30MIN && options !== _1H && options !== _6H && options > 0 ?
+                <IconButton
+                  width={'10%'}
+                  position={'relative'}
+                  right={'0'}
+                  icon={<X color="#FFFFFF" size={16} />}
+                  onPress={() => {
+                    setTimeOptions(0);
+                  }}
+                /> : null}
+            </HStack>
+          </Button>
 
         </Actionsheet.Content>
       </Actionsheet>
 
       <Actionsheet isOpen={customOptions.isOpen} onClose={customOptions.onClose} hideDragIndicator >
         <Actionsheet.Content borderTopRadius="20" bg="#251751" padding={0}>
-          
-          <VStack 
+
+          <VStack
             paddingTop={5}
             paddingBottom={5}>
-            <Text 
-            color="#FFFFFF" 
-            textAlign="center" 
-            fontFamily={'robomedium'}
-            fontSize={16}>
+            <Text
+              color="#FFFFFF"
+              textAlign="center"
+              fontFamily={'robomedium'}
+              fontSize={16}>
               Personalizar
             </Text>
           </VStack>
 
-          <Text 
-            color="#FFFFFF" 
-            textAlign="center" 
+          <Text
+            color="#FFFFFF"
+            textAlign="center"
             fontFamily={'robolight'}
             fontSize={14}>
             {onChangeValueFinalControl ? onChangeValueFinal : onChangeEndValue}
@@ -451,35 +512,35 @@ export function MusicPlayer() {
           />
 
           <VStack
-             bg="#251751"
-             alignItems={'center'}
-             paddingTop={5}
-             paddingBottom={10}>
+            bg="#251751"
+            alignItems={'center'}
+            paddingTop={5}
+            paddingBottom={10}>
 
             <HStack>
-              
-              <Button 
-              marginRight={10}
-              width={140}
-              bg="#2F2570"
-              borderRadius={6}
-              onPress={customOptions.onClose}>
-                <Text 
-                color="#FFFFFF"
+
+              <Button
+                marginRight={10}
+                width={140}
+                bg="#2F2570"
+                borderRadius={6}
+                onPress={customOptions.onClose}>
+                <Text
+                  color="#FFFFFF"
                 >
                   Cancelar
                 </Text>
               </Button>
 
-              <Button 
-              width={140}
-              bg="#5548E1"
-              borderRadius={6}
-              onPress={setTimeOptionsCustom}>
+              <Button
+                width={140}
+                bg="#5548E1"
+                borderRadius={6}
+                onPress={setTimeOptionsCustom}>
                 <Text
-                color="#FFFFFF"
+                  color="#FFFFFF"
                 >
-                  Ok 
+                  Ok
                 </Text>
               </Button>
 
@@ -499,7 +560,10 @@ const styles = StyleSheet.create({
     color: "#FFFFFF",
     flexDirection: "row",
     justifyContent: "space-between"
-
+  },
+  buttonPadding: {
+    paddingTop: 13,
+    paddingBottom: 13,
   },
   imageLogo: {
     width: 35,
@@ -508,7 +572,7 @@ const styles = StyleSheet.create({
   image: {
     flex: 1,
     justifyContent: 'center',
-  }, 
+  },
   mainContainer: {
     flex: 1,
     alignItems: 'center',
