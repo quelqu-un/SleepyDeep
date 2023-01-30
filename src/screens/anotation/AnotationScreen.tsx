@@ -1,54 +1,13 @@
-import { VStack, HStack, Text, ScrollView, IconButton, Center } from 'native-base';
+import { VStack, HStack, Text, ScrollView, IconButton } from 'native-base';
 import React from 'react';
-import { FlatList, StyleSheet, TouchableOpacity, View } from 'react-native';
-import { Image,  ImageBackground} from 'react-native';
-import { Globe, ArrowLeft, PlusCircle } from 'phosphor-react-native';
+import { FlatList, StyleSheet, TouchableOpacity } from 'react-native';
+import { Image } from 'react-native';
+import { ArrowLeft, PlusCircle } from 'phosphor-react-native';
 import { useNavigation } from '@react-navigation/native';
-import { SearchBarComponent } from '../../components/SearchBar';
 import { CardAnotation } from '../../components/CardAnotation';
-
-
+import { dataAnotationScreen } from '../../model/Data';
 
 export function AnotationScreen() {
-  let data = [[{
-    id: '0',
-    text: 'Recentes',
-    recent: true
-  },
-  {
-    id: '1',
-    text: 'Tudo',
-    recent: false
-  },
- 
-  ], [
-    {
-    id: '2',
-    text: 'Recentes',
-    recent: true
-  },
-  {
-    id: '3',
-    text: 'Tudo',
-    recent: false
-  },
-  
-  ], [
-    {
-      id: '3',
-      text: 'Recentes',
-      recent: true
-    },
-    {
-      id: '4',
-      text: 'Tudo',
-      recent: false
-    },
-    
-  
-  ],
-
-];
   const navigation = useNavigation();
 
   function handleNewOrder() {
@@ -79,7 +38,7 @@ export function AnotationScreen() {
                 textAlign= "center"
                 color={'#FFFFFF'}
                 fontSize={18}>
-                    Anotação
+                  Anotação
                </Text>
                 <Image style={styles.imageLogo} source={require('../../assets/images/moon.png')} />
              </HStack>
@@ -102,7 +61,7 @@ export function AnotationScreen() {
 
         <HStack marginBottom={10}>
           <FlatList
-            data={data[0]}
+            data={dataAnotationScreen[0]}
             horizontal={true}
             keyExtractor={item => item.id}
             renderItem={({ item }) =>
@@ -122,7 +81,7 @@ export function AnotationScreen() {
         </TouchableOpacity>
         <HStack marginBottom={10}>
           <FlatList
-            data={data[1]}
+            data={dataAnotationScreen[1]}
             horizontal={true}
             keyExtractor={item => item.id}
             renderItem={({ item }) =>
@@ -140,7 +99,7 @@ export function AnotationScreen() {
         </TouchableOpacity>
         <HStack marginBottom={10}>
           <FlatList
-            data={data[2]}
+            data={dataAnotationScreen[2]}
             horizontal={true}
             keyExtractor={item => item.id}
             renderItem={({ item }) =>

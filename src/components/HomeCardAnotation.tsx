@@ -2,6 +2,7 @@ import { Text, useTheme, VStack, Pressable, IPressableProps ,} from 'native-base
 import { useState } from 'react';
 import { Image } from 'react-native';
 import { StyleSheet, View,TextInput } from 'react-native';
+import { dataImagesCardAnotation } from '../model/Data';
 
 export type CardAnotationProps = {
   id: string;
@@ -10,20 +11,10 @@ export type CardAnotationProps = {
 }
 
 type Props = IPressableProps & {
-    data: CardAnotationProps;
+  data: CardAnotationProps;
 }
 
-const dataImages = [
-    
-    require('../assets/images/anotation_0.png'),
-    require('../assets/images/anotation_1.png'),
-    require('../assets/images/anotation_2.png'),
-   
-]
-
 export function HomeCardAnotation({ data, cor, ...rest }) {
-  const { colors } = useTheme();
-  const [userName, setUserName] = useState('');
 
   return (
     <Pressable {...rest}  >
@@ -35,11 +26,9 @@ export function HomeCardAnotation({ data, cor, ...rest }) {
             borderTopLeftRadius={20} 
             borderTopRightRadius={20}
             bg={cor}
-            alignItems={'center'}
-              
-               >
+            alignItems={'center'}>
 
-                <Text paddingX={2} 
+              <Text paddingX={2} 
               paddingY={1} 
               color="#FFFFFF" 
               fontSize={12}
@@ -47,39 +36,29 @@ export function HomeCardAnotation({ data, cor, ...rest }) {
                 {data.text}
                 </Text>
 
-                <Image  style={styles.imagens} borderBottomLeftRadius ={20} borderBottomRightRadius ={20}  source={dataImages[data.id]} />
+                <Image  style={styles.imagens} borderBottomLeftRadius ={20} borderBottomRightRadius ={20}  source={dataImagesCardAnotation[data.id]} />
 
             </VStack>
-
-             {/* <TextInput
-          value={userName}
-          onChangeText={(userName) => setUserName(userName)}
-          placeholder={'Texto aqui'}
-          style={styles.input}
-        />
-              */}
 
         </VStack>
     </Pressable>
   );
 }
 const styles = StyleSheet.create({
-    imagens: {
+  imagens: {
+    color: "#FFFFFF",
+    width: 120,
+    height: 100
+  } ,
+    legenda: {
       color: "#FFFFFF",
       width: 120,
-      height: 100
-  
-    } ,
-     legenda: {
-        color: "#FFFFFF",
-        width: 120,
-        
-     },
-     input: {
-      width: 120,
-      height: 80,
-      padding: 10,
-      backgroundColor:"#251751" ,
     },
-  });
+    input: {
+    width: 120,
+    height: 80,
+    padding: 10,
+    backgroundColor:"#251751" ,
+  },
+});
   

@@ -1,11 +1,8 @@
-import { VStack, HStack, Text, ScrollView, IconButton, Center, View, Flex, Spacer } from 'native-base';
+import { VStack, HStack, Text, ScrollView, IconButton, View, Spacer } from 'native-base';
 import React, { useState } from 'react';
 import { Pressable, StyleSheet, TextInput } from 'react-native';
-import { Image, ImageBackground } from 'react-native';
-import { Globe, ArrowLeft, Trash, Microphone } from 'phosphor-react-native';
+import { ArrowLeft, Trash, Microphone } from 'phosphor-react-native';
 import { useNavigation } from '@react-navigation/native';
-import { SearchBarComponent } from '../../components/SearchBar';
-import { background } from 'native-base/lib/typescript/theme/styled-system';
 
 
 export function TextInputAnotation(props) {
@@ -21,80 +18,80 @@ export function TextInputAnotation(props) {
         <VStack flex={1} height={"100%"} bg="#180F34"  >
 
             <ScrollView
-             _contentContainerStyle={{
+                _contentContainerStyle={{
 
-              h: "100%",
-              w: "100%",
-            }}
-            >         
-                   
-                    <HStack paddingTop={4}  paddingX={4} style={styles.title} >
+                    h: "100%",
+                    w: "100%",
+                }}
+            >
 
-
-                        <IconButton
-                            marginTop={-2}
-                            icon={<ArrowLeft color="#FFFFFF" size={25} />}
-                            onPress={handleNewOrder}
-                        />
-
-                        <Text
-                            marginRight={5}
-                            fontFamily="robobold"
-                            textAlign="center"
-                            color={'#FFFFFF'}
-                            fontSize={18}>
-                            Título
-                        </Text>
+                <HStack paddingTop={4} paddingX={4} style={styles.title} >
 
 
-                        <IconButton
-                            marginTop={-2}
-                            icon={<Trash color="#FFFFFF" size={25} />}
-                            onPress={handleNewOrder}
-                        />
+                    <IconButton
+                        marginTop={-2}
+                        icon={<ArrowLeft color="#FFFFFF" size={25} />}
+                        onPress={handleNewOrder}
+                    />
 
-                    </HStack>
-                    
-                    <Text style={styles.data} >
-                        01/50/22
+                    <Text
+                        marginRight={5}
+                        fontFamily="robobold"
+                        textAlign="center"
+                        color={'#FFFFFF'}
+                        fontSize={18}>
+                        Título
                     </Text>
 
-                   
 
-                    <View style={styles.enjoadinho} >
+                    <IconButton
+                        marginTop={-2}
+                        icon={<Trash color="#FFFFFF" size={25} />}
+                        onPress={handleNewOrder}
+                    />
+
+                </HStack>
+
+                <Text style={styles.data} >
+                    01/50/22
+                </Text>
+
+
+
+                <View style={styles.enjoadinho} >
                     <TextInput
-                            
-                            editable
-                            multiline
-                            value={value}
-                            onChangeText={(text) => setUserName(text)}
-                            placeholder={'Texto aqui'}
-                            style={styles.input}
-                        />
-                    </View>
-                       
-                     
-                      <Spacer />
-                      
-                        <HStack marginBottom = {5} flexDirection = {'row'} justifyContent ={'center'}
-                          >
-                        
-                            <Pressable style={styles.button} onPress={onPress}>
-                                <Text style={styles.text}>{title}</Text>
-                            </Pressable>
 
-                            <IconButton
-                                icon={<Microphone style={styles.microphone} color="#FFFFFF" size={25} />}
-                                onPress={handleNewOrder}
-                            />
-                        </HStack>
-                        
-                      
-                      
-                        
-                       
+                        editable
+                        multiline
+                        value={value}
+                        onChangeText={(text) => setUserName(text)}
+                        placeholder={'Texto aqui'}
+                        style={styles.input}
+                    />
+                </View>
+
+
+                <Spacer />
+
+                <HStack marginBottom={5} flexDirection={'row'} justifyContent={'center'}
+                >
+
+                    <Pressable style={styles.button} onPress={onPress}>
+                        <Text style={styles.text}>{title}</Text>
+                    </Pressable>
+
+                    <IconButton
+                        icon={<Microphone style={styles.microphone} color="#FFFFFF" size={25} />}
+                        onPress={handleNewOrder}
+                    />
+                </HStack>
+
+
+
+
+
             </ScrollView>
-            
+
         </VStack>
 
     );
@@ -124,7 +121,7 @@ const styles = StyleSheet.create({
         padding: 10,
         backgroundColor: "#5C4EBC",
         marginBottom: 50,
-        borderRadius: 20,  
+        borderRadius: 20,
 
     },
     button: {
@@ -149,9 +146,9 @@ const styles = StyleSheet.create({
         marginRight: -200,
     },
     enjoadinho: {
-         flex: 1,
-         alignItems: 'center',
-                    
+        flex: 1,
+        alignItems: 'center',
+
     },
     data: {
         marginLeft: 20,

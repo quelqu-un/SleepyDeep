@@ -1,7 +1,6 @@
-import { Text, useTheme, VStack, Pressable, IPressableProps ,} from 'native-base';
-import { useState } from 'react';
-import { Image, TouchableOpacity } from 'react-native';
-import { StyleSheet, View,TextInput } from 'react-native';
+import { Text, VStack, Pressable, IPressableProps ,} from 'native-base';
+import { TouchableOpacity } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 export type CardAnotationProps = {
@@ -14,17 +13,7 @@ type Props = IPressableProps & {
     data: CardAnotationProps;
 }
 
-const dataImages = [
-    
-    require('../assets/images/anotation_0.png'),
-    require('../assets/images/anotation_1.png'),
-    require('../assets/images/anotation_2.png'),
-   
-]
-
 export function CardAnotation({ data, cor, ...rest }) {
-  const { colors } = useTheme();
-  const [userName, setUserName] = useState('');
   const navigation = useNavigation();
 
   function handleNewOrder() {
