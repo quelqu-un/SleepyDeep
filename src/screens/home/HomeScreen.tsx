@@ -6,77 +6,11 @@ import { CardMusic } from '../../components/CardMusic';
 import { Image } from 'react-native';
 import { Globe, ListBullets } from 'phosphor-react-native';
 import { DrawerActions, useNavigation } from '@react-navigation/native';
+import { dataHome } from '../../model/Data';
 
 
 
 export function HomeScreen() {
-  let data = [[{
-    id: '0',
-    text: 'Ouvidos recentes',
-    recent: true
-  },
-  {
-    id: '1',
-    text: 'Chuva Forte',
-    recent: true
-  },
-  {
-    id: '2',
-    text: 'Música Instrumental',
-    recent: true
-  },
-  ], [
-    {
-      id: '3',
-      text: 'Ondas Alphas',
-      recent: true
-    },
-    {
-      id: '4',
-      text: 'Sons da Natureza',
-      recent: true
-    },
-    {
-      id: '5',
-      text: 'ASMR',
-      recent: true
-    },
-  ], [
-    {
-      id: '6',
-      text: 'História 1',
-      recent: true
-    },
-    {
-      id: '7',
-      text: 'História 2',
-      recent: true
-    },
-    {
-      id: '8',
-      text: 'História 3',
-      recent: true
-    },
-  ], [
-    {
-      id: '0',
-      text: 'O que eu sonhei hoje',
-      recent: true
-    },
-    {
-      id: '1',
-      text: 'Estresse do dia',
-      recent: true
-    },
-    {
-      id: '2',
-      text: 'Metas do dia ',
-      recent: true
-    },
-  ],
-
-  ];
-
   const navigation = useNavigation();
 
   function handleNewOrder() {
@@ -138,7 +72,7 @@ export function HomeScreen() {
         <Text paddingX={5} marginTop={8} marginBottom={4} fontFamily={'robomedium'} style={styles.secondtitle} >Músicas</Text>
         <HStack marginBottom={10}>
           <FlatList
-            data={data[0]}
+            data={dataHome[0]}
             horizontal={true}
             keyExtractor={item => item.id}
             renderItem={({ item }) =>
@@ -154,7 +88,7 @@ export function HomeScreen() {
         <HStack >
 
           <FlatList
-            data={data[1]}
+            data={dataHome[1]}
             horizontal={true}
             keyExtractor={item => item.id}
             renderItem={({ item }) =>
@@ -171,7 +105,7 @@ export function HomeScreen() {
         <HStack >
 
           <FlatList
-            data={data[2]}
+            data={dataHome[2]}
             horizontal={true}
             keyExtractor={item => item.id}
             renderItem={({ item }) =>
@@ -186,7 +120,7 @@ export function HomeScreen() {
         <Text paddingX={5} fontFamily={'robomedium'} marginBottom={3}  >Anotações</Text>
         <HStack marginBottom={10}>
           <FlatList
-            data={data[3]}
+            data={dataHome[3]}
             horizontal={true}
             keyExtractor={item => item.id}
             renderItem={({ item }) =>
@@ -232,4 +166,5 @@ const styles = StyleSheet.create({
   },
   
 });
+
 export default HomeScreen;

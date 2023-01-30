@@ -4,8 +4,6 @@ import { HStack, IconButton, Text } from 'native-base'
 import { ArrowLeft } from 'phosphor-react-native';
 import { useNavigation } from '@react-navigation/native';
 
-
-
 export function CustomDrawerContent(props) {
 
  const navigation = useNavigation();

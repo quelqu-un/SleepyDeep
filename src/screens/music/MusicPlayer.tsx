@@ -9,12 +9,7 @@ import Slider from '@react-native-community/slider';
 
 import { Audio } from 'expo-av';
 import { Sound } from 'expo-av/build/Audio';
-
-
-const songs = [
-  require('../../assets/audio/aboutu.mpeg'),
-  require('../../assets/audio/enjoadinho.mp4'),
-];
+import { songsPath } from '../../model/Data';
 
 export function MusicPlayer() {
   const timerOptions = useDisclose();
@@ -61,7 +56,7 @@ export function MusicPlayer() {
       };
 
       sound.setOnPlaybackStatusUpdate(onPlaybackStatusUpdate)
-      sound.loadAsync(songs[musicIndex], status, true)
+      sound.loadAsync(songsPath[musicIndex], status, true)
 
       setMusicCheck(false);
     }
@@ -72,7 +67,7 @@ export function MusicPlayer() {
         isLooping: true
       };
       sound.unloadAsync();
-      sound.loadAsync(songs[musicIndex], status, false);
+      sound.loadAsync(songsPath[musicIndex], status, false);
       sound.playAsync();
     }
   }, [musicIndex]);
@@ -141,7 +136,7 @@ export function MusicPlayer() {
     setOnChangeEndValue(1);
     setOnChangeValueFinal(1);
     setOnChangeValueFinalControl(true);
-    if (musicIndex === (songs.length - 1)) {
+    if (musicIndex === (songsPath.length - 1)) {
       setMusicIndex(0);
       setplayPause(false);
     } else {
@@ -160,7 +155,7 @@ export function MusicPlayer() {
     setOnChangeValueFinal(1);
     setOnChangeValueFinalControl(true);
     if (musicIndex === 0) {
-      setMusicIndex(songs.length - 1);
+      setMusicIndex(songsPath.length - 1);
       setplayPause(false);
     } else {
       setMusicIndex(musicIndex - 1);

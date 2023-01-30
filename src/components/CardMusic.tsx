@@ -1,8 +1,8 @@
 import { useNavigation } from '@react-navigation/native';
-import { Text, useTheme, VStack, Pressable, IPressableProps } from 'native-base';
+import { Text, VStack, IPressableProps } from 'native-base';
 import { Image, TouchableOpacity } from 'react-native';
-import { StyleSheet, View } from 'react-native';
-
+import { StyleSheet } from 'react-native';
+import { dataImagesCardMusic } from '../model/Data';
 
 export type CardMusicProps = {
   id: string;
@@ -14,23 +14,7 @@ type Props = IPressableProps & {
     data: CardMusicProps;
 }
 
-const dataImages = [
-    require('../assets/images/music_0.png'),
-    require('../assets/images/music_1.png'),
-    require('../assets/images/music_2.png'),
-    require('../assets/images/music_3.png'),
-    require('../assets/images/music_4.png'),
-    require('../assets/images/music_5.png'),
-    require('../assets/images/music_6.png'),
-    require('../assets/images/music_7.png'),
-    require('../assets/images/music_8.png'),
-    require('../assets/images/anotation_0.png'),
-    require('../assets/images/anotation_1.png'),
-    require('../assets/images/anotation_2.png'),
-]
-
 export function CardMusic({ data, ...rest }: Props) {
-  const { colors } = useTheme();
   const navigation = useNavigation();
 
   function handleNewOrder() {
@@ -40,7 +24,7 @@ export function CardMusic({ data, ...rest }: Props) {
   return (
     <TouchableOpacity  onPress={handleNewOrder} >
         <VStack width={100} height={95} marginLeft={4} marginRight={5} >
-            <Image  style={styles.imagens} borderTopLeftRadius ={20} borderTopRightRadius ={20}  source={dataImages[data.id]} />
+            <Image  style={styles.imagens} borderTopLeftRadius ={20} borderTopRightRadius ={20}  source={dataImagesCardMusic[data.id]} />
 
             <VStack style={styles.legenda}  bg="#32206A" 
             borderBottomLeftRadius={20} 

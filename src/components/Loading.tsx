@@ -1,5 +1,5 @@
 import { Center, Spinner } from 'native-base';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 
 export function Loading() {
   return ( 
