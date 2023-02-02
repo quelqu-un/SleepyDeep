@@ -1,27 +1,91 @@
-
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Audio } from 'expo-av';
-import { VStack, HStack, Text, ScrollView, IconButton, Center, View, Flex, Spacer, Button, Input, } from 'native-base';
-import { Pressable, StyleSheet, TextInput } from 'react-native';
-import { Image, ImageBackground } from 'react-native';
-import { Globe, ArrowLeft, Trash, Microphone, PlayCircle, MagnifyingGlass, PauseCircle } from 'phosphor-react-native';
+import { VStack, HStack, Text, IconButton, View, Spacer, Modal, Button, Input, Flex } from 'native-base';
+import { Pressable, StyleSheet } from 'react-native';
+import { Image } from 'react-native';
+import { ArrowLeft, Trash, Microphone, PlayCircle, PauseCircle, StopCircle } from 'phosphor-react-native';
 import { useNavigation } from '@react-navigation/native';
-import { SearchBarComponent } from '../../components/SearchBar';
-import { background } from 'native-base/lib/typescript/theme/styled-system';
+import { TouchableWithoutFeedback, Animated} from 'react-native';
 
-//import * as Sharing from 'expo-sharing';
+import {useSharedValue, useAnimatedStyle, withTiming, withRepeat, ReverseAnimation} from 'react-native-reanimated'
+import Slider from '@react-native-community/slider';
 
 export function GravationScreen() {
-  const [recording, setRecording] = React.useState<any>();
-  const [recordings, setRecordings] = React.useState([]);
-  const [message, setMessage] = React.useState("");
+  const [recording, setRecording] = useState<any>();
+  const [recordings, setRecordings] = useState([]);
+  const [message, setMessage] = useState("");
+  const [RecordingStatusUpdate, setRecordingStatusUpdate] = useState<any>();
+  const [playPause, setPlayPause] = useState(true);
+  const [playPauseRecording, setPlayPauseRecording] = useState(false);
+  const [recordingControl, setRecordingControl] = useState(true);
+  const [recordingControlIndex, setRecordingControlIndex] = useState(0);
+
+  const [placement, setPlacement] = useState(undefined);
+  const [open, setOpen] = useState(false);
+
+  const [placementBack, setPlacementBack] = useState(undefined);
+  const [openBack, setOpenBack] = useState(false);
+  const [control, setControl] = useState<any>({
+    isBuffering: 0,
+    durationMillis: 0,
+    positionMillis: 0,
+  });
+
+  const opacityAnimation = useRef(new Animated.Value(1)).current;
+
+  const opacityStyle = { opacity: opacityAnimation };
+
+  const animateElement = () => {
+    if(playPause) {
+      Animated.loop(
+       Animated.timing(opacityAnimation, {
+        toValue: 0,
+        duration: 500,
+        useNativeDriver: true
+      })
+      ).start();
+    } else {
+      Animated.timing(opacityAnimation, {
+        toValue: 1,
+        duration: 500,
+        useNativeDriver: true
+      }).start();
+    }
+  };
+
+  const openModal = placement => {
+    setOpen(true);
+    setPlacement(placement);
+  };
+
+  const openModalBack = placement => {
+    setOpenBack(true);
+    setPlacementBack(placement);
+  };
+  
+  function formatDate() {
+    const dateNow = new Date(Date.now());
+
+    return `${dateNow.getDate()}/${dateNow.getUTCMonth()}/${dateNow.getFullYear()}`
+  }
+  
   const navigation = useNavigation();
 
-  function handleNewOrder() {
-    navigation.goBack();
+  const OnRecordingStatusUpdate = status => {
+    setRecordingStatusUpdate(status);
   }
+
+  function handleNewOrder() {
+    if(recording !== undefined)
+      stopRecording();
+    openModalGoBack();
+  }
+
   async function startRecording() {
+    if(recordingControl) {
+      setRecordingControl(false);
+    }
+
     try {
       const permission = await Audio.requestPermissionsAsync();
 
@@ -36,27 +100,31 @@ export function GravationScreen() {
         );
 
         setRecording(recording);
+        recording.setOnRecordingStatusUpdate(OnRecordingStatusUpdate);
       } else {
         setMessage("Please grant permission to app to access microphone");
       }
+
     } catch (err) {
       console.error('Failed to start recording', err);
     }
   }
 
   async function stopRecording() {
-    setRecording(undefined);
-    await recording.stopAndUnloadAsync();
-
-    let updatedRecordings = [...recordings];
-    const { sound, status } = await recording.createNewLoadedSoundAsync();
-    updatedRecordings.push({
-      sound: sound,
-      duration: getDurationFormatted(status.durationMillis),
-      file: recording.getURI()
-    });
-
-    setRecordings(updatedRecordings);
+    if(recording) {
+      await recording.stopAndUnloadAsync();
+      setRecording(undefined);
+  
+      let updatedRecordings = [...recordings];
+      const { sound, status } = await recording.createNewLoadedSoundAsync();
+      updatedRecordings.push({
+        sound: sound,
+        duration: getDurationFormatted(status.durationMillis),
+        file: recording.getURI()
+      });
+  
+      setRecordings(updatedRecordings);
+    }
   }
 
   function getDurationFormatted(millis) {
@@ -67,52 +135,158 @@ export function GravationScreen() {
     return `${minutesDisplay}:${secondsDisplay}`;
   }
 
+  const playPauseRecordingControl = sound => {
+    if(playPauseRecording) {
+      sound.pauseAsync();
+    } else {
+      
+      sound.playAsync();
+    }
+    setPlayPauseRecording(!playPauseRecording);
+  }
+
+  const onPlaybackStatusUpdate = status => {
+    setControl(status);
+  }
+
   function getRecordingLines() {
 
     return recordings.map((recordingLine, index) => {
-      return (
-
-        <VStack style={styles.legenda} bg="#32206A"
-        >
-
-          <View key={index} style={styles.row}>
-
-
-            <IconButton
-              icon={<PlayCircle color="#FFFFFF" size={28} />}
-              onPress={() => recordingLine.sound.replayAsync()}
-
-            />
-
-            <Text style={styles.fill}>Recording {index + 1} - {recordingLine.duration}</Text>
-
-            <VStack style={styles.folha}>
+      if(index === recordingControlIndex) {
+        return (
+          <VStack style={styles.legenda} bg="#32206A" key={index}
+          >
+  
+            <View key={index} style={styles.row}>
+  
+  
               <IconButton
-                marginTop={-1}
-                icon={<Trash color="#FFFFFF" size={20} />}
-                onPress={handleNewOrder}
+                icon={
+                  playPauseRecording ?
+                  <PauseCircle color="#FFFFFF" size={28} /> :
+                  <PlayCircle color="#FFFFFF" size={28}/>
+                }
+                onPress={() => {
+                  recordingLine.sound.setOnPlaybackStatusUpdate(onPlaybackStatusUpdate);
+                  if(control.positionMillis >= control.durationMillis) {
+                    recordingLine.sound.replayAsync();
+                    setPlayPauseRecording(true);
+                  } else {
+                    playPauseRecordingControl(recordingLine.sound);
+                  }
+                }}
               />
-              <Text
-
-                marginTop={2}
-                color="#FFFFFF"
-                fontSize={9}
-                fontFamily={'robolight'}>
-                21/05/2025
-              </Text>
-            </VStack>
-          </View>
-
-        </VStack>
-      );
+  
+              <VStack width={'250px'} alignItems='flex-end' marginTop={'14px'} marginLeft={'-20px'}>
+                <Slider
+                  style={styles.progressBar}
+                  value={control.positionMillis}
+                  minimumValue={0}
+                  maximumValue={control.durationMillis}
+                  thumbTintColor="#FFD369"
+                  minimumTrackTintColor="#FFD369"
+                  maximumTrackTintColor="#fff"
+                  onSlidingStart={v => {
+                    recordingLine.sound.pauseAsync();
+                  }}
+                  onSlidingComplete={v => {
+                    recordingLine.sound.setPositionAsync(v);
+                    recordingLine.sound.playAsync();
+                  }}
+                />
+                <Text color="#FFFFFF" fontSize={10} fontFamily={'robolight'} marginRight={'16px'}>
+                  {convertTimeRecording(control.positionMillis/1000)}
+                </Text>
+              </VStack>
+  
+              <VStack style={styles.folha}>
+  
+                <IconButton
+                  marginTop={-1}
+                  icon={<Trash color="#FFFFFF" size={20} />}
+                  onPress={removingRecording}
+                />
+  
+                <Text
+                  marginTop={2}
+                  color="#FFFFFF"
+                  fontSize={9}
+                  fontFamily={'robolight'}>
+                  {formatDate()}
+                </Text>
+              </VStack>
+  
+            </View>
+  
+          </VStack>
+        );
+      }
     });
+  }
+
+  const pauseRecording = () => {
+    if(recording) {
+      if(playPause) {
+        recording.pauseAsync();
+      } else {
+        recording.startAsync();
+      }
+      setPlayPause(!playPause);
+    }
+  }
+
+  const convertTime = sec => {
+    let dateObj: any = new Date(sec * 1000);
+    if (isNaN(dateObj)) {
+      return '00:00:00'
+    }
+    let hours = dateObj.getUTCHours();
+    let minutes = dateObj.getUTCMinutes();
+    let seconds = dateObj.getSeconds();
+
+    let timeString = hours.toString().padStart(2, '0') + ':' +
+      minutes.toString().padStart(2, '0') + ':' +
+      seconds.toString().padStart(2, '0');
+
+    return timeString;
+  }
+
+  const convertTimeRecording = sec => {
+    let dateObj: any = new Date(sec * 1000);
+    if (isNaN(dateObj)) {
+      return '00:00'
+    }
+    let minutes = dateObj.getUTCMinutes();
+    let seconds = dateObj.getSeconds();
+
+    let timeString = minutes.toString().padStart(2, '0') + ':' +
+      seconds.toString().padStart(2, '0');
+
+    return timeString;
+  }
+
+  const openModalSave = () => {
+    if(!recordingControl) {
+      stopRecording();
+      openModal("center");
+    }
+  }
+
+  const openModalGoBack = () => {
+    if(!recordingControl) {
+      openModalBack("center");
+    } else {
+      navigation.goBack();
+    }
+  }
+
+  const removingRecording = () => {
+    setRecordingControl(true);
+    setRecordingControlIndex(recordingControlIndex + 1);
   }
 
   return (
     <VStack flex={1} height={"100%"} bg="#180F34"  >
-
-
-
 
       <HStack paddingTop={2} paddingX={4} style={styles.title} >
 
@@ -133,7 +307,7 @@ export function GravationScreen() {
         </Text>
 
 
-        <Image style={styles.imageLogo} source={require('../../assets/images/moon.png')} />
+        <Image style={styles.imageFolha} source={require('../../assets/images/moonalone.png')} />
       </HStack>
 
 
@@ -141,29 +315,47 @@ export function GravationScreen() {
       <View style={styles.container}>
         <Text>{message}</Text>
         <IconButton
-          onPress={recording ? stopRecording : startRecording}
-
-
-          icon={recording ? <Microphone style={styles.microphone} color="#FD0541" size={25} /> :
-            <Microphone style={styles.microphone} color="#FFFFFF" size={25} />
+          onPress={recordingControl ? startRecording : null}
+          icon={(recording && playPause) ? 
+          <Microphone style={styles.microphone} color="#FD0541" size={45} /> :
+          <Microphone style={styles.microphone} color="#FFFFFF" size={45} />
           }
         />
-        <Text marginBottom={10}> {recording ? 'Stop Recording' : 'Start Recording'}  </Text>
+
+        <Text marginBottom={10} color="#FFFFFF">{recordingControl ? 'Iniciar gravação' : null}</Text>
         <VStack style={styles.legenda} bg="#32206A"
         >
-          <View style={styles.row}>
-            <IconButton
-              marginLeft={3}
-              icon={<PauseCircle color="#FFFFFF" size={28} />}
-            />
+            
+         <View style={styles.row}>
+         <HStack flexDirection={'row'} justifyContent={'flex-start'}>
+          <IconButton
+           onPress={stopRecording}
+          icon={<StopCircle style={styles.microphone} color="#FFFFFF" size={30} />}
+        />
+              <Animated.View 
+
+                style={[opacityStyle]} >
+                  <IconButton
+                    onPress={() => {
+                      if(recording) {
+                        animateElement();
+                        pauseRecording();
+                      }
+                    }}
+                   
+                    icon={<PauseCircle color="#FFFFFF" size={30} />}
+                  />
+              </Animated.View>
+          </HStack>
+             
             <View style={styles.Otobutton}>
-              <Text style={styles.Durationtext}>Duração</Text>
+              <Text style={styles.Durationtext}>
+                {convertTime(RecordingStatusUpdate === undefined ? 0 : RecordingStatusUpdate.durationMillis/1000)}
+              </Text>
             </View>
-            <       VStack marginTop={-1} style={styles.folha}>
 
-
+            <VStack marginTop={-1} style={styles.folha}>
               < Image style={styles.imageFolha} source={require('../../assets/images/moonalone.png')} />
-
             </VStack>
 
           </View>
@@ -175,25 +367,111 @@ export function GravationScreen() {
 
       <Spacer />
 
-      <HStack marginBottom={5} flexDirection={'row'} justifyContent={'center'}
+      <HStack marginBottom={10} flexDirection={'row'} justifyContent={'center'}
       >
 
-        <Pressable style={styles.button} onPress={handleNewOrder}>
+        <Button 
+        width={'120px'} 
+        borderRadius={20} 
+        bg={'#5C4EBC'} 
+        onPress={openModalSave}>
           <Text style={styles.text}>Salvar</Text>
-        </Pressable>
+        </Button>
       </HStack>
+
+      <Modal isOpen={open} onClose={() => setOpen(false)} safeAreaTop={true}>
+        <Modal.Content maxWidth="350" {...styles[placement]} bg="#5C4EBC">
+          <Modal.Header bg="#5C4EBC" borderColor={"#5C4EBC"}>
+            <Text color="#FFFFFF" fontSize={"16px"} fontFamily={'robobold'}>
+              Digite o nome de arquivo
+            </Text>
+          </Modal.Header>
+
+          <Modal.Body>
+            <Input 
+            size="xs" 
+            variant="outline" 
+            _focus={{
+              backgroundColor: "#FFFFFF",
+              borderColor: "#FFFFFF"
+            }}
+            fontFamily={'robolight'}
+            placeholder="new_music_0001" 
+            color="#0C091F" 
+            borderColor={"#1B1065"}
+            fontSize={"12px"} 
+            bg="white"
+            />
+          </Modal.Body>
+
+          <Modal.Footer bg="#5C4EBC" borderColor={"#5C4EBC"}>
+            <Button.Group width={'100%'}>
+              <Button bg="#2F2570" width={'120px'} height={'40px'} onPress={() => {
+              setOpen(false);
+              }}>
+                <Text color="#FFFFFF" fontFamily={'robomedium'}>
+                  Cancel
+                </Text>
+              </Button>
+              <Spacer/>
+              <Button bg="#2F2570" width={'120px'} height={'40px'} onPress={() => {
+              setOpen(false);
+            }}>
+                <Text color="#FFFFFF" fontFamily={'robomedium'}>
+                  Ok
+                </Text>
+              </Button>
+            </Button.Group>
+          </Modal.Footer>
+        </Modal.Content>
+      </Modal>
+
+      <Modal isOpen={openBack} onClose={() => setOpenBack(false)} safeAreaTop={true}>
+        <Modal.Content maxWidth="350" {...styles[placementBack]} bg="#5C4EBC">
+          <Modal.Header bg="#5C4EBC" borderColor={"#5C4EBC"}>
+            <Text color="#FFFFFF" fontSize={"16px"} fontFamily={'robobold'}>
+              Atenção
+            </Text>
+          </Modal.Header>
+
+          <Modal.Body>
+            <Text color="#FFFFFF" fontSize={"14px"} fontFamily={'robomedium'}>
+              Se você voltar para página anterior, a gravação será excluída.
+            </Text>
+          </Modal.Body>
+
+          <Modal.Footer bg="#5C4EBC" borderColor={"#5C4EBC"}>
+            <Button.Group width={'100%'}>
+              <Button bg="#2F2570" width={'120px'} height={'40px'} onPress={() => {
+                setOpenBack(false);
+              }}>
+                <Text color="#FFFFFF" fontFamily={'robomedium'}>
+                  Cancel
+                </Text>
+              </Button>
+              <Spacer/>
+              <Button bg="#2F2570" width={'120px'} height={'40px'} onPress={() => {
+                setOpenBack(false);
+                navigation.goBack();
+              }}>
+                <Text color="#FFFFFF" fontFamily={'robomedium'}>
+                  Ok
+                </Text>
+              </Button>
+            </Button.Group>
+          </Modal.Footer>
+        </Modal.Content>
+      </Modal>
+
     </VStack>
   );
 }
 
 const styles = StyleSheet.create({
-
   container: {
     flex: 1,
     backgroundColor: "#180F34",
     alignItems: 'center',
-    //justifyContent: 'center',
-
   },
   imageLogo: {
     width: 30,
@@ -208,12 +486,10 @@ const styles = StyleSheet.create({
     color: "#FFFFFF",
     flexDirection: "row",
     justifyContent: "space-between",
-
   },
   secondtitle: {
     color: "#FFFFFF",
     alignContent: "center",
-
   },
   button: {
     alignItems: 'center',
@@ -222,7 +498,6 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 32,
     borderRadius: 20,
-    elevation: 3,
     backgroundColor: "#5C4EBC",
   },
   Otobutton: {
@@ -249,7 +524,6 @@ const styles = StyleSheet.create({
     letterSpacing: 0.25,
     color: 'white',
   },
-
   row: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -258,11 +532,9 @@ const styles = StyleSheet.create({
   },
   fill: {
     flex: 1,
-    //margin: 16,
+    color: "#FFFFFF"
   },
-
   microphone: {
-    //  color: "#FD0541",
     marginRight: 1,
   },
   data: {
@@ -296,9 +568,10 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 210,
     borderTopLeftRadius: 150,
     borderTopRightRadius: 46,
-    //borderLeftRa
-    // border-radius: 26px 26px 200px 0px,
     backgroundColor: "#2E888D",
   },
-
+  progressBar: {
+    width: '100%',
+    flexDirection: 'row',
+  },
 });

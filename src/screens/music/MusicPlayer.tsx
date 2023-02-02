@@ -287,13 +287,6 @@ export function MusicPlayer() {
             /> : null
           }
 
-          {/* <HStack style={styles.progressLevelDuration}>
-            <Text style={styles.progressLabelText}>
-              {soundTimer ? convertTime(control.positionMillis / 1000) : null}
-              {soundTimer ? null : convertTime(countTimer)}
-            </Text>
-          </HStack> */}
-
         </VStack>
         
         <HStack marginTop={50} style={styles.musicControlsContainer}>
