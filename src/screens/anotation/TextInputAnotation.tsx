@@ -1,4 +1,4 @@
-import { VStack, HStack, Text, ScrollView, IconButton, View, Spacer } from 'native-base';
+import { VStack, HStack, Text, ScrollView, IconButton, View, Spacer, TextArea, KeyboardAvoidingView, Button } from 'native-base';
 import React, { useState } from 'react';
 import { Pressable, StyleSheet, TextInput } from 'react-native';
 import { ArrowLeft, Trash, Microphone } from 'phosphor-react-native';
@@ -10,19 +10,19 @@ export function TextInputAnotation(props) {
     const [value, setUserName] = useState('');
     const { onPress, title = 'Salvar' } = props;
 
-    function handleNewOrder() {
+    const handleNewOrder = () => {
         navigation.goBack();
+    }
+
+    const handleGravation = () => {
+        navigation.navigate('gravation');
     }
 
     return (
         <VStack flex={1} height={"100%"} bg="#180F34"  >
 
             <ScrollView
-                _contentContainerStyle={{
-
-                    h: "100%",
-                    w: "100%",
-                }}
+                height={"100%"}
             >
 
                 <HStack paddingTop={4} paddingX={4} style={styles.title} >
@@ -52,15 +52,8 @@ export function TextInputAnotation(props) {
 
                 </HStack>
 
-                <Text style={styles.data} >
-                    01/50/22
-                </Text>
-
-
-
                 <View style={styles.enjoadinho} >
                     <TextInput
-
                         editable
                         multiline
                         value={value}
@@ -70,25 +63,20 @@ export function TextInputAnotation(props) {
                     />
                 </View>
 
-
                 <Spacer />
 
                 <HStack marginBottom={5} flexDirection={'row'} justifyContent={'center'}
                 >
 
-                    <Pressable style={styles.button} onPress={onPress}>
+                    <Button style={styles.button} >
                         <Text style={styles.text}>{title}</Text>
-                    </Pressable>
+                    </Button>
 
                     <IconButton
                         icon={<Microphone style={styles.microphone} color="#FFFFFF" size={25} />}
-                        onPress={handleNewOrder}
+                        onPress={handleGravation}
                     />
                 </HStack>
-
-
-
-
 
             </ScrollView>
 
@@ -116,13 +104,13 @@ const styles = StyleSheet.create({
 
     },
     input: {
-        width: 350,
-        height: 200,
+        width: 380,
+        minHeight: 600,
         padding: 10,
         backgroundColor: "#5C4EBC",
+        textAlignVertical: 'top',
         marginBottom: 50,
         borderRadius: 20,
-
     },
     button: {
         alignItems: 'center',
@@ -146,7 +134,6 @@ const styles = StyleSheet.create({
         marginRight: -200,
     },
     enjoadinho: {
-        flex: 1,
         alignItems: 'center',
 
     },

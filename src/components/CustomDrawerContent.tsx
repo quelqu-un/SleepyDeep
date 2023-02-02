@@ -1,6 +1,6 @@
 import { DrawerContentScrollView, DrawerItemList } from '@react-navigation/drawer';
 import { StyleSheet, View } from 'react-native';
-import { HStack, IconButton, Text } from 'native-base'
+import { HStack, IconButton, ScrollView, Text } from 'native-base'
 import { ArrowLeft } from 'phosphor-react-native';
 import { useNavigation } from '@react-navigation/native';
 
@@ -17,7 +17,9 @@ export function CustomDrawerContent(props) {
         contentContainerStyle={{
             backgroundColor: "#4E2188",
         }}>
-            
+            <ScrollView 
+              marginBottom={10}
+            >
             <HStack style={styles.title} >
             <Text 
             marginLeft={4} 
@@ -34,16 +36,16 @@ export function CustomDrawerContent(props) {
                   marginRight = {1}
                   
                 icon={<ArrowLeft  color="#FFFFFF" size={22} />}
-                 onPress={handleNewOrder}
+                onPress={handleNewOrder}
               />
             </HStack>
           
 
-            <View>
-                <DrawerItemList 
-                    {...props} 
-                />
-            </View>
+
+            <DrawerItemList 
+                {...props} 
+            />
+            </ScrollView>
         </DrawerContentScrollView>
     );
 }
