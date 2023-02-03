@@ -144,7 +144,7 @@ function HomeDrawer() {
       component={HomeScreen} 
       options={{
         drawerItemStyle: {
-          paddingVertical: 6,
+          paddingVertical: 4,
           backgroundColor: "#2F2570",
         },
         drawerLabelStyle: {
@@ -158,7 +158,7 @@ function HomeDrawer() {
       component={MainTab} 
       options={{
         drawerItemStyle: {
-          paddingVertical: 6,
+          paddingVertical: 4,
           backgroundColor: "#2F2570"
         },
         drawerLabelStyle: {
@@ -172,7 +172,7 @@ function HomeDrawer() {
       component={MainTab} 
       options={{
         drawerItemStyle: {
-          paddingVertical: 6,
+          paddingVertical: 4,
           backgroundColor: "#2F2570"
         },
         drawerLabelStyle: {
@@ -186,7 +186,7 @@ function HomeDrawer() {
       component={MainTab} 
       options={{
         drawerItemStyle: {
-          paddingVertical: 6,
+          paddingVertical: 4,
           backgroundColor: "#2F2570"
         },
         drawerLabelStyle: {
@@ -200,7 +200,7 @@ function HomeDrawer() {
       component={MainTab} 
       options={{
         drawerItemStyle: {
-          paddingVertical: 6,
+          paddingVertical: 4,
           backgroundColor: "#2F2570"
         },
         drawerLabelStyle: {
@@ -214,7 +214,7 @@ function HomeDrawer() {
       component={MainTab} 
       options={{
         drawerItemStyle: {
-          paddingVertical: 6,
+          paddingVertical: 4,
           backgroundColor: "#2F2570"
         },
         drawerLabelStyle: {
@@ -228,7 +228,7 @@ function HomeDrawer() {
       component={MainTab} 
       options={{
         drawerItemStyle: {
-          paddingVertical: 6,
+          paddingVertical: 4,
           backgroundColor: "#2E888D"
         },
         drawerLabelStyle: {
@@ -242,7 +242,7 @@ function HomeDrawer() {
       component={MainTab} 
       options={{
         drawerItemStyle: {
-          paddingVertical: 6,
+          paddingVertical: 4,
           backgroundColor: "#2E888D"
         },
         drawerLabelStyle: {
@@ -256,7 +256,7 @@ function HomeDrawer() {
       component={MainTab} 
       options={{
         drawerItemStyle: {
-          paddingVertical: 6,
+          paddingVertical: 4,
           backgroundColor: "#2E888D"
         },
         drawerLabelStyle: {
@@ -270,7 +270,7 @@ function HomeDrawer() {
       component={MainTab} 
       options={{
         drawerItemStyle: {
-          paddingVertical: 6,
+          paddingVertical: 4,
           backgroundColor: "#2E888D"
         },
         drawerLabelStyle: {
@@ -284,7 +284,7 @@ function HomeDrawer() {
       component={MainTab} 
       options={{
         drawerItemStyle: {
-          paddingVertical: 6,
+          paddingVertical: 4,
           backgroundColor: "#37DA1D"
         },
         drawerLabelStyle: {

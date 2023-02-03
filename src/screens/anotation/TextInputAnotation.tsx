@@ -3,12 +3,40 @@ import React, { useState } from 'react';
 import { Pressable, StyleSheet, TextInput } from 'react-native';
 import { ArrowLeft, Trash, Microphone } from 'phosphor-react-native';
 import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 export function TextInputAnotation(props) {
     const navigation = useNavigation();
-    const [value, setUserName] = useState('');
+    const [note, setNote] = useState('');
+    const [allNotes, setAllNotes] = useState();
     const { onPress, title = 'Salvar' } = props;
+
+    const saveNote = async () => {
+        //NOTES
+        //TESTE
+        //TESTE1
+        //TESTE2
+        //TESTE3
+        //TESTE4
+		const value = await AsyncStorage.getItem("TESTE4").then((noteee) => {
+            const n = noteee ? JSON.parse(noteee) : [];
+            n.push(note);
+
+            AsyncStorage.setItem("TESTE4", JSON.stringify(n)).then(() => {
+                getNotes();
+            });
+        })
+	}
+
+    const getNotes = () => {
+		AsyncStorage.getItem("TESTE4").then((notes) => {
+            console.log("oi", notes)
+            console.log("ai", JSON.parse(notes))
+			// setAllNotes(JSON.parse(notes));
+            // console.log(allNotes);
+		});
+	}
 
     const handleNewOrder = () => {
         navigation.goBack();
@@ -56,8 +84,8 @@ export function TextInputAnotation(props) {
                     <TextInput
                         editable
                         multiline
-                        value={value}
-                        onChangeText={(text) => setUserName(text)}
+                        value={note}
+                        onChangeText={setNote}
                         placeholder={'Texto aqui'}
                         style={styles.input}
                     />
@@ -68,8 +96,10 @@ export function TextInputAnotation(props) {
                 <HStack marginBottom={5} flexDirection={'row'} justifyContent={'center'}
                 >
 
-                    <Button style={styles.button} >
-                        <Text style={styles.text}>{title}</Text>
+                    <Button style={styles.button} width={'100px'} onPress={saveNote}>
+                        <Text style={styles.text}>
+                            Salvar
+                        </Text>
                     </Button>
 
                     <IconButton
