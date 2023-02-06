@@ -1,31 +1,65 @@
 import { VStack, HStack, Text, ScrollView, IconButton, Spacer, Input } from 'native-base';
-import React from 'react';
-import { FlatList, StyleSheet } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, FlatList, TextInput } from 'react-native';
 import { Image } from 'react-native';
 import { ArrowLeft, MagnifyingGlass } from 'phosphor-react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { SavedTextAnotation } from '../../components/SavedTextAnotation';
 import { SavedRecAnotation } from '../../components/SavedRecAnotation';
 import { dataAllAnotation } from '../../model/Data';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 export function AllAnotation() {
     const navigation = useNavigation();
+    const [note, setNote] = useState([]);
+    const [searchInput, setSearchInput] = useState("");
+    const [searchInputControl, setSearchInputControl] = useState(false);
+    const [searchInputFilter, setSearchInputFilter] = useState(false);
+
+    useEffect(() => {
+        getNotes();
+    }, []);
+
+    const getNotes = async () => {
+        await AsyncStorage.getItem("TESTE7").then((notes) => {
+            if (searchInput.length > 0) {
+                let newNote = JSON.parse(notes).filter((item) => {
+                    return item.title.match(searchInput);
+                });
+
+                setNote(newNote.reverse());
+            } else {
+                setNote(JSON.parse(notes).reverse());
+            }
+        });
+    }
+
+    const getAllNotes = async () => {
+        await AsyncStorage.getItem("TESTE7").then((notes) => {
+            setNote(JSON.parse(notes).reverse());
+            setSearchInputFilter(false);
+        });
+    }
+
+    const onDelete = async () => {
+        getNotes();
+    }
 
     function handleNewOrder() {
-        navigation.goBack();
+        if(searchInputFilter) {
+            getAllNotes();
+            setSearchInput("");
+        } else {
+            navigation.goBack();
+        }
     }
 
     return (
         <VStack flex={1} alignItems={'center'}
             height={"100%"} bg="#180F34" >
 
-
-            <ScrollView _contentContainerStyle={{
-
-                h: "100%",
-                w: "100%",
-            }} >
+            <VStack flex={1} width={'100%'} height={"100%"}>
                 <VStack
                     bg="#180F34"
                 >
@@ -49,95 +83,43 @@ export function AllAnotation() {
                         < Image style={styles.imageLogo} source={require('../../assets/images/moonalone.png')} />
                     </HStack>
 
-
-
                 </VStack>
-                <HStack marginTop={10}>
-                    <FlatList
-                        data={dataAllAnotation[0]}
-                        horizontal={true}
-                        keyExtractor={item => item.id}
-                        renderItem={({ item }) =>
-                            <SavedTextAnotation
-                                data={item}
-                            ></SavedTextAnotation>
-                        }
-                        contentContainerStyle={{ paddingBottom: 40 }}
-                    />
-                </HStack>
-                <HStack marginTop={-5}>
-                    <FlatList
-                        data={dataAllAnotation[1]}
-                        horizontal={true}
-                        keyExtractor={item => item.id}
-                        renderItem={({ item }) =>
-                            <SavedTextAnotation
-                                data={item}
-                            ></SavedTextAnotation>
-                        }
-                        contentContainerStyle={{ paddingBottom: 40 }}
-                    />
-                </HStack>
-                <HStack marginTop={-5}>
-                    <FlatList
-                        data={dataAllAnotation[2]}
-                        horizontal={true}
-                        keyExtractor={item => item.id}
-                        renderItem={({ item }) =>
-                            <SavedTextAnotation
-                                data={item}
-                            ></SavedTextAnotation>
-                        }
-                        contentContainerStyle={{ paddingBottom: 40 }}
-                    />
-                </HStack>
-                <HStack marginTop={-5}>
-                    <FlatList
-                        data={dataAllAnotation[3]}
-                        horizontal={true}
-                        keyExtractor={item => item.id}
-                        renderItem={({ item }) =>
-                            <SavedTextAnotation
-                                data={item}
-                            ></SavedTextAnotation>
-                        }
-                        contentContainerStyle={{ paddingBottom: 40 }}
-                    />
-                </HStack>
-                <HStack marginTop={-5}>
-                    <FlatList
-                        data={dataAllAnotation[4]}
-                        horizontal={true}
-                        keyExtractor={item => item.id}
-                        renderItem={({ item }) =>
-                            <SavedRecAnotation
-                                data={item}
-                            ></SavedRecAnotation>
-                        }
-                        contentContainerStyle={{ paddingBottom: 40 }}
-                    />
-                </HStack>
-                <HStack marginTop={-5}>
-                    <FlatList
-                        data={dataAllAnotation[5]}
-                        horizontal={true}
-                        keyExtractor={item => item.id}
-                        renderItem={({ item }) =>
-                            <SavedRecAnotation
-                                data={item}
-                            ></SavedRecAnotation>
-                        }
-                        contentContainerStyle={{ paddingBottom: 40 }}
-                    />
-                </HStack>
 
+                <Text color="#FFFFFF" textAlign={'center'}>
+                    {searchInputControl ? 'Nenhum resultado encontrado' : null}
+                </Text>
+
+                <HStack marginTop={'10px'} width={'100%'}>
+                    <FlatList
+                        data={note}
+                        keyExtractor={item => item.id}
+                        renderItem={({ item }) =>
+                            <SavedTextAnotation
+                                onDelete={onDelete}
+                                data={item}
+                            ></SavedTextAnotation>
+                        }
+                        contentContainerStyle={{ paddingBottom: 60 }}
+                    />
+                </HStack>
 
                 <Spacer />
-
-                <VStack my="5" maxW="380px" >
-                    <Input
-
-                        marginLeft={5}
+            </VStack>
+            <VStack
+                width={'100%'}
+                height={'60px'}
+                alignItems={'center'}
+                justifyContent={'center'}
+                bg={"#251751"}
+                borderTopRadius={20}
+                >
+                <HStack 
+                    width={'100%'} 
+                    alignItems={'center'} 
+                    paddingLeft={'10px'} 
+                    paddingRight={'10px'}
+                >
+                    {/* <Input
                         bg="#310569"
                         placeholder="Pesquisar"
                         placeholderTextColor={"#FFFFFF"}
@@ -145,10 +127,45 @@ export function AllAnotation() {
                         borderRadius="10"
                         py="1"
                         px="3"
-                        InputRightElement={<MagnifyingGlass style={styles.lupa} color="#FFFFFF" size={25} />} />
-                </VStack>
-
-            </ScrollView>
+                        InputRightElement={<MagnifyingGlass style={styles.lupa} color="#FFFFFF" size={25} />} /> */}
+                    <TextInput
+                        style={{color: "#FFFFFF"}}
+                        editable
+                        multiline
+                        value={searchInput}
+                        onChangeText={(value) => {
+                            setSearchInput(value);
+                        }}
+                        placeholder={'Titulo'}
+                        placeholderTextColor={"#FFFFFF"}
+                    />
+                    <Spacer/>
+                    <IconButton
+                    onPress={() => {
+                        if (searchInput.length > 0) {
+                            setSearchInputFilter(true);
+                            AsyncStorage.getItem("TESTE7").then((notes) => {
+                                let newNote = JSON.parse(notes).filter((item) => {
+                                    return item.title.match(searchInput);
+                                });
+    
+                                setNote(newNote.reverse());
+                                setSearchInputControl(false);
+    
+                                if(newNote.length === 0) {
+                                    setSearchInputControl(true);
+                                }
+                            });
+                        } 
+                        else if(searchInput.length === 0) {
+                            setSearchInputFilter(false);
+                            getNotes();
+                            setSearchInputControl(false);
+                        }
+                    }}
+                    icon={<MagnifyingGlass color="#FFFFFF" size={25} />}/>
+                </HStack>
+            </VStack>
         </VStack>
     );
 }

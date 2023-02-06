@@ -1,30 +1,46 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 import { Text, VStack, IPressableProps, HStack, IconButton } from 'native-base';
 import { Trash } from 'phosphor-react-native';
 import { TouchableOpacity } from 'react-native';
 import { StyleSheet } from 'react-native';
 
-export type CardMusicProps = {
+type NoteType = {
   id: string;
   text: string;
-  datas: string;
-  recent: boolean;
+  isRecording: boolean;
+  audioPath: string;
+  date: string;
+  title: string;
 }
 
 type Props = IPressableProps & {
-  data: CardMusicProps;
+  data: NoteType;
+  onDelete: Function;
 }
 
-export function SavedTextAnotation({ data, ...rest }: Props) {
+export function SavedTextAnotation({ data, onDelete, ...rest }: Props) {
   const navigation = useNavigation();
 
-  function handleNewOrder() {
-    navigation.navigate("music");
+  const deleteNote = async () => {
+    await AsyncStorage.getItem("TESTE7").then((notes) => {
+      let newNotes = JSON.parse(notes);
+      newNotes.splice(newNotes.indexOf(newNotes.filter(function(obj){
+        return obj.id === data.id;
+      })[0]), 1);
+      AsyncStorage.setItem("TESTE7", JSON.stringify(newNotes)).then((value) => {
+        onDelete();
+      });
+    });
+  }
+
+  const handleNewOrder = () => {
+    navigation.goBack();
   }
 
   return (
     <TouchableOpacity onPress={handleNewOrder} >
-      <VStack marginLeft={4} marginRight={5} >
+      <VStack alignItems={'center'} paddingBottom={'12px'} >
 
         <VStack style={styles.legenda} bg="#32206A"
 
@@ -38,7 +54,7 @@ export function SavedTextAnotation({ data, ...rest }: Props) {
               color="#FFFFFF"
               fontSize={16}
               fontFamily={'robolight'}>
-              {data.text}
+              {data.title}
             </Text>
 
 
@@ -48,7 +64,7 @@ export function SavedTextAnotation({ data, ...rest }: Props) {
                 <IconButton
                   marginTop={-1}
                   icon={<Trash color="#FFFFFF" size={20} />}
-                  onPress={handleNewOrder}
+                  onPress={deleteNote}
                 />
 
               </VStack>
@@ -59,7 +75,7 @@ export function SavedTextAnotation({ data, ...rest }: Props) {
                 color="#FFFFFF"
                 fontSize={12}
                 fontFamily={'robolight'}>
-                {data.datas}
+                {data.date}
               </Text>
             </VStack>
 

@@ -14,7 +14,7 @@ export function HomeScreen() {
   const navigation = useNavigation();
 
   function handleNewOrder() {
-    navigation.navigate("gravation");
+    navigation.navigate("allAnotation");
   }
 
   function handleNewNewOrder() {

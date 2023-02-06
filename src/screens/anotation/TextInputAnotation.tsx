@@ -1,16 +1,23 @@
-import { VStack, HStack, Text, ScrollView, IconButton, View, Spacer, TextArea, KeyboardAvoidingView, Button } from 'native-base';
+import { VStack, HStack, Text, ScrollView, IconButton, View, Spacer, Button } from 'native-base';
 import React, { useState } from 'react';
-import { Pressable, StyleSheet, TextInput } from 'react-native';
+import { StyleSheet, TextInput } from 'react-native';
 import { ArrowLeft, Trash, Microphone } from 'phosphor-react-native';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+type NoteType = {
+    id: string;
+    text: string;
+    isRecording: boolean;
+    audioPath: string;
+    date: string;
+    title: string;
+}
 
 export function TextInputAnotation(props) {
     const navigation = useNavigation();
     const [note, setNote] = useState('');
-    const [allNotes, setAllNotes] = useState();
-    const { onPress, title = 'Salvar' } = props;
+    const [noteTitle, setNoteTitle] = useState('');
 
     const saveNote = async () => {
         //NOTES
@@ -19,23 +26,40 @@ export function TextInputAnotation(props) {
         //TESTE2
         //TESTE3
         //TESTE4
-		const value = await AsyncStorage.getItem("TESTE4").then((noteee) => {
-            const n = noteee ? JSON.parse(noteee) : [];
-            n.push(note);
+        //TESTE5
+        //TESTE6
+        //TESTE7
+        //TESTECOUNT1
+        //TESTECOUNT2
 
-            AsyncStorage.setItem("TESTE4", JSON.stringify(n)).then(() => {
-                getNotes();
+        await AsyncStorage.getItem("TESTECOUNT2").then((count) => {
+            const countJson = count ? JSON.parse(count) : 0;
+
+            AsyncStorage.getItem("TESTE7").then((noteValue) => {
+                const noteJson = noteValue ? JSON.parse(noteValue) : [];
+
+                const dateNow = new Date(Date.now());
+                const dateString =  `${dateNow.getUTCDate()}/${dateNow.getUTCMonth()+1}/${dateNow.getUTCFullYear()}`;
+
+                const newValue: NoteType = {
+                    id: countJson,
+                    text: note,
+                    isRecording: false,
+                    audioPath: '',
+                    date: dateString,
+                    title: noteTitle,
+                }
+
+                noteJson.push(newValue);
+
+                AsyncStorage.setItem("TESTE7", JSON.stringify(noteJson)).then(() => {
+                    AsyncStorage.setItem("TESTECOUNT2", JSON.stringify(countJson + 1));
+                    navigation.navigate('allAnotation');
+                });
             });
-        })
-	}
 
-    const getNotes = () => {
-		AsyncStorage.getItem("TESTE4").then((notes) => {
-            console.log("oi", notes)
-            console.log("ai", JSON.parse(notes))
-			// setAllNotes(JSON.parse(notes));
-            // console.log(allNotes);
-		});
+            
+        });
 	}
 
     const handleNewOrder = () => {
@@ -62,15 +86,15 @@ export function TextInputAnotation(props) {
                         onPress={handleNewOrder}
                     />
 
-                    <Text
-                        marginRight={5}
-                        fontFamily="robobold"
-                        textAlign="center"
-                        color={'#FFFFFF'}
-                        fontSize={18}>
-                        Título
-                    </Text>
-
+                    <TextInput
+                        style={{color: "#FFFFFF"}}
+                        editable
+                        multiline
+                        value={noteTitle}
+                        onChangeText={setNoteTitle}
+                        placeholder={'Titulo'}
+                        placeholderTextColor={"#FFFFFF"}
+                    />
 
                     <IconButton
                         marginTop={-2}
