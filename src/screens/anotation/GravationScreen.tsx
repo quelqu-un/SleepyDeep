@@ -5,10 +5,19 @@ import { Pressable, StyleSheet } from 'react-native';
 import { Image } from 'react-native';
 import { ArrowLeft, Trash, Microphone, PlayCircle, PauseCircle, StopCircle } from 'phosphor-react-native';
 import { useNavigation } from '@react-navigation/native';
-import { TouchableWithoutFeedback, Animated} from 'react-native';
-
-import {useSharedValue, useAnimatedStyle, withTiming, withRepeat, ReverseAnimation} from 'react-native-reanimated'
+import { Animated} from 'react-native';
 import Slider from '@react-native-community/slider';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Sound } from 'expo-av/build/Audio';
+
+type NoteType = {
+  id: string;
+  text: string;
+  isRecording: boolean;
+  audioPath: string;
+  date: string;
+  title: string;
+}
 
 export function GravationScreen() {
   const [recording, setRecording] = useState<any>();
@@ -30,6 +39,10 @@ export function GravationScreen() {
     durationMillis: 0,
     positionMillis: 0,
   });
+
+  const [textSave, setTextSave] = useState("");
+
+  const [sound, setSound] = useState<Sound>(new Audio.Sound());
 
   const opacityAnimation = useRef(new Animated.Value(1)).current;
 
@@ -224,6 +237,62 @@ export function GravationScreen() {
     });
   }
 
+  const saveNote = async () => {
+    recordings.map((recordingLine, index) => {
+      if(index === recordingControlIndex) {
+
+        AsyncStorage.getItem("TESTECOUNT2").then((count) => {
+            const countJson = count ? JSON.parse(count) : 0;
+    
+            AsyncStorage.getItem("TESTE7").then((noteValue) => {
+                const noteJson = noteValue ? JSON.parse(noteValue) : [];
+    
+                const dateNow = new Date(Date.now());
+                const dateString =  `${dateNow.getUTCDate()}/${dateNow.getUTCMonth()+1}/${dateNow.getUTCFullYear()}`;
+    
+                const newValue: NoteType = {
+                    id: countJson,
+                    text: "",
+                    isRecording: true,
+                    audioPath: recordingLine.file,
+                    date: dateString,
+                    title: textSave,
+                }
+    
+                noteJson.push(newValue);
+    
+                AsyncStorage.setItem("TESTE7", JSON.stringify(noteJson)).then(() => {
+                    AsyncStorage.setItem("TESTECOUNT2", JSON.stringify(countJson + 1));
+                    // navigation.navigate('allAnotation');
+                });
+            });
+    
+            
+        });
+      }
+    });
+
+  }
+
+  const testLauraEnjoadinha = () => {
+
+    AsyncStorage.getItem("TESTE7").then((noteValue) => {
+      const noteJson = noteValue ? JSON.parse(noteValue) : [];
+
+      console.log(noteJson[3].audioPath);
+
+      const status = {
+        shouldPlay: true,
+        isLooping: true,
+      };
+  
+      sound.loadAsync({uri:noteJson[3].audioPath}, status, true);
+      setTimeout(() => {
+        sound.unloadAsync();
+      }, 3600000);
+    });
+  }
+
   const pauseRecording = () => {
     if(recording) {
       if(playPause) {
@@ -306,8 +375,10 @@ export function GravationScreen() {
           Gravador
         </Text>
 
+        <Pressable onPress={saveNote}>
+          <Image style={styles.imageFolha} source={require('../../assets/images/moonalone.png')} />
+        </Pressable>
 
-        <Image style={styles.imageFolha} source={require('../../assets/images/moonalone.png')} />
       </HStack>
 
 
@@ -395,6 +466,8 @@ export function GravationScreen() {
               backgroundColor: "#FFFFFF",
               borderColor: "#FFFFFF"
             }}
+            value={textSave}
+            onChangeText={setTextSave}
             fontFamily={'robolight'}
             placeholder="new_music_0001" 
             color="#0C091F" 
@@ -415,8 +488,9 @@ export function GravationScreen() {
               </Button>
               <Spacer/>
               <Button bg="#2F2570" width={'120px'} height={'40px'} onPress={() => {
-              setOpen(false);
-            }}>
+                setOpen(false);
+                saveNote();
+              }}>
                 <Text color="#FFFFFF" fontFamily={'robomedium'}>
                   Ok
                 </Text>

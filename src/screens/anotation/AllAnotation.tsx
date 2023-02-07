@@ -94,6 +94,12 @@ export function AllAnotation() {
                         data={note}
                         keyExtractor={item => item.id}
                         renderItem={({ item }) =>
+                            item.isRecording ?
+                            <SavedRecAnotation
+                                onDelete={onDelete}
+                                data={item}
+                            >
+                            </SavedRecAnotation> :
                             <SavedTextAnotation
                                 onDelete={onDelete}
                                 data={item}
