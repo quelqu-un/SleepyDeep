@@ -55,8 +55,8 @@ export function MusicPlayer() {
         isLooping: true,
       };
 
-      sound.setOnPlaybackStatusUpdate(onPlaybackStatusUpdate)
-      sound.loadAsync(songsPath[musicIndex], status, true)
+      sound.setOnPlaybackStatusUpdate(onPlaybackStatusUpdate);
+      sound.loadAsync(songsPath[musicIndex], status, true);
 
       setMusicCheck(false);
     }
