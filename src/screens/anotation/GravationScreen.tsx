@@ -48,6 +48,14 @@ export function GravationScreen() {
 
   const opacityStyle = { opacity: opacityAnimation };
 
+  useEffect(() => {
+    if(control.didJustFinish) {
+      setPlayPauseRecording(false);
+      sound.setPositionAsync(0);
+      sound.pauseAsync();
+    }
+  }, [control]); 
+
   const animateElement = () => {
     if(playPause) {
       Animated.loop(
@@ -95,10 +103,6 @@ export function GravationScreen() {
   }
 
   async function startRecording() {
-    if(recordingControl) {
-      setRecordingControl(false);
-    }
-
     try {
       const permission = await Audio.requestPermissionsAsync();
 
@@ -124,6 +128,10 @@ export function GravationScreen() {
   }
 
   async function stopRecording() {
+    if(recordingControl) {
+      setRecordingControl(false);
+    }
+
     if(recording) {
       await recording.stopAndUnloadAsync();
       setRecording(undefined);
@@ -152,7 +160,6 @@ export function GravationScreen() {
     if(playPauseRecording) {
       sound.pauseAsync();
     } else {
-      
       sound.playAsync();
     }
     setPlayPauseRecording(!playPauseRecording);
@@ -180,6 +187,7 @@ export function GravationScreen() {
                   <PlayCircle color="#FFFFFF" size={28}/>
                 }
                 onPress={() => {
+                  setSound(recordingLine.sound);
                   recordingLine.sound.setOnPlaybackStatusUpdate(onPlaybackStatusUpdate);
                   if(control.positionMillis >= control.durationMillis) {
                     recordingLine.sound.replayAsync();
@@ -274,24 +282,24 @@ export function GravationScreen() {
 
   }
 
-  const testLauraEnjoadinha = () => {
+  // const testLauraEnjoadinha = () => {
 
-    AsyncStorage.getItem("TESTE7").then((noteValue) => {
-      const noteJson = noteValue ? JSON.parse(noteValue) : [];
+  //   AsyncStorage.getItem("TESTE7").then((noteValue) => {
+  //     const noteJson = noteValue ? JSON.parse(noteValue) : [];
 
-      console.log(noteJson[3].audioPath);
+  //     console.log(noteJson[3].audioPath);
 
-      const status = {
-        shouldPlay: true,
-        isLooping: true,
-      };
+  //     const status = {
+  //       shouldPlay: true,
+  //       isLooping: true,
+  //     };
   
-      sound.loadAsync({uri:noteJson[3].audioPath}, status, true);
-      setTimeout(() => {
-        sound.unloadAsync();
-      }, 3600000);
-    });
-  }
+  //     sound.loadAsync({uri:noteJson[3].audioPath}, status, true);
+  //     setTimeout(() => {
+  //       sound.unloadAsync();
+  //     }, 3600000);
+  //   });
+  // }
 
   const pauseRecording = () => {
     if(recording) {
@@ -386,21 +394,38 @@ export function GravationScreen() {
       <View style={styles.container}>
         <Text>{message}</Text>
         <IconButton
-          onPress={recordingControl ? startRecording : null}
+          // onPress={recordingControl ? startRecording : null}
           icon={(recording && playPause) ? 
           <Microphone style={styles.microphone} color="#FD0541" size={45} /> :
           <Microphone style={styles.microphone} color="#FFFFFF" size={45} />
           }
         />
 
-        <Text marginBottom={10} color="#FFFFFF">{recordingControl ? 'Iniciar gravação' : null}</Text>
+        <VStack width={'200px'} height={'100px'} bg={'#FFFFFF'} justifyContent={'center'}>
+
+          <Button borderRadius={20} marginBottom={10} bg="#FD0541" 
+          style={styles.shadowProp}
+            onPress={recordingControl ? 
+              (recording ? stopRecording : startRecording) 
+              : null
+            }
+          >
+            <Text color="#FFFFFF">{recording ? 'Parar gravação' : 'Iniciar gravação'}</Text>
+          </Button>
+        </VStack>
         <VStack style={styles.legenda} bg="#32206A"
         >
             
          <View style={styles.row}>
          <HStack flexDirection={'row'} justifyContent={'flex-start'}>
           <IconButton
-           onPress={stopRecording}
+            onPress={() => {
+              stopRecording();
+              if(!playPause) {
+                animateElement();
+                setPlayPause(!playPause);
+              }
+            }}
           icon={<StopCircle style={styles.microphone} color="#FFFFFF" size={30} />}
         />
               <Animated.View 
@@ -490,6 +515,7 @@ export function GravationScreen() {
               <Button bg="#2F2570" width={'120px'} height={'40px'} onPress={() => {
                 setOpen(false);
                 saveNote();
+                navigation.navigate('allAnotation');
               }}>
                 <Text color="#FFFFFF" fontFamily={'robomedium'}>
                   Ok
@@ -546,6 +572,16 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#180F34",
     alignItems: 'center',
+  },
+  shadowProp: {
+    shadowColor: "#000000",
+    shadowOffset: {
+      width: 0,
+      height: 12,
+    },
+    shadowOpacity: 0.58,
+    shadowRadius: 16.00,
+    elevation: 24,
   },
   imageLogo: {
     width: 30,
