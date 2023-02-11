@@ -97,75 +97,77 @@ export function SavedRecAnotation({ data, onDelete, ...rest }: Props) {
   }
 
   return (
-    <VStack style={styles.legenda} bg="#32206A">
+    <VStack alignItems={'center'} paddingBottom={'12px'} >
+      <VStack style={styles.legenda} bg="#32206A">
 
-      <View style={styles.row}>
+        <View style={styles.row}>
 
 
-        <IconButton
-          icon={
-            playPauseRecording ?
-              <PauseCircle color="#FFFFFF" size={28} /> :
-              <PlayCircle color="#FFFFFF" size={28} />
-          }
-          onPress={() => {
-            sound.setOnPlaybackStatusUpdate(onPlaybackStatusUpdate);
-            if (control.positionMillis >= control.durationMillis) {
-              sound.replayAsync();
-              setPlayPauseRecording(true);
-            } else {
-              playPauseRecordingControl(sound);
+          <IconButton
+            icon={
+              playPauseRecording ?
+                <PauseCircle color="#FFFFFF" size={28} /> :
+                <PlayCircle color="#FFFFFF" size={28} />
             }
-          }}
-        />
+            onPress={() => {
+              sound.setOnPlaybackStatusUpdate(onPlaybackStatusUpdate);
+              if (control.positionMillis >= control.durationMillis) {
+                sound.replayAsync();
+                setPlayPauseRecording(true);
+              } else {
+                playPauseRecordingControl(sound);
+              }
+            }}
+          />
 
-        <VStack width={'250px'} alignItems='flex-end' marginLeft={'-20px'}>
-          <VStack width={'250px'} alignItems='flex-start' marginRight={'-10px'}>
-            <Text color="#FFFFFF" fontSize={'12px'} fontFamily={'robobold'}>
-              {data.title}
+          <VStack width={'250px'} alignItems='flex-end' marginLeft={'-20px'}>
+            <VStack width={'250px'} alignItems='flex-start' marginRight={'-10px'}>
+              <Text color="#FFFFFF" fontSize={'12px'} fontFamily={'robolight'}>
+                {data.title}
+              </Text>
+            </VStack>
+
+            <Slider
+              style={styles.progressBar}
+              value={control.positionMillis}
+              minimumValue={0}
+              maximumValue={control.durationMillis}
+              thumbTintColor="#FFD369"
+              minimumTrackTintColor="#FFD369"
+              maximumTrackTintColor="#fff"
+              onSlidingStart={v => {
+                sound.pauseAsync();
+              }}
+              onSlidingComplete={v => {
+                sound.setPositionAsync(v);
+                sound.playAsync();
+              }}
+            />
+            <Text color="#FFFFFF" fontSize={10} fontFamily={'robolight'} marginRight={'16px'}>
+              {convertTimeRecording(control.positionMillis / 1000)}
             </Text>
           </VStack>
 
-          <Slider
-            style={styles.progressBar}
-            value={control.positionMillis}
-            minimumValue={0}
-            maximumValue={control.durationMillis}
-            thumbTintColor="#FFD369"
-            minimumTrackTintColor="#FFD369"
-            maximumTrackTintColor="#fff"
-            onSlidingStart={v => {
-              sound.pauseAsync();
-            }}
-            onSlidingComplete={v => {
-              sound.setPositionAsync(v);
-              sound.playAsync();
-            }}
-          />
-          <Text color="#FFFFFF" fontSize={10} fontFamily={'robolight'} marginRight={'16px'}>
-            {convertTimeRecording(control.positionMillis / 1000)}
-          </Text>
-        </VStack>
+          <VStack style={styles.folha}>
 
-        <VStack style={styles.folha}>
+            <IconButton
+              marginTop={-1}
+              icon={<Trash color="#FFFFFF" size={20} />}
+              onPress={deleteNote}
+            />
 
-          <IconButton
-            marginTop={-1}
-            icon={<Trash color="#FFFFFF" size={20} />}
-            onPress={deleteNote}
-          />
+            <Text
+              marginTop={2}
+              color="#FFFFFF"
+              fontSize={9}
+              fontFamily={'robolight'}>
+              {formatDate()}
+            </Text>
+          </VStack>
 
-          <Text
-            marginTop={2}
-            color="#FFFFFF"
-            fontSize={9}
-            fontFamily={'robolight'}>
-            {formatDate()}
-          </Text>
-        </VStack>
+        </View>
 
-      </View>
-
+      </VStack>
     </VStack>
   );
 }
@@ -183,7 +185,6 @@ const styles = StyleSheet.create({
     height: 65,
     paddingX: "50",
     borderRadius: 10,
-    marginTop: 10,
 
   },
   folha: {
