@@ -1,8 +1,9 @@
-import { VStack, HStack, Text, ScrollView, IconButton, View, Spacer, Button } from 'native-base';
+import { VStack, HStack, Text, ScrollView, IconButton, View, Spacer, Button, Modal, KeyboardAvoidingViewComponent, KeyboardAvoidingView } from 'native-base';
 import React, { useState } from 'react';
 import { StyleSheet, TextInput } from 'react-native';
 import { ArrowLeft, Trash, Microphone } from 'phosphor-react-native';
 import { useNavigation } from '@react-navigation/native';
+import { Image, TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type NoteType = {
@@ -18,6 +19,8 @@ export function TextInputAnotation(props) {
     const navigation = useNavigation();
     const [note, setNote] = useState('');
     const [noteTitle, setNoteTitle] = useState('');
+    const [openBack, setOpenBack] = useState(false);
+    const [placementBack, setPlacementBack] = useState(undefined);
 
     const saveNote = async () => {
         //NOTES
@@ -32,6 +35,11 @@ export function TextInputAnotation(props) {
         //TESTECOUNT1
         //TESTECOUNT2
 
+        if (note.length === 0 || noteTitle.length === 0) {
+            setOpenBack(true);
+            return
+        }
+
         await AsyncStorage.getItem("TESTECOUNT2").then((count) => {
             const countJson = count ? JSON.parse(count) : 0;
 
@@ -39,7 +47,7 @@ export function TextInputAnotation(props) {
                 const noteJson = noteValue ? JSON.parse(noteValue) : [];
 
                 const dateNow = new Date(Date.now());
-                const dateString =  `${dateNow.getUTCDate()}/${dateNow.getUTCMonth()+1}/${dateNow.getUTCFullYear()}`;
+                const dateString = `${dateNow.getUTCDate()}/${dateNow.getUTCMonth() + 1}/${dateNow.getUTCFullYear()}`;
 
                 const newValue: NoteType = {
                     id: countJson,
@@ -58,9 +66,21 @@ export function TextInputAnotation(props) {
                 });
             });
 
-            
+
         });
-	}
+    }
+
+    const mensageModal = () => {
+        if (note.length === 0 && noteTitle.length === 0) {
+            return 'Insira o título e o texto.'
+        } else if (note.length === 0) {
+            return 'Insira o texto.'
+        } else if (noteTitle.length === 0) {
+            return 'Insira o título.'
+        } else {
+            return
+        }
+    }
 
     const handleNewOrder = () => {
         navigation.goBack();
@@ -74,10 +94,12 @@ export function TextInputAnotation(props) {
         <VStack flex={1} height={"100%"} bg="#180F34"  >
 
             <ScrollView
-                height={"100%"}
+                contentContainerStyle={{
+                    minHeight:'100%'
+                }}
             >
-
-                <HStack paddingTop={4} paddingX={4} style={styles.title} >
+                    
+                <HStack paddingTop={'20px'} paddingBottom={'20px'} paddingX={4} style={styles.title}>
 
 
                     <IconButton
@@ -87,7 +109,11 @@ export function TextInputAnotation(props) {
                     />
 
                     <TextInput
-                        style={{color: "#FFFFFF"}}
+                        style={{
+                            color: "#FFFFFF",
+                            fontSize: 16,
+                            marginTop: -10
+                        }}
                         editable
                         multiline
                         value={noteTitle}
@@ -96,11 +122,7 @@ export function TextInputAnotation(props) {
                         placeholderTextColor={"#FFFFFF"}
                     />
 
-                    <IconButton
-                        marginTop={-2}
-                        icon={<Trash color="#FFFFFF" size={25} />}
-                        onPress={handleNewOrder}
-                    />
+                    <Image style={styles.imageLogo} source={require('../../assets/images/moonalone.png')} />
 
                 </HStack>
 
@@ -111,28 +133,62 @@ export function TextInputAnotation(props) {
                         value={note}
                         onChangeText={setNote}
                         placeholder={'Texto aqui'}
+                        placeholderTextColor={"#FFFFFF"}
                         style={styles.input}
                     />
                 </View>
 
-                <Spacer />
-
-                <HStack marginBottom={5} flexDirection={'row'} justifyContent={'center'}
+                <Spacer/>
+                
+                <HStack marginBottom={'30px'} flexDirection={'row'} justifyContent={'center'}
                 >
 
-                    <Button style={styles.button} width={'100px'} onPress={saveNote}>
+                    <Button style={styles.button} onPress={saveNote}>
                         <Text style={styles.text}>
                             Salvar
                         </Text>
                     </Button>
 
                     <IconButton
-                        icon={<Microphone style={styles.microphone} color="#FFFFFF" size={25} />}
+                        _pressed={{
+                            backgroundColor: "#180F34"
+                        }}
+                        icon={<Microphone style={styles.microphone} color="#FFFFFF" size={28} />}
                         onPress={handleGravation}
                     />
                 </HStack>
-
             </ScrollView>
+
+         
+
+            <Modal isOpen={openBack} onClose={() => setOpenBack(false)} safeAreaTop={true}>
+                <Modal.Content maxWidth="350" {...styles[placementBack]} bg="#5C4EBC">
+                    <Modal.Header bg="#5C4EBC" borderColor={"#5C4EBC"}>
+                        <Text color="#FFFFFF" fontSize={"16px"} fontFamily={'robobold'}>
+                            Atenção
+                        </Text>
+                    </Modal.Header>
+
+                    <Modal.Body>
+                        <Text color="#FFFFFF" fontSize={"14px"} fontFamily={'robomedium'}>
+                            {mensageModal()}
+                        </Text>
+                    </Modal.Body>
+
+                    <Modal.Footer bg="#5C4EBC" borderColor={"#5C4EBC"}>
+                        <Button.Group width={'100%'}>
+                            <Spacer />
+                            <Button bg="#2F2570" width={'120px'} height={'40px'} onPress={() => {
+                                setOpenBack(false);
+                            }}>
+                                <Text color="#FFFFFF" fontFamily={'robomedium'}>
+                                    Ok
+                                </Text>
+                            </Button>
+                        </Button.Group>
+                    </Modal.Footer>
+                </Modal.Content>
+            </Modal>
 
         </VStack>
 
@@ -150,17 +206,17 @@ const styles = StyleSheet.create({
     secondtitle: {
         color: "#FFFFFF",
         alignContent: "center",
-
     },
     imageLogo: {
-        width: 25,
-        height: 25,
-
+        width: 35,
+        height: 35,
+        marginTop: -2
     },
     input: {
         width: 380,
         minHeight: 600,
-        padding: 10,
+        padding: 20,
+        color: "#FFFFFF",
         backgroundColor: "#5C4EBC",
         textAlignVertical: 'top',
         marginBottom: 50,
@@ -168,12 +224,9 @@ const styles = StyleSheet.create({
     },
     button: {
         alignItems: 'center',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        paddingVertical: 12,
-        paddingHorizontal: 32,
+        justifyContent: 'center',
+        width: 150,
         borderRadius: 20,
-        elevation: 3,
         backgroundColor: "#5C4EBC",
     },
     text: {
@@ -204,5 +257,4 @@ const styles = StyleSheet.create({
         fontSize: 12,
         letterSpacing: 1.1,
     },
-
 });

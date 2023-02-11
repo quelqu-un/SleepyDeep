@@ -282,25 +282,6 @@ export function GravationScreen() {
 
   }
 
-  // const testLauraEnjoadinha = () => {
-
-  //   AsyncStorage.getItem("TESTE7").then((noteValue) => {
-  //     const noteJson = noteValue ? JSON.parse(noteValue) : [];
-
-  //     console.log(noteJson[3].audioPath);
-
-  //     const status = {
-  //       shouldPlay: true,
-  //       isLooping: true,
-  //     };
-  
-  //     sound.loadAsync({uri:noteJson[3].audioPath}, status, true);
-  //     setTimeout(() => {
-  //       sound.unloadAsync();
-  //     }, 3600000);
-  //   });
-  // }
-
   const pauseRecording = () => {
     if(recording) {
       if(playPause) {
@@ -401,7 +382,6 @@ export function GravationScreen() {
           }
         />
 
-        <VStack width={'200px'} height={'100px'} bg={'#FFFFFF'} justifyContent={'center'}>
 
           <Button borderRadius={20} marginBottom={10} bg="#FD0541" 
           style={styles.shadowProp}
@@ -412,7 +392,6 @@ export function GravationScreen() {
           >
             <Text color="#FFFFFF">{recording ? 'Parar gravação' : 'Iniciar gravação'}</Text>
           </Button>
-        </VStack>
         <VStack style={styles.legenda} bg="#32206A"
         >
             
@@ -575,13 +554,9 @@ const styles = StyleSheet.create({
   },
   shadowProp: {
     shadowColor: "#000000",
-    shadowOffset: {
-      width: 0,
-      height: 12,
-    },
-    shadowOpacity: 0.58,
-    shadowRadius: 16.00,
-    elevation: 24,
+    elevation: 15,
+    shadowOpacity: 5
+
   },
   imageLogo: {
     width: 30,

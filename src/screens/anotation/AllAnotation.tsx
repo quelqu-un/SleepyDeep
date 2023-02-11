@@ -105,7 +105,7 @@ export function AllAnotation() {
                                 data={item}
                             ></SavedTextAnotation>
                         }
-                        contentContainerStyle={{ paddingBottom: 60 }}
+                        contentContainerStyle={{ paddingBottom: 80 }}
                     />
                 </HStack>
 
@@ -134,17 +134,29 @@ export function AllAnotation() {
                         py="1"
                         px="3"
                         InputRightElement={<MagnifyingGlass style={styles.lupa} color="#FFFFFF" size={25} />} /> */}
-                    <TextInput
-                        style={{color: "#FFFFFF"}}
-                        editable
-                        multiline
-                        value={searchInput}
-                        onChangeText={(value) => {
-                            setSearchInput(value);
-                        }}
-                        placeholder={'Titulo'}
-                        placeholderTextColor={"#FFFFFF"}
-                    />
+                    <VStack 
+                    paddingX={'10px'}
+                    paddingY={'5px'}
+                    width={'87%'} 
+                    borderWidth={"1"} 
+                    borderRadius={10}
+                    borderColor={"#FFFFFF"}>
+                        <TextInput
+                            style={{
+                                color: "#FFFFFF",
+                                width: '100%', 
+                            }}
+                            editable
+                            multiline
+                            value={searchInput}
+                            onChangeText={(value) => {
+                                setSearchInput(value);
+                            }}
+                            placeholder={'Pesquisar'}
+                            placeholderTextColor={"#FFFFFF"}
+                            underlineColorAndroid={'transparent'}
+                        />
+                    </VStack>
                     <Spacer/>
                     <IconButton
                     onPress={() => {
