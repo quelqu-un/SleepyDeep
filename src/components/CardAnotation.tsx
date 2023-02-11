@@ -2,6 +2,7 @@ import { Text, VStack, Pressable, IPressableProps ,} from 'native-base';
 import { TouchableOpacity } from 'react-native';
 import { StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { useEffect } from 'react';
 
 export type CardAnotationProps = {
   id: string;
@@ -10,14 +11,24 @@ export type CardAnotationProps = {
 }
 
 type Props = IPressableProps & {
-    data: CardAnotationProps;
+  data: CardAnotationProps;
+  name: string;
+  value: any;
 }
 
-export function CardAnotation({ data, cor, ...rest }) {
+export function CardAnotation({ cor, name, value, ...rest }) {
   const navigation = useNavigation();
 
   function handleNewOrder() {
     navigation.navigate("anotationText");
+  }
+
+  const formatText = (text) => {
+    if(text.length >= 210) {
+      return text.substring(0, 210) + '...'
+    }
+    
+    return text;
   }
   
   return (
@@ -26,12 +37,12 @@ export function CardAnotation({ data, cor, ...rest }) {
         <VStack  marginLeft={4} marginRight={5} marginBottom = {-5} >
            
             <VStack style={styles.legenda} 
-             borderBottomLeftRadius={20} 
-             borderBottomRightRadius={20}
-            borderTopLeftRadius={20} 
-            borderTopRightRadius={20}
-            bg={cor}
-            alignItems={'center'}
+              borderBottomLeftRadius={20} 
+              borderBottomRightRadius={20}
+              borderTopLeftRadius={20} 
+              borderTopRightRadius={20}
+              bg={cor}
+              alignItems={'center'}
               
                >
              <TouchableOpacity  onPress={handleNewOrder} >
@@ -41,19 +52,21 @@ export function CardAnotation({ data, cor, ...rest }) {
               color="#FFFFFF" 
               fontSize={12}
               fontFamily={'robolight'}>
-                {data.text}
+                {name}
                 </Text>
 
                 <VStack style={styles.input}
                  borderBottomLeftRadius={20} 
-                borderBottomRightRadius={20}
+                  borderBottomRightRadius={20}
                 bg="#FFFFFF">           
+                  <Text color={"#FFFFFF"}>
+                    {formatText(value.reverse()[0].text)}
+                  </Text>
                 </VStack>
-                </TouchableOpacity>
+              </TouchableOpacity>
                 
             </VStack>
 
-          
 
         </VStack>
     </Pressable>

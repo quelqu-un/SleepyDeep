@@ -1,21 +1,64 @@
-import { VStack, HStack, Text, ScrollView, IconButton } from 'native-base';
-import React from 'react';
-import { FlatList, StyleSheet, TouchableOpacity } from 'react-native';
+import { VStack, HStack, Text, ScrollView, IconButton, Modal, Input, Button, Spacer } from 'native-base';
+import React, { useEffect, useState } from 'react';
+import { FlatList, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { Image } from 'react-native';
 import { ArrowLeft, PlusCircle } from 'phosphor-react-native';
 import { useNavigation } from '@react-navigation/native';
 import { CardAnotation } from '../../components/CardAnotation';
 import { dataAnotationScreen } from '../../model/Data';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export function AnotationScreen() {
   const navigation = useNavigation();
+
+  const [placement, setPlacement] = useState(undefined);
+  const [open, setOpen] = useState(false);
+  const [textSave, setTextSave] = useState("");
+  const [sections, setSections] = useState([]);
 
   function handleNewOrder() {
     navigation.goBack();
   }
 
+  const saveSection = async () => {
+    //ALLSECTIONTEST1
+    await AsyncStorage.getItem("TESTECOUNT3").then((count) => {
+      const countJson = count ? JSON.parse(count) : 0;
+      AsyncStorage.getItem("ALLSECTIONTEST1").then((noteValue) => {
+          let noteJson = noteValue ? JSON.parse(noteValue) : [];
+  
+          noteJson.push({
+            id: countJson,
+            name: textSave,
+            values: [
+              {
+                text: 'oi'
+              }
+            ]
+          });
+  
+          AsyncStorage.setItem("ALLSECTIONTEST1", JSON.stringify(noteJson)).then(() => {
+            AsyncStorage.getItem("ALLSECTIONTEST1")
+            .then((noteValue) => {
+              setSections(JSON.parse(noteValue));
+              AsyncStorage.setItem("TESTECOUNT3", JSON.stringify(countJson + 1));
+            });
+          });
+      });
+    });
+
+  }
+
+  useEffect(() => {
+    AsyncStorage.getItem("ALLSECTIONTEST1").then((noteValue) => {
+      let noteJson = noteValue ? JSON.parse(noteValue) : [];
+      setSections(noteJson)
+    });
+  }, [sections])
+
   return (
-    <ScrollView >
+    <VStack 
+      height={'100%'}>
       <VStack flex={1}
         bg="#180F34"
       >
@@ -47,74 +90,101 @@ export function AnotationScreen() {
             marginTop={-3}
             marginRight={-2}
             icon={<PlusCircle color="#FFFFFF" size={28} />}
-            onPress={handleNewOrder}
+            onPress={() => { setOpen(true)}}
           />
 
         </HStack>
 
+        <FlatList
+            data={sections}
+            keyExtractor={item => item.id}
+            renderItem={({ item }) => 
+            <View  key={item.id}>
+              <TouchableOpacity onPress={handleNewOrder}>
+                <Text 
+                paddingX={5} 
+                fontFamily={'robolight'} 
+                marginBottom={3} 
+                style={styles.secondtitle}>
+                  {item.name}
+                </Text>
+              </TouchableOpacity>
 
-        <VStack
-          marginTop={30}>
-          <TouchableOpacity onPress={handleNewOrder}>
-            <Text paddingX={5} fontFamily={'robolight'} marginBottom={3} style={styles.secondtitle} >O que eu sonhei hoje</Text>
-          </TouchableOpacity>
+              <HStack marginBottom={10}>
 
-          <HStack marginBottom={10}>
-            <FlatList
-              data={dataAnotationScreen[0]}
-              horizontal={true}
-              keyExtractor={item => item.id}
-              renderItem={({ item }) =>
                 <CardAnotation
-
-                  cor={"#2FC217"}
-                  data={item}
+                  cor={"#5C4EBC"}
+                  name={'Recentes'}
+                  value={item.values}
                 ></CardAnotation>
-              }
-              contentContainerStyle={{ paddingBottom: 40 }}
-            />
-          </HStack>
-        </VStack>
 
-        <TouchableOpacity onPress={handleNewOrder}>
-          <Text paddingX={5} fontFamily={'robolight'} marginBottom={3} style={styles.secondtitle}> Estresse do dia </Text>
-        </TouchableOpacity>
-        <HStack marginBottom={10}>
-          <FlatList
-            data={dataAnotationScreen[1]}
-            horizontal={true}
-            keyExtractor={item => item.id}
-            renderItem={({ item }) =>
-              <CardAnotation
+                <CardAnotation
+                  cor={"#5C4EBC"}
+                  name={'Todas'}
+                  value={item.values}
+                ></CardAnotation>
 
-                cor={"#FD0541"}
-                data={item}
-              ></CardAnotation>
+              </HStack>
+            </View>
             }
             contentContainerStyle={{ paddingBottom: 40 }}
           />
-        </HStack>
-        <TouchableOpacity onPress={handleNewOrder}>
-          <Text paddingX={5} fontFamily={'robolight'} marginBottom={3} style={styles.secondtitle} >Metas do dia</Text>
-        </TouchableOpacity>
-        <HStack marginBottom={10}>
-          <FlatList
-            data={dataAnotationScreen[2]}
-            horizontal={true}
-            keyExtractor={item => item.id}
-            renderItem={({ item }) =>
-              <CardAnotation
-                cor={"#1DC0B7"}
-                data={item}
-              ></CardAnotation>
-            }
-            contentContainerStyle={{ paddingBottom: 40 }}
-          />
-        </HStack>
 
       </VStack>
 
-    </ScrollView>
+      <Modal isOpen={open} onClose={() => setOpen(false)} safeAreaTop={true}>
+        <Modal.Content maxWidth="350" {...styles[placement]} bg="#5C4EBC">
+          <Modal.Header bg="#5C4EBC" borderColor={"#5C4EBC"}>
+            <Text color="#FFFFFF" fontSize={"16px"} fontFamily={'robobold'}>
+              Digite o nome da seção
+            </Text>
+          </Modal.Header>
+
+          <Modal.Body>
+            <Input 
+            size="xs" 
+            variant="outline" 
+            _focus={{
+              backgroundColor: "#FFFFFF",
+              borderColor: "#FFFFFF"
+            }}
+            value={textSave}
+            onChangeText={setTextSave}
+            fontFamily={'robolight'}
+            placeholder="new_section_0001" 
+            color="#0C091F" 
+            borderColor={"#1B1065"}
+            fontSize={"12px"} 
+            bg="white"
+            />
+          </Modal.Body>
+
+          <Modal.Footer bg="#5C4EBC" borderColor={"#5C4EBC"}>
+            <Button.Group width={'100%'}>
+              <Button bg="#2F2570" width={'120px'} height={'40px'} onPress={() => {
+              setOpen(false);
+              }}>
+                <Text color="#FFFFFF" fontFamily={'robomedium'}>
+                  Cancel
+                </Text>
+              </Button>
+              <Spacer/>
+              <Button bg="#2F2570" width={'120px'} height={'40px'} onPress={() => {
+                setOpen(false);
+                saveSection();
+                // saveNote();
+                // navigation.navigate('allAnotation');
+              }}>
+                <Text color="#FFFFFF" fontFamily={'robomedium'}>
+                  Ok
+                </Text>
+              </Button>
+            </Button.Group>
+          </Modal.Footer>
+        </Modal.Content>
+      </Modal>
+
+    </VStack>
 
   );
 }

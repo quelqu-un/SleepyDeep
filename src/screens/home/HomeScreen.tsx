@@ -117,7 +117,7 @@ export function HomeScreen() {
           />
 
         </HStack>
-        <Text paddingX={5} fontFamily={'robomedium'} marginBottom={3}  >Anotações</Text>
+        <Text paddingX={5} marginBottom={3} fontFamily={'robomedium'}  style={styles.secondtitle} >Anotações</Text>
         <HStack marginBottom={10}>
           <FlatList
             data={dataHome[3]}

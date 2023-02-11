@@ -1,4 +1,4 @@
-import { VStack, HStack, Text, ScrollView, IconButton, View, Spacer, Button, Modal, KeyboardAvoidingViewComponent, KeyboardAvoidingView } from 'native-base';
+import { VStack, HStack, Text, ScrollView, IconButton, View, Spacer, Button, Modal } from 'native-base';
 import React, { useState } from 'react';
 import { StyleSheet, TextInput } from 'react-native';
 import { ArrowLeft, Trash, Microphone } from 'phosphor-react-native';
