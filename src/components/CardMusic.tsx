@@ -4,6 +4,8 @@ import { Image, TouchableOpacity } from 'react-native';
 import { StyleSheet } from 'react-native';
 import { dataImagesCardMusic } from '../model/Data';
 
+
+
 export type CardMusicProps = {
   id: string;
   text: string;

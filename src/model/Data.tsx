@@ -18,6 +18,39 @@ export const songsPath = [
   require('../assets/audio/aboutu.mpeg'),
   require('../assets/audio/enjoadinho.mp4'),
 ];
+export const dataindividualHome = [[{
+  id: '0',
+  text: 'Chuvisco',
+  recent: true
+},{
+  id: '1',
+  text: 'Chuva no Trânsito',
+  recent: true
+},
+{
+  id: '2',
+  text: 'Chuva Trovão',
+  recent: true
+},
+],[
+
+{
+  id: '3',
+  text: 'Chuva na Floresta',
+  recent: true
+},
+{
+  id: '4',
+  text: 'Chuva no Bosque',
+  recent: true
+},
+{
+  id: '5',
+  text: 'Chuva ',
+  recent: true
+},
+],
+]
 
 export const dataHome = [[{
   id: '0',
@@ -177,22 +210,34 @@ export const dataAnotationScreen = [[{
 ];
 
 export const dataImagesCardMusic = [
-  require('../assets/images/music_0.png'),
+ 
   require('../assets/images/music_1.png'),
-  require('../assets/images/music_2.png'),
-  require('../assets/images/music_3.png'),
-  require('../assets/images/music_4.png'),
-  require('../assets/images/music_5.png'),
+  require('../assets/images/rainhome.jpg'),
+  require('../assets/images/instrumenthome.jpg'),
+  require('../assets/images/waves.jpg'),
+  require('../assets/images/nature.jpg'),
+  require('../assets/images/asmrhome.jpg'),
   require('../assets/images/music_6.png'),
   require('../assets/images/music_7.png'),
   require('../assets/images/music_8.png'),
-  require('../assets/images/anotation_0.png'),
-  require('../assets/images/anotation_1.png'),
-  require('../assets/images/anotation_2.png'),
+ 
 ];
 
 export const dataImagesCardAnotation = [
   require('../assets/images/anotation_0.png'),
   require('../assets/images/anotation_1.png'),
   require('../assets/images/anotation_2.png'),
+];
+
+export const dataImagesCardindividualMusic = [
+    
+  require('../assets/imageind/rain1.jpg'),
+  require('../assets/imageind/rain2.jpg'),
+  require('../assets/imageind/rain3.jpg'),
+  require('../assets/imageind/rain4.jpg'),
+  require('../assets/imageind/rain5.jpg'),
+  require('../assets/imageind/rain6.jpg'),
+  
+
+ 
 ];
