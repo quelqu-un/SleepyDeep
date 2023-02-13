@@ -2,9 +2,11 @@ import { VStack, HStack, Text, ScrollView } from 'native-base';
 import React from 'react';
 import { FlatList, GestureResponderEvent, StyleSheet } from 'react-native';
 import { CardMusic } from '../../components/CardMusic';
+import { CardindividualMusic } from '../../components/CardindividualMusic';
 import { Image, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { dataHome } from '../../model/Data';
+import { dataindividualHome } from '../../model/Data';
 
 export function MusicScreen() {
   const navigation = useNavigation();
@@ -40,66 +42,35 @@ export function MusicScreen() {
 
           <HStack marginBottom={10}>
             <FlatList
-              data={dataHome[0]}
+              data={dataindividualHome[0]}
               horizontal={true}
               keyExtractor={item => item.id}
               renderItem={({ item }) =>
-                <CardMusic
+                <CardindividualMusic
                   data={item}
-                ></CardMusic>
+                ></CardindividualMusic>
+              }
+              contentContainerStyle={{ paddingBottom: 40 }}
+            />
+
+          </HStack>
+          <HStack marginBottom={10}>
+            <FlatList
+              data={dataindividualHome[1]}
+              horizontal={true}
+              keyExtractor={item => item.id}
+              renderItem={({ item }) =>
+                <CardindividualMusic
+                  data={item}
+                ></CardindividualMusic>
               }
               contentContainerStyle={{ paddingBottom: 40 }}
             />
 
           </HStack>
 
-          <HStack >
-
-            <FlatList
-              data={dataHome[1]}
-              horizontal={true}
-              keyExtractor={item => item.id}
-              renderItem={({ item }) =>
-                <CardMusic
-                  data={item}
-                ></CardMusic>
-              }
-              contentContainerStyle={{ paddingBottom: 80 }}
-            />
-
-          </HStack>
-
-          <HStack >
-
-            <FlatList
-              data={dataHome[1]}
-              horizontal={true}
-              keyExtractor={item => item.id}
-              renderItem={({ item }) =>
-                <CardMusic
-                  data={item}
-                ></CardMusic>
-              }
-              contentContainerStyle={{ paddingBottom: 80 }}
-            />
-
-          </HStack>
-          <HStack >
-
-            <FlatList
-              data={dataHome[1]}
-              horizontal={true}
-              keyExtractor={item => item.id}
-              renderItem={({ item }) =>
-                <CardMusic
-                  data={item}
-                ></CardMusic>
-              }
-              contentContainerStyle={{ paddingBottom: 80 }}
-            />
-
-          </HStack>
-
+         
+        
         </VStack>
 
 
