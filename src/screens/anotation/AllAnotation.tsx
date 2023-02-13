@@ -22,22 +22,28 @@ export function AllAnotation() {
     }, []);
 
     const getNotes = async () => {
-        await AsyncStorage.getItem("TESTE7").then((notes) => {
+        await AsyncStorage.getItem("ALLSECTIONTEST1").then((notes) => {
+            const  notesN = JSON.parse(notes);
+            const indexChange = notesN.indexOf(notesN.filter(function(obj){return obj.name === 'teste';})[0]);
+            let arrayAux = notesN[indexChange].values;
             if (searchInput.length > 0) {
-                let newNote = JSON.parse(notes).filter((item) => {
+                let newNote = JSON.parse(arrayAux).filter((item) => {
                     return item.title.match(searchInput);
                 });
 
                 setNote(newNote.reverse());
             } else {
-                setNote(JSON.parse(notes).reverse());
+                setNote(arrayAux.reverse());
             }
         });
     }
 
     const getAllNotes = async () => {
-        await AsyncStorage.getItem("TESTE7").then((notes) => {
-            setNote(JSON.parse(notes).reverse());
+        await AsyncStorage.getItem("ALLSECTIONTEST1").then((notes) => {
+            const notesN = JSON.parse(notes);
+            const indexChange = notesN.indexOf(notesN.filter(function(obj){return obj.name === 'teste';})[0]);
+            let arrayAux = notesN[indexChange].values;
+            setNote(arrayAux.reverse());
             setSearchInputFilter(false);
         });
     }
@@ -51,7 +57,7 @@ export function AllAnotation() {
             getAllNotes();
             setSearchInput("");
         } else {
-            navigation.goBack();
+            navigation.navigate('home');
         }
     }
 
@@ -162,8 +168,11 @@ export function AllAnotation() {
                     onPress={() => {
                         if (searchInput.length > 0) {
                             setSearchInputFilter(true);
-                            AsyncStorage.getItem("TESTE7").then((notes) => {
-                                let newNote = JSON.parse(notes).filter((item) => {
+                            AsyncStorage.getItem("ALLSECTIONTEST1").then((notes) => {
+                                const notesN = JSON.parse(notes);
+                                const indexChange = notesN.indexOf(notesN.filter(function(obj){return obj.name === 'teste';})[0]);
+                                let arrayAux = notesN[indexChange].values;
+                                let newNote = arrayAux.filter((item) => {
                                     return item.title.match(searchInput);
                                 });
     

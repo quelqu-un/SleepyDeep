@@ -24,11 +24,16 @@ export function CardAnotation({ cor, name, value, ...rest }) {
   }
 
   const formatText = (text) => {
-    if(text.length >= 210) {
-      return text.substring(0, 210) + '...'
+    if(text !== undefined) {
+
+      if(text.length >= 210) {
+        return text.substring(0, 210) + '...'
+      }
+      
+      return text;
+    } else {
+      return "";
     }
-    
-    return text;
   }
   
   return (
@@ -60,7 +65,7 @@ export function CardAnotation({ cor, name, value, ...rest }) {
                   borderBottomRightRadius={20}
                 bg="#FFFFFF">           
                   <Text color={"#FFFFFF"}>
-                    {formatText(value.reverse()[0].text)}
+                    {formatText(value.reverse()[0]?.text)}
                   </Text>
                 </VStack>
               </TouchableOpacity>

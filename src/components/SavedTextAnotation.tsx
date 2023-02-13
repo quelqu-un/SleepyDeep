@@ -23,12 +23,16 @@ export function SavedTextAnotation({ data, onDelete, ...rest }: Props) {
   const navigation = useNavigation();
 
   const deleteNote = async () => {
-    await AsyncStorage.getItem("TESTE7").then((notes) => {
+    await AsyncStorage.getItem("ALLSECTIONTEST1").then((notes) => {
       let newNotes = JSON.parse(notes);
-      newNotes.splice(newNotes.indexOf(newNotes.filter(function(obj){
-        return obj.id === data.id;
-      })[0]), 1);
-      AsyncStorage.setItem("TESTE7", JSON.stringify(newNotes)).then((value) => {
+
+      const indexSectionRemove = newNotes.indexOf(newNotes.filter(function(obj){return obj.name === 'teste';})[0]);
+      const arrayRemove = newNotes[indexSectionRemove].values;
+      const indexAnotation = arrayRemove.indexOf(arrayRemove.filter(function(obj){return obj.id === data.id;})[0]);
+      arrayRemove.splice(indexAnotation, 1);
+      newNotes[indexSectionRemove].values = arrayRemove;
+
+      AsyncStorage.setItem("ALLSECTIONTEST1", JSON.stringify(newNotes)).then((value) => {
         onDelete();
       });
     });

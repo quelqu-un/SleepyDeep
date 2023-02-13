@@ -41,6 +41,7 @@ export function GravationScreen() {
   });
 
   const [textSave, setTextSave] = useState("");
+  const [saveControl, setSaveControl] = useState(false);
 
   const [sound, setSound] = useState<Sound>(new Audio.Sound());
 
@@ -249,10 +250,11 @@ export function GravationScreen() {
     recordings.map((recordingLine, index) => {
       if(index === recordingControlIndex) {
 
+        setSaveControl(true);
         AsyncStorage.getItem("TESTECOUNT2").then((count) => {
             const countJson = count ? JSON.parse(count) : 0;
     
-            AsyncStorage.getItem("TESTE7").then((noteValue) => {
+            AsyncStorage.getItem("ALLSECTIONTEST1").then((noteValue) => {
                 const noteJson = noteValue ? JSON.parse(noteValue) : [];
     
                 const dateNow = new Date(Date.now());
@@ -266,12 +268,15 @@ export function GravationScreen() {
                     date: dateString,
                     title: textSave,
                 }
+
+                const indexChange = noteJson.indexOf(noteJson.filter(function(obj){return obj.name === 'teste';})[0]);
+                noteJson[indexChange].values.push(newValue);
     
-                noteJson.push(newValue);
-    
-                AsyncStorage.setItem("TESTE7", JSON.stringify(noteJson)).then(() => {
+                AsyncStorage.setItem("ALLSECTIONTEST1", JSON.stringify(noteJson)).then(() => {
                     AsyncStorage.setItem("TESTECOUNT2", JSON.stringify(countJson + 1));
-                    // navigation.navigate('allAnotation');
+                    setSaveControl(false);
+                    setTextSave("");
+                    navigation.navigate('allAnotation');
                 });
             });
     
@@ -491,10 +496,9 @@ export function GravationScreen() {
                 </Text>
               </Button>
               <Spacer/>
-              <Button bg="#2F2570" width={'120px'} height={'40px'} onPress={() => {
+              <Button bg="#2F2570" disabled={saveControl} width={'120px'} height={'40px'} onPress={() => {
                 setOpen(false);
                 saveNote();
-                navigation.navigate('allAnotation');
               }}>
                 <Text color="#FFFFFF" fontFamily={'robomedium'}>
                   Ok

@@ -21,6 +21,7 @@ export function TextInputAnotation(props) {
     const [noteTitle, setNoteTitle] = useState('');
     const [openBack, setOpenBack] = useState(false);
     const [placementBack, setPlacementBack] = useState(undefined);
+    const [saveControl, setSaveControl] = useState(false);
 
     const saveNote = async () => {
         //NOTES
@@ -40,15 +41,45 @@ export function TextInputAnotation(props) {
             return
         }
 
+        // await AsyncStorage.getItem("TESTECOUNT2").then((count) => {
+        //     const countJson = count ? JSON.parse(count) : 0;
+
+        //     AsyncStorage.getItem("TESTE7").then((noteValue) => {
+        //         const noteJson = noteValue ? JSON.parse(noteValue) : [];
+
+        //         const dateNow = new Date(Date.now());
+        //         const dateString = `${dateNow.getUTCDate()}/${dateNow.getUTCMonth() + 1}/${dateNow.getUTCFullYear()}`;
+
+        //         const newValue: NoteType = {
+        //             id: countJson,
+        //             text: note,
+        //             isRecording: false,
+        //             audioPath: '',
+        //             date: dateString,
+        //             title: noteTitle,
+        //         }
+
+        //         noteJson.push(newValue);
+
+        //         AsyncStorage.setItem("TESTE7", JSON.stringify(noteJson)).then(() => {
+        //             AsyncStorage.setItem("TESTECOUNT2", JSON.stringify(countJson + 1));
+        //             navigation.navigate('allAnotation');
+        //         });
+        //     });
+
+
+        // });
+        
+        setSaveControl(true);
         await AsyncStorage.getItem("TESTECOUNT2").then((count) => {
             const countJson = count ? JSON.parse(count) : 0;
 
-            AsyncStorage.getItem("TESTE7").then((noteValue) => {
-                const noteJson = noteValue ? JSON.parse(noteValue) : [];
+            AsyncStorage.getItem("ALLSECTIONTEST1").then((noteValue) => {
+                let noteJson = noteValue ? JSON.parse(noteValue) : [];
 
                 const dateNow = new Date(Date.now());
                 const dateString = `${dateNow.getUTCDate()}/${dateNow.getUTCMonth() + 1}/${dateNow.getUTCFullYear()}`;
-
+                
                 const newValue: NoteType = {
                     id: countJson,
                     text: note,
@@ -57,11 +88,17 @@ export function TextInputAnotation(props) {
                     date: dateString,
                     title: noteTitle,
                 }
+                
+                // adicionar lógica de nome único
+                
+                const indexChange = noteJson.indexOf(noteJson.filter(function(obj){return obj.name === 'teste';})[0]);
+                noteJson[indexChange].values.push(newValue);
 
-                noteJson.push(newValue);
-
-                AsyncStorage.setItem("TESTE7", JSON.stringify(noteJson)).then(() => {
+                AsyncStorage.setItem("ALLSECTIONTEST1", JSON.stringify(noteJson)).then(() => {
                     AsyncStorage.setItem("TESTECOUNT2", JSON.stringify(countJson + 1));
+                    setSaveControl(false);
+                    setNote("");
+                    setNoteTitle("");
                     navigation.navigate('allAnotation');
                 });
             });
@@ -143,7 +180,7 @@ export function TextInputAnotation(props) {
                 <HStack marginBottom={'30px'} flexDirection={'row'} justifyContent={'center'}
                 >
 
-                    <Button style={styles.button} onPress={saveNote}>
+                    <Button style={styles.button} onPress={saveNote} disabled={saveControl}>
                         <Text style={styles.text}>
                             Salvar
                         </Text>

@@ -30,11 +30,7 @@ export function AnotationScreen() {
           noteJson.push({
             id: countJson,
             name: textSave,
-            values: [
-              {
-                text: 'oi'
-              }
-            ]
+            values: []
           });
   
           AsyncStorage.setItem("ALLSECTIONTEST1", JSON.stringify(noteJson)).then(() => {
