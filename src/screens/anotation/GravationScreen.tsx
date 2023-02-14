@@ -5,7 +5,7 @@ import { Pressable, StyleSheet } from 'react-native';
 import { Image } from 'react-native';
 import { ArrowLeft, Trash, Microphone, PlayCircle, PauseCircle, StopCircle } from 'phosphor-react-native';
 import { useNavigation } from '@react-navigation/native';
-import { Animated} from 'react-native';
+import { Animated } from 'react-native';
 import Slider from '@react-native-community/slider';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Sound } from 'expo-av/build/Audio';
@@ -50,21 +50,21 @@ export function GravationScreen(props) {
   const opacityStyle = { opacity: opacityAnimation };
 
   useEffect(() => {
-    if(control.didJustFinish) {
+    if (control.didJustFinish) {
       setPlayPauseRecording(false);
       sound.setPositionAsync(0);
       sound.pauseAsync();
     }
-  }, [control]); 
+  }, [control]);
 
   const animateElement = () => {
-    if(playPause) {
+    if (playPause) {
       Animated.loop(
-       Animated.timing(opacityAnimation, {
-        toValue: 0,
-        duration: 500,
-        useNativeDriver: true
-      })
+        Animated.timing(opacityAnimation, {
+          toValue: 0,
+          duration: 500,
+          useNativeDriver: true
+        })
       ).start();
     } else {
       Animated.timing(opacityAnimation, {
@@ -84,13 +84,13 @@ export function GravationScreen(props) {
     setOpenBack(true);
     setPlacementBack(placement);
   };
-  
+
   function formatDate() {
     const dateNow = new Date(Date.now());
 
     return `${dateNow.getDate()}/${dateNow.getUTCMonth()}/${dateNow.getFullYear()}`
   }
-  
+
   const navigation = useNavigation();
 
   const OnRecordingStatusUpdate = status => {
@@ -98,7 +98,7 @@ export function GravationScreen(props) {
   }
 
   function handleNewOrder() {
-    if(recording !== undefined)
+    if (recording !== undefined)
       stopRecording();
     openModalGoBack();
   }
@@ -129,14 +129,14 @@ export function GravationScreen(props) {
   }
 
   async function stopRecording() {
-    if(recordingControl) {
+    if (recordingControl) {
       setRecordingControl(false);
     }
 
-    if(recording) {
+    if (recording) {
       await recording.stopAndUnloadAsync();
       setRecording(undefined);
-  
+
       let updatedRecordings = [...recordings];
       const { sound, status } = await recording.createNewLoadedSoundAsync();
       updatedRecordings.push({
@@ -144,7 +144,7 @@ export function GravationScreen(props) {
         duration: getDurationFormatted(status.durationMillis),
         file: recording.getURI()
       });
-  
+
       setRecordings(updatedRecordings);
     }
   }
@@ -158,7 +158,7 @@ export function GravationScreen(props) {
   }
 
   const playPauseRecordingControl = sound => {
-    if(playPauseRecording) {
+    if (playPauseRecording) {
       sound.pauseAsync();
     } else {
       sound.playAsync();
@@ -173,24 +173,24 @@ export function GravationScreen(props) {
   function getRecordingLines() {
 
     return recordings.map((recordingLine, index) => {
-      if(index === recordingControlIndex) {
+      if (index === recordingControlIndex) {
         return (
           <VStack style={styles.legenda} bg="#32206A" key={index}
           >
-  
+
             <View key={index} style={styles.row}>
-  
-  
+
+
               <IconButton
                 icon={
                   playPauseRecording ?
-                  <PauseCircle color="#FFFFFF" size={28} /> :
-                  <PlayCircle color="#FFFFFF" size={28}/>
+                    <PauseCircle color="#FFFFFF" size={28} /> :
+                    <PlayCircle color="#FFFFFF" size={28} />
                 }
                 onPress={() => {
                   setSound(recordingLine.sound);
                   recordingLine.sound.setOnPlaybackStatusUpdate(onPlaybackStatusUpdate);
-                  if(control.positionMillis >= control.durationMillis) {
+                  if (control.positionMillis >= control.durationMillis) {
                     recordingLine.sound.replayAsync();
                     setPlayPauseRecording(true);
                   } else {
@@ -198,7 +198,7 @@ export function GravationScreen(props) {
                   }
                 }}
               />
-  
+
               <VStack width={'250px'} alignItems='flex-end' marginTop={'14px'} marginLeft={'-20px'}>
                 <Slider
                   style={styles.progressBar}
@@ -217,18 +217,18 @@ export function GravationScreen(props) {
                   }}
                 />
                 <Text color="#FFFFFF" fontSize={10} fontFamily={'robolight'} marginRight={'16px'}>
-                  {convertTimeRecording(control.positionMillis/1000)}
+                  {convertTimeRecording(control.positionMillis / 1000)}
                 </Text>
               </VStack>
-  
+
               <VStack style={styles.folha}>
-  
+
                 <IconButton
                   marginTop={-1}
                   icon={<Trash color="#FFFFFF" size={20} />}
                   onPress={removingRecording}
                 />
-  
+
                 <Text
                   marginTop={2}
                   color="#FFFFFF"
@@ -237,9 +237,9 @@ export function GravationScreen(props) {
                   {formatDate()}
                 </Text>
               </VStack>
-  
+
             </View>
-  
+
           </VStack>
         );
       }
@@ -248,42 +248,42 @@ export function GravationScreen(props) {
 
   const saveNote = async () => {
     recordings.map((recordingLine, index) => {
-      if(index === recordingControlIndex) {
+      if (index === recordingControlIndex) {
 
         setSaveControl(true);
         AsyncStorage.getItem("TESTECOUNT2").then((count) => {
-            const countJson = count ? JSON.parse(count) : 0;
-    
-            AsyncStorage.getItem("ALLSECTIONTEST1").then((noteValue) => {
-                const noteJson = noteValue ? JSON.parse(noteValue) : [];
-    
-                const dateNow = new Date(Date.now());
-                const dateString =  `${dateNow.getUTCDate()}/${dateNow.getUTCMonth()+1}/${dateNow.getUTCFullYear()}`;
-    
-                const newValue: NoteType = {
-                    id: countJson,
-                    text: "",
-                    isRecording: true,
-                    audioPath: recordingLine.file,
-                    date: dateString,
-                    title: textSave,
-                }
+          const countJson = count ? JSON.parse(count) : 0;
 
-                const indexChange = noteJson.indexOf(noteJson.filter(function(obj){return obj.name === props.route.params.name;})[0]);
-                noteJson[indexChange].values.push(newValue);
-    
-                AsyncStorage.setItem("ALLSECTIONTEST1", JSON.stringify(noteJson)).then(() => {
-                    AsyncStorage.setItem("TESTECOUNT2", JSON.stringify(countJson + 1));
-                    setSaveControl(false);
-                    setTextSave("");
-                    navigation.navigate('allAnotation', {
-                      id: props.route.params.id,
-                      name: props.route.params.name
-                  });
-                });
+          AsyncStorage.getItem("ALLSECTIONTEST1").then((noteValue) => {
+            const noteJson = noteValue ? JSON.parse(noteValue) : [];
+
+            const dateNow = new Date(Date.now());
+            const dateString = `${dateNow.getUTCDate()}/${dateNow.getUTCMonth() + 1}/${dateNow.getUTCFullYear()}`;
+
+            const newValue: NoteType = {
+              id: countJson,
+              text: "",
+              isRecording: true,
+              audioPath: recordingLine.file,
+              date: dateString,
+              title: textSave,
+            }
+
+            const indexChange = noteJson.indexOf(noteJson.filter(function (obj) { return obj.name === props.route.params.name; })[0]);
+            noteJson[indexChange].values.push(newValue);
+
+            AsyncStorage.setItem("ALLSECTIONTEST1", JSON.stringify(noteJson)).then(() => {
+              AsyncStorage.setItem("TESTECOUNT2", JSON.stringify(countJson + 1));
+              setSaveControl(false);
+              setTextSave("");
+              navigation.navigate('allAnotation', {
+                id: props.route.params.id,
+                name: props.route.params.name
+              });
             });
-    
-            
+          });
+
+
         });
       }
     });
@@ -291,8 +291,8 @@ export function GravationScreen(props) {
   }
 
   const pauseRecording = () => {
-    if(recording) {
-      if(playPause) {
+    if (recording) {
+      if (playPause) {
         recording.pauseAsync();
       } else {
         recording.startAsync();
@@ -332,14 +332,14 @@ export function GravationScreen(props) {
   }
 
   const openModalSave = () => {
-    if(!recordingControl) {
+    if (!recordingControl) {
       stopRecording();
       openModal("center");
     }
   }
 
   const openModalGoBack = () => {
-    if(!recordingControl) {
+    if (!recordingControl) {
       openModalBack("center");
     } else {
       navigation.goBack();
@@ -384,56 +384,59 @@ export function GravationScreen(props) {
         <Text>{message}</Text>
         <IconButton
           // onPress={recordingControl ? startRecording : null}
-          icon={(recording && playPause) ? 
-          <Microphone style={styles.microphone} color="#FD0541" size={45} /> :
-          <Microphone style={styles.microphone} color="#FFFFFF" size={45} />
+          icon={(recording && playPause) ?
+            <Microphone style={styles.microphone} color="#FD0541" size={45} /> :
+            <Microphone style={styles.microphone} color="#FFFFFF" size={45} />
           }
         />
 
 
-          <Button borderRadius={20} marginBottom={10} bg="#FD0541" 
+        <Button borderRadius={20} marginBottom={10} bg={recordingControl ?
+          (recording ? "#FD0541" : "#2E888D")
+          : null
+        }
           style={styles.shadowProp}
-            onPress={recordingControl ? 
-              (recording ? stopRecording : startRecording) 
-              : null
-            }
-          >
-            <Text color="#FFFFFF">{recording ? 'Parar gravação' : 'Iniciar gravação'}</Text>
-          </Button>
+          onPress={recordingControl ?
+            (recording ? stopRecording : startRecording)
+            : null
+          }
+        >
+          <Text color="#FFFFFF">{recording ? 'Parar gravação' : 'Iniciar gravação'}</Text>
+        </Button>
         <VStack style={styles.legenda} bg="#32206A"
         >
-            
-         <View style={styles.row}>
-         <HStack flexDirection={'row'} justifyContent={'flex-start'}>
-          <IconButton
-            onPress={() => {
-              stopRecording();
-              if(!playPause) {
-                animateElement();
-                setPlayPause(!playPause);
-              }
-            }}
-          icon={<StopCircle style={styles.microphone} color="#FFFFFF" size={30} />}
-        />
-              <Animated.View 
+
+          <View style={styles.row}>
+            <HStack flexDirection={'row'} justifyContent={'flex-start'}>
+              <IconButton
+                onPress={() => {
+                  stopRecording();
+                  if (!playPause) {
+                    animateElement();
+                    setPlayPause(!playPause);
+                  }
+                }}
+                icon={<StopCircle style={styles.microphone} color="#FFFFFF" size={30} />}
+              />
+              <Animated.View
 
                 style={[opacityStyle]} >
-                  <IconButton
-                    onPress={() => {
-                      if(recording) {
-                        animateElement();
-                        pauseRecording();
-                      }
-                    }}
-                   
-                    icon={<PauseCircle color="#FFFFFF" size={30} />}
-                  />
+                <IconButton
+                  onPress={() => {
+                    if (recording) {
+                      animateElement();
+                      pauseRecording();
+                    }
+                  }}
+
+                  icon={<PauseCircle color="#FFFFFF" size={30} />}
+                />
               </Animated.View>
-          </HStack>
-             
+            </HStack>
+
             <View style={styles.Otobutton}>
               <Text style={styles.Durationtext}>
-                {convertTime(RecordingStatusUpdate === undefined ? 0 : RecordingStatusUpdate.durationMillis/1000)}
+                {convertTime(RecordingStatusUpdate === undefined ? 0 : RecordingStatusUpdate.durationMillis / 1000)}
               </Text>
             </View>
 
@@ -453,11 +456,11 @@ export function GravationScreen(props) {
       <HStack marginBottom={10} flexDirection={'row'} justifyContent={'center'}
       >
 
-        <Button 
-        width={'120px'} 
-        borderRadius={20} 
-        bg={'#5C4EBC'} 
-        onPress={openModalSave}>
+        <Button
+          width={'120px'}
+          borderRadius={20}
+          bg={'#5C4EBC'}
+          onPress={openModalSave}>
           <Text style={styles.text}>Salvar</Text>
         </Button>
       </HStack>
@@ -471,34 +474,34 @@ export function GravationScreen(props) {
           </Modal.Header>
 
           <Modal.Body>
-            <Input 
-            size="xs" 
-            variant="outline" 
-            _focus={{
-              backgroundColor: "#FFFFFF",
-              borderColor: "#FFFFFF"
-            }}
-            value={textSave}
-            onChangeText={setTextSave}
-            fontFamily={'robolight'}
-            placeholder="new_music_0001" 
-            color="#0C091F" 
-            borderColor={"#1B1065"}
-            fontSize={"12px"} 
-            bg="white"
+            <Input
+              size="xs"
+              variant="outline"
+              _focus={{
+                backgroundColor: "#FFFFFF",
+                borderColor: "#FFFFFF"
+              }}
+              value={textSave}
+              onChangeText={setTextSave}
+              fontFamily={'robolight'}
+              placeholder="new_music_0001"
+              color="#0C091F"
+              borderColor={"#1B1065"}
+              fontSize={"12px"}
+              bg="white"
             />
           </Modal.Body>
 
           <Modal.Footer bg="#5C4EBC" borderColor={"#5C4EBC"}>
             <Button.Group width={'100%'}>
               <Button bg="#2F2570" width={'120px'} height={'40px'} onPress={() => {
-              setOpen(false);
+                setOpen(false);
               }}>
                 <Text color="#FFFFFF" fontFamily={'robomedium'}>
                   Cancel
                 </Text>
               </Button>
-              <Spacer/>
+              <Spacer />
               <Button bg="#2F2570" disabled={saveControl} width={'120px'} height={'40px'} onPress={() => {
                 setOpen(false);
                 saveNote();
@@ -535,7 +538,7 @@ export function GravationScreen(props) {
                   Cancel
                 </Text>
               </Button>
-              <Spacer/>
+              <Spacer />
               <Button bg="#2F2570" width={'120px'} height={'40px'} onPress={() => {
                 setOpenBack(false);
                 navigation.goBack();
