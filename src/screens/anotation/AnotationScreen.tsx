@@ -17,7 +17,14 @@ export function AnotationScreen() {
   const [sections, setSections] = useState([]);
 
   function handleNewOrder() {
-    navigation.goBack();
+    navigation.navigate("home");
+  }
+
+  function handleNavigateToTextAnotation(id, name) {
+    navigation.navigate("allAnotation", {
+      id: id,
+      name: name,
+    });
   }
 
   const saveSection = async () => {
@@ -47,10 +54,51 @@ export function AnotationScreen() {
 
   useEffect(() => {
     AsyncStorage.getItem("ALLSECTIONTEST1").then((noteValue) => {
-      let noteJson = noteValue ? JSON.parse(noteValue) : [];
-      setSections(noteJson)
+      if(noteValue) {
+        let noteJson = JSON.parse(noteValue);
+        setSections(noteJson)
+      }
     });
-  }, [sections])
+  }, [sections]);
+
+  useEffect(() => {
+    AsyncStorage.getItem("ALLSECTIONTEST1").then((noteValue) => {
+      if(noteValue === undefined || noteValue.length === 0) {
+        setSections(JSON.parse(noteValue));
+      } else {
+        AsyncStorage.getItem("TESTECOUNT3").then((count) => {
+          const countJson = count ? JSON.parse(count) : 0;
+
+          const newArray = [
+            {
+              id: countJson,
+              name: "Sonhos",
+              values: []
+            },
+            {
+              id: countJson+1,
+              name: "Estresse do Dia",
+              values: []
+            },
+            {
+              id: countJson+2,
+              name: "Metas do dia",
+              values: []
+            },
+          ];
+
+          AsyncStorage.setItem("ALLSECTIONTEST1", JSON.stringify(newArray)).then(() => {
+            AsyncStorage.getItem("ALLSECTIONTEST1")
+            .then((noteValue) => {
+              setSections(JSON.parse(noteValue));
+              AsyncStorage.setItem("TESTECOUNT3", JSON.stringify(countJson + 3));
+            });
+          });
+
+        });
+      }
+    });
+  }, []);
 
   return (
     <VStack 
@@ -59,7 +107,7 @@ export function AnotationScreen() {
         bg="#180F34"
       >
 
-        <HStack paddingTop={5} paddingX={4} style={styles.title}     >
+        <HStack paddingTop={5} paddingX={4} style={styles.title}>
 
           <TouchableOpacity onPress={handleNewOrder}>
             <IconButton
@@ -96,7 +144,9 @@ export function AnotationScreen() {
             keyExtractor={item => item.id}
             renderItem={({ item }) => 
             <View  key={item.id}>
-              <TouchableOpacity onPress={handleNewOrder}>
+              <TouchableOpacity onPress={() => {
+                handleNavigateToTextAnotation(item.id, item.name);
+              }}>
                 <Text 
                 paddingX={5} 
                 fontFamily={'robolight'} 

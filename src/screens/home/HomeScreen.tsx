@@ -14,7 +14,10 @@ export function HomeScreen() {
   const navigation = useNavigation();
 
   function handleNewOrder() {
-    navigation.navigate("allAnotation");
+    navigation.navigate("anotationText", {
+      id: 1, 
+      name: "Sonhos"
+    });
   }
 
   function handleNewNewOrder() {

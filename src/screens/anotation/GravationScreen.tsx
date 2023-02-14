@@ -19,7 +19,7 @@ type NoteType = {
   title: string;
 }
 
-export function GravationScreen() {
+export function GravationScreen(props) {
   const [recording, setRecording] = useState<any>();
   const [recordings, setRecordings] = useState([]);
   const [message, setMessage] = useState("");
@@ -269,14 +269,17 @@ export function GravationScreen() {
                     title: textSave,
                 }
 
-                const indexChange = noteJson.indexOf(noteJson.filter(function(obj){return obj.name === 'teste';})[0]);
+                const indexChange = noteJson.indexOf(noteJson.filter(function(obj){return obj.name === props.route.params.name;})[0]);
                 noteJson[indexChange].values.push(newValue);
     
                 AsyncStorage.setItem("ALLSECTIONTEST1", JSON.stringify(noteJson)).then(() => {
                     AsyncStorage.setItem("TESTECOUNT2", JSON.stringify(countJson + 1));
                     setSaveControl(false);
                     setTextSave("");
-                    navigation.navigate('allAnotation');
+                    navigation.navigate('allAnotation', {
+                      id: props.route.params.id,
+                      name: props.route.params.name
+                  });
                 });
             });
     

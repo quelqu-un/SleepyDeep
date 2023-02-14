@@ -152,7 +152,7 @@ export function SavedRecAnotation({ data, onDelete, ...rest }: Props) {
             </Text>
           </VStack>
 
-          <VStack style={styles.folha}>
+          <VStack marginTop = {-2}style={styles.folha}>
 
             <IconButton
               marginTop={-1}
@@ -165,7 +165,7 @@ export function SavedRecAnotation({ data, onDelete, ...rest }: Props) {
               color="#FFFFFF"
               fontSize={9}
               fontFamily={'robolight'}>
-              {formatDate()}
+               {data.date}
             </Text>
           </VStack>
 
@@ -194,7 +194,7 @@ const styles = StyleSheet.create({
   folha: {
     width: 54,
     height: 35,
-    left: 1,
+   
     bottom: 14,
     borderBottomLeftRadius: 10,
     borderBottomRightRadius: 210,
