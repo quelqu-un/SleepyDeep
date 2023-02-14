@@ -64,7 +64,7 @@ export function SavedTextAnotation({ data, onDelete, ...rest }: Props) {
 
             <VStack>
 
-              <VStack style={styles.folha}>
+              <VStack marginLeft={5} style={styles.folha}>
                 <IconButton
                   marginTop={-1}
                   icon={<Trash color="#FFFFFF" size={20} />}
@@ -75,9 +75,9 @@ export function SavedTextAnotation({ data, onDelete, ...rest }: Props) {
 
               <Text
                 marginTop={2}
-                marginRight={3}
+                marginLeft = {5}
                 color="#FFFFFF"
-                fontSize={12}
+                fontSize={9}
                 fontFamily={'robolight'}>
                 {data.date}
               </Text>
@@ -110,13 +110,10 @@ const styles = StyleSheet.create({
   folha: {
     width: 54,
     height: 35,
-    left: 9,
     borderBottomLeftRadius: 10,
     borderBottomRightRadius: 210,
     borderTopLeftRadius: 150,
     borderTopRightRadius: 46,
-    //borderLeftRa
-    // border-radius: 26px 26px 200px 0px,
     backgroundColor: "#2E888D",
   },
 });

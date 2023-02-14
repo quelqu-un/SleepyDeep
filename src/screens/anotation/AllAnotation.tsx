@@ -2,7 +2,7 @@ import { VStack, HStack, Text, ScrollView, IconButton, Spacer, Input } from 'nat
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, FlatList, TextInput } from 'react-native';
 import { Image } from 'react-native';
-import { ArrowLeft, MagnifyingGlass } from 'phosphor-react-native';
+import { ArrowLeft, MagnifyingGlass, PlusCircle } from 'phosphor-react-native';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { SavedTextAnotation } from '../../components/SavedTextAnotation';
 import { SavedRecAnotation } from '../../components/SavedRecAnotation';
@@ -10,7 +10,7 @@ import { dataAllAnotation } from '../../model/Data';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
-export function AllAnotation() {
+export function AllAnotation(props) {
     const navigation = useNavigation();
     const [note, setNote] = useState([]);
     const [searchInput, setSearchInput] = useState("");
@@ -24,7 +24,7 @@ export function AllAnotation() {
     const getNotes = async () => {
         await AsyncStorage.getItem("ALLSECTIONTEST1").then((notes) => {
             const  notesN = JSON.parse(notes);
-            const indexChange = notesN.indexOf(notesN.filter(function(obj){return obj.name === 'teste';})[0]);
+            const indexChange = notesN.indexOf(notesN.filter(function(obj){return obj.name === props.route.params.name;})[0]);
             let arrayAux = notesN[indexChange].values;
             if (searchInput.length > 0) {
                 let newNote = JSON.parse(arrayAux).filter((item) => {
@@ -41,7 +41,7 @@ export function AllAnotation() {
     const getAllNotes = async () => {
         await AsyncStorage.getItem("ALLSECTIONTEST1").then((notes) => {
             const notesN = JSON.parse(notes);
-            const indexChange = notesN.indexOf(notesN.filter(function(obj){return obj.name === 'teste';})[0]);
+            const indexChange = notesN.indexOf(notesN.filter(function(obj){return obj.name === props.route.params.name;})[0]);
             let arrayAux = notesN[indexChange].values;
             setNote(arrayAux.reverse());
             setSearchInputFilter(false);
@@ -59,6 +59,13 @@ export function AllAnotation() {
         } else {
             navigation.navigate('home');
         }
+    }
+
+    function handleNewNewOrder() {
+        navigation.navigate("anotationText", {
+            id: props.route.params.id,
+            name: props.route.params.name,
+        });
     }
 
     return (
@@ -84,9 +91,14 @@ export function AllAnotation() {
                             textAlign="center"
                             color={'#FFFFFF'}
                             fontSize={18}>
-                            O que eu sonhei hoje
+                            {props.route.params.name}
                         </Text>
-                        < Image style={styles.imageLogo} source={require('../../assets/images/moonalone.png')} />
+                        <IconButton
+                            marginTop={-3}
+                            marginRight={-2}
+                            icon={<PlusCircle color="#FFFFFF" size={28} />}
+                            onPress={handleNewNewOrder}
+                        />
                     </HStack>
 
                 </VStack>
@@ -131,15 +143,6 @@ export function AllAnotation() {
                     paddingLeft={'10px'} 
                     paddingRight={'10px'}
                 >
-                    {/* <Input
-                        bg="#310569"
-                        placeholder="Pesquisar"
-                        placeholderTextColor={"#FFFFFF"}
-                        variant="filled"
-                        borderRadius="10"
-                        py="1"
-                        px="3"
-                        InputRightElement={<MagnifyingGlass style={styles.lupa} color="#FFFFFF" size={25} />} /> */}
                     <VStack 
                     paddingX={'10px'}
                     paddingY={'5px'}
@@ -170,7 +173,7 @@ export function AllAnotation() {
                             setSearchInputFilter(true);
                             AsyncStorage.getItem("ALLSECTIONTEST1").then((notes) => {
                                 const notesN = JSON.parse(notes);
-                                const indexChange = notesN.indexOf(notesN.filter(function(obj){return obj.name === 'teste';})[0]);
+                                const indexChange = notesN.indexOf(notesN.filter(function(obj){return obj.name === props.route.params.name;})[0]);
                                 let arrayAux = notesN[indexChange].values;
                                 let newNote = arrayAux.filter((item) => {
                                     return item.title.match(searchInput);

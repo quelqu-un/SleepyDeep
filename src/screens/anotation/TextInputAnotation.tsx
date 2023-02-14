@@ -91,7 +91,7 @@ export function TextInputAnotation(props) {
                 
                 // adicionar lógica de nome único
                 
-                const indexChange = noteJson.indexOf(noteJson.filter(function(obj){return obj.name === 'teste';})[0]);
+                const indexChange = noteJson.indexOf(noteJson.filter(function(obj){return obj.name === props.route.params.name;})[0]);
                 noteJson[indexChange].values.push(newValue);
 
                 AsyncStorage.setItem("ALLSECTIONTEST1", JSON.stringify(noteJson)).then(() => {
@@ -99,7 +99,10 @@ export function TextInputAnotation(props) {
                     setSaveControl(false);
                     setNote("");
                     setNoteTitle("");
-                    navigation.navigate('allAnotation');
+                    navigation.navigate('allAnotation', {
+                        id: props.route.params.id,
+                        name: props.route.params.name
+                    });
                 });
             });
 
@@ -124,7 +127,10 @@ export function TextInputAnotation(props) {
     }
 
     const handleGravation = () => {
-        navigation.navigate('gravation');
+        navigation.navigate('gravation', {
+            id: props.route.params.id,
+            name: props.route.params.name
+        });
     }
 
     return (
