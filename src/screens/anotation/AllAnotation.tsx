@@ -1,12 +1,10 @@
-import { VStack, HStack, Text, ScrollView, IconButton, Spacer, Input } from 'native-base';
+import { VStack, HStack, Text, IconButton, Spacer } from 'native-base';
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, FlatList, TextInput } from 'react-native';
-import { Image } from 'react-native';
 import { ArrowLeft, MagnifyingGlass, PlusCircle } from 'phosphor-react-native';
-import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import { SavedTextAnotation } from '../../components/SavedTextAnotation';
 import { SavedRecAnotation } from '../../components/SavedRecAnotation';
-import { dataAllAnotation } from '../../model/Data';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
@@ -19,7 +17,7 @@ export function AllAnotation(props) {
 
     useEffect(() => {
         getNotes();
-    }, []);
+    }, [note]);
 
     const getNotes = async () => {
         await AsyncStorage.getItem("ALLSECTIONTEST1").then((notes) => {

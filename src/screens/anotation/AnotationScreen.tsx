@@ -63,7 +63,7 @@ export function AnotationScreen() {
 
   useEffect(() => {
     AsyncStorage.getItem("ALLSECTIONTEST1").then((noteValue) => {
-      if(noteValue === undefined || noteValue.length === 0) {
+      if(!(noteValue === undefined)) {
         setSections(JSON.parse(noteValue));
       } else {
         AsyncStorage.getItem("TESTECOUNT3").then((count) => {

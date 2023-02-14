@@ -50,6 +50,14 @@ export function SavedRecAnotation({ data, onDelete, ...rest }: Props) {
       } : undefined;
   }, [sound]);
 
+  useEffect(() => {
+    if(control.didJustFinish) {
+      setPlayPauseRecording(false);
+      sound.setPositionAsync(0);
+      sound.pauseAsync();
+    }
+  }, [control]); 
+
   const deleteNote = async () => {
     await AsyncStorage.getItem("ALLSECTIONTEST1").then((notes) => {
       let newNotes = JSON.parse(notes);
@@ -92,12 +100,6 @@ export function SavedRecAnotation({ data, onDelete, ...rest }: Props) {
       seconds.toString().padStart(2, '0');
 
     return timeString;
-  }
-
-  function formatDate() {
-    const dateNow = new Date(Date.now());
-
-    return `${dateNow.getDate()}/${dateNow.getUTCMonth()}/${dateNow.getFullYear()}`
   }
 
   return (
