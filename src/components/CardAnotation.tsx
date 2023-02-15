@@ -1,8 +1,7 @@
-import { Text, VStack, Pressable, IPressableProps ,} from 'native-base';
+import { Text, VStack, IPressableProps ,} from 'native-base';
 import { TouchableOpacity } from 'react-native';
 import { StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { useEffect } from 'react';
 
 export type CardAnotationProps = {
   id: string;
@@ -14,13 +13,18 @@ type Props = IPressableProps & {
   data: CardAnotationProps;
   name: string;
   value: any;
+  navId: number;
+  navName: string;
 }
 
-export function CardAnotation({ cor, name, value, ...rest }) {
+export function CardAnotation({ cor, name, value, navId, navName, ...rest }) {
   const navigation = useNavigation();
 
   function handleNewOrder() {
-    navigation.navigate("anotationText");
+    navigation.navigate("allAnotation", {
+      id: navId,
+      name: navName,
+    });
   }
 
   const formatText = (text) => {
@@ -37,42 +41,38 @@ export function CardAnotation({ cor, name, value, ...rest }) {
   }
   
   return (
-   
-    <Pressable {...rest}  >
-        <VStack alignSelf={'center'} justifyContent = {'center'} flexDirection = {'row'} 
-     //   marginLeft={10} 
-        >
-           
-            <VStack style={styles.legenda} 
-              borderRadius = {20}
-              bg={cor}
-              
-               >
-             <TouchableOpacity  onPress={handleNewOrder} >
-                <Text style = {styles.text} paddingX={2} 
-              paddingY={1} 
-            
-              color="#FFFFFF" 
-              fontSize={12}
-              fontFamily={'robolight'}>
-                {name}
-                </Text>
+    <VStack alignSelf={'center'} justifyContent = {'center'} flexDirection = {'row'} 
+    >
+        
+        <VStack style={styles.legenda} 
+          borderRadius = {20}
+          bg={cor}
+          
+            >
+          <TouchableOpacity  onPress={handleNewOrder} >
+            <Text style = {styles.text} paddingX={2} 
+          paddingY={1} 
+        
+          color="#FFFFFF" 
+          fontSize={12}
+          fontFamily={'robolight'}>
+            {name}
+            </Text>
 
-                <VStack style={styles.input}
-                 borderBottomLeftRadius={20} 
-                  borderBottomRightRadius={20}
-                bg="#FFFFFF">           
-                  <Text color={"#FFFFFF"}>
-                    {formatText(value.reverse()[0]?.text)}
-                  </Text>
-                </VStack>
-              </TouchableOpacity>
-                
+            <VStack style={styles.input}
+              borderBottomLeftRadius={20} 
+              borderBottomRightRadius={20}
+            bg="#FFFFFF">           
+              <Text color={"#FFFFFF"}>
+                {formatText(value.reverse()[0]?.text)}
+              </Text>
             </VStack>
-
-
+          </TouchableOpacity>
+            
         </VStack>
-    </Pressable>
+
+
+    </VStack>
    
   );
 }
