@@ -48,6 +48,8 @@ export function TextInputAnotation(props) {
             AsyncStorage.getItem("ALLSECTIONTEST1").then((noteValue) => {
                 let noteJson = noteValue ? JSON.parse(noteValue) : [];
 
+                console.log(noteJson)
+
                 const dateNow = new Date(Date.now());
                 const dateString = `${dateNow.getUTCDate()}/${dateNow.getUTCMonth() + 1}/${dateNow.getUTCFullYear()}`;
                 
@@ -59,6 +61,8 @@ export function TextInputAnotation(props) {
                     date: dateString,
                     title: noteTitle,
                 }
+                
+                // adicionar lógica de nome único
                 
                 const indexChange = noteJson.indexOf(noteJson.filter(function(obj){return obj.name === props.route.params.name;})[0]);
                 noteJson[indexChange].values.push(newValue);
@@ -101,6 +105,12 @@ export function TextInputAnotation(props) {
             name: props.route.params.name
         });
     }
+    const TodaysDate = () => {
+        const dateNow = new Date(Date.now());
+
+        return `${dateNow.getDate()}/${dateNow.getUTCMonth()+1}/${dateNow.getFullYear()}`
+
+    }
 
     return (
         <VStack flex={1} height={"100%"} bg="#180F34"  >
@@ -137,6 +147,19 @@ export function TextInputAnotation(props) {
                     <Image style={styles.imageLogo} source={require('../../assets/images/moonalone.png')} />
 
                 </HStack>
+
+                <VStack marginBottom = {8} style={styles.divdata}  >
+                <Text marginTop={1}
+                    color="#FFFFFF"
+                    fontSize={"13px"}
+                    fontFamily={'robolight'}>
+                   
+
+                    {TodaysDate()}
+                    
+                </Text>
+                  
+                </VStack>
 
                 <View style={styles.enjoadinho} >
                     <TextInput
@@ -218,6 +241,14 @@ const styles = StyleSheet.create({
     secondtitle: {
         color: "#FFFFFF",
         alignContent: "center",
+    },
+    divdata:{
+        alignItems: 'center',
+        justifyContent: 'flex-start',
+        width: 100,
+        height: 30,
+        borderRadius: 20,
+        backgroundColor: "#5C4EBC",
     },
     imageLogo: {
         width: 35,
