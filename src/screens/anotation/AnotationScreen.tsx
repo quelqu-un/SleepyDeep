@@ -15,6 +15,8 @@ export function AnotationScreen() {
   const [open, setOpen] = useState(false);
   const [textSave, setTextSave] = useState("");
   const [sections, setSections] = useState([]);
+  const [openBack, setOpenBack] = useState(false);
+  const [placementBack, setPlacementBack] = useState(undefined);
 
   function handleNewOrder() {
     navigation.navigate("home");
@@ -34,19 +36,26 @@ export function AnotationScreen() {
       AsyncStorage.getItem("ALLSECTIONTEST1").then((noteValue) => {
           let noteJson = noteValue ? JSON.parse(noteValue) : [];
   
+          const sectionName = noteJson.map(item => item.name);
+
           noteJson.push({
             id: countJson,
             name: textSave,
             values: []
           });
-  
-          AsyncStorage.setItem("ALLSECTIONTEST1", JSON.stringify(noteJson)).then(() => {
-            AsyncStorage.getItem("ALLSECTIONTEST1")
-            .then((noteValue) => {
-              setSections(JSON.parse(noteValue));
-              AsyncStorage.setItem("TESTECOUNT3", JSON.stringify(countJson + 1));
+                
+          if(sectionName.indexOf(textSave) === -1) {
+            AsyncStorage.setItem("ALLSECTIONTEST1", JSON.stringify(noteJson)).then(() => {
+              AsyncStorage.getItem("ALLSECTIONTEST1")
+              .then((noteValue) => {
+                setSections(JSON.parse(noteValue));
+                AsyncStorage.setItem("TESTECOUNT3", JSON.stringify(countJson + 1));
+              });
             });
-          });
+          } else {
+            setOpenBack(true);
+          }
+  
       });
     });
 
@@ -107,7 +116,7 @@ export function AnotationScreen() {
         bg="#180F34"
       >
 
-        <HStack paddingTop={5} paddingX={4} style={styles.title}>
+        <HStack marginBottom={8} paddingTop={5} paddingX={4} style={styles.title}>
 
           <TouchableOpacity onPress={handleNewOrder}>
             <IconButton
@@ -144,11 +153,19 @@ export function AnotationScreen() {
             keyExtractor={item => item.id}
             renderItem={({ item }) => 
             <View  key={item.id}>
-              <TouchableOpacity onPress={() => {
+              
+
+              <VStack marginBottom={5} 
+              alignSelf={'center'} justifyContent = {'center'} 
+              >
+
+<TouchableOpacity onPress={() => {
                 handleNavigateToTextAnotation(item.id, item.name);
               }}>
                 <Text 
-                paddingX={5} 
+             //  textAlign={'center'}
+                
+               
                 fontFamily={'robolight'} 
                 marginBottom={3} 
                 style={styles.secondtitle}>
@@ -156,21 +173,13 @@ export function AnotationScreen() {
                 </Text>
               </TouchableOpacity>
 
-              <HStack marginBottom={10}>
-
                 <CardAnotation
-                  cor={"#5C4EBC"}
-                  name={'Recentes'}
-                  value={item.values}
-                ></CardAnotation>
-
-                <CardAnotation
-                  cor={"#5C4EBC"}
+                  cor={"#2E888D"}
                   name={'Todas'}
                   value={item.values}
                 ></CardAnotation>
 
-              </HStack>
+              </VStack>
             </View>
             }
             contentContainerStyle={{ paddingBottom: 40 }}
@@ -228,6 +237,35 @@ export function AnotationScreen() {
             </Button.Group>
           </Modal.Footer>
         </Modal.Content>
+      </Modal>
+
+      <Modal isOpen={openBack} onClose={() => setOpenBack(false)} safeAreaTop={true}>
+                <Modal.Content maxWidth="350" {...styles[placementBack]} bg="#5C4EBC">
+                    <Modal.Header bg="#5C4EBC" borderColor={"#5C4EBC"}>
+                        <Text color="#FFFFFF" fontSize={"16px"} fontFamily={'robobold'}>
+                            Atenção
+                        </Text>
+                    </Modal.Header>
+
+                    <Modal.Body>
+                        <Text color="#FFFFFF" fontSize={"14px"} fontFamily={'robomedium'}>
+                            Não é possível criar uma seção com um nome já existente.
+                        </Text>
+                    </Modal.Body>
+
+                    <Modal.Footer bg="#5C4EBC" borderColor={"#5C4EBC"}>
+                        <Button.Group width={'100%'}>
+                            <Spacer />
+                            <Button bg="#2F2570" width={'120px'} height={'40px'} onPress={() => {
+                                setOpenBack(false);
+                            }}>
+                                <Text color="#FFFFFF" fontFamily={'robomedium'}>
+                                    Ok
+                                </Text>
+                            </Button>
+                        </Button.Group>
+                    </Modal.Footer>
+                </Modal.Content>
       </Modal>
 
     </VStack>

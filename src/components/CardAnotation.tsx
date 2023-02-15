@@ -39,21 +39,19 @@ export function CardAnotation({ cor, name, value, ...rest }) {
   return (
    
     <Pressable {...rest}  >
-        <VStack  marginLeft={4} marginRight={5} marginBottom = {-5} >
+        <VStack alignSelf={'center'} justifyContent = {'center'} flexDirection = {'row'} 
+     //   marginLeft={10} 
+        >
            
             <VStack style={styles.legenda} 
-              borderBottomLeftRadius={20} 
-              borderBottomRightRadius={20}
-              borderTopLeftRadius={20} 
-              borderTopRightRadius={20}
+              borderRadius = {20}
               bg={cor}
-              alignItems={'center'}
               
                >
              <TouchableOpacity  onPress={handleNewOrder} >
-                <Text paddingX={2} 
+                <Text style = {styles.text} paddingX={2} 
               paddingY={1} 
-              marginLeft= {2}
+            
               color="#FFFFFF" 
               fontSize={12}
               fontFamily={'robolight'}>
@@ -86,16 +84,18 @@ const styles = StyleSheet.create({
   
     } ,
      legenda: {
-        color: "#FFFFFF",
-        width: 180,
-        
-        
+      color: "#FFFFFF",
+      width: 310,
+     },
+     text: {
+      justifyContent:'center',
+      alignSelf:'center',
+      flexDirection: 'row',
      },
      input: {
-      width: 180,
-      height: 120,
+      width: 310,
+      height: 130,
       padding: 10,
       backgroundColor:"#251751" ,
     },
   });
-  

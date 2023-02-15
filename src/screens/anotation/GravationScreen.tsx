@@ -397,7 +397,13 @@ export function GravationScreen(props) {
         }
           style={styles.shadowProp}
           onPress={recordingControl ?
-            (recording ? stopRecording : startRecording)
+            (recording ? () => {
+              stopRecording();  
+              if (!playPause) {
+                animateElement();
+                setPlayPause(!playPause);
+              }
+            }: startRecording)
             : null
           }
         >

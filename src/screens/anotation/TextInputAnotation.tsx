@@ -48,8 +48,6 @@ export function TextInputAnotation(props) {
             AsyncStorage.getItem("ALLSECTIONTEST1").then((noteValue) => {
                 let noteJson = noteValue ? JSON.parse(noteValue) : [];
 
-                console.log(noteJson)
-
                 const dateNow = new Date(Date.now());
                 const dateString = `${dateNow.getUTCDate()}/${dateNow.getUTCMonth() + 1}/${dateNow.getUTCFullYear()}`;
                 
@@ -61,8 +59,6 @@ export function TextInputAnotation(props) {
                     date: dateString,
                     title: noteTitle,
                 }
-                
-                // adicionar lógica de nome único
                 
                 const indexChange = noteJson.indexOf(noteJson.filter(function(obj){return obj.name === props.route.params.name;})[0]);
                 noteJson[indexChange].values.push(newValue);
