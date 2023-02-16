@@ -23,7 +23,7 @@ export function SearchScreen() {
           bg="#251751"
         >
 
-          <HStack marginTop={2} paddingX={4} style={styles.title} >
+          <HStack paddingTop={4} paddingX={4} style={styles.title} >
 
 
             <IconButton

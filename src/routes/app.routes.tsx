@@ -12,11 +12,12 @@ import { SearchScreen } from '../screens/search/SearchScreen';
 import { TextInputAnotation } from '../screens/anotation/TextInputAnotation';
 import { AllAnotation } from '../screens/anotation/AllAnotation';
 
-import { NotePencil, MagnifyingGlass, Alarm, House, CurrencyDollar, ArrowLeft } from 'phosphor-react-native';
+import { NotePencil, MagnifyingGlass, Alarm, House, CurrencyDollar, ArrowLeft, CurrencyCircleDollar } from 'phosphor-react-native';
 
 import React from 'react';
 import { CustomDrawerContent } from '../components/CustomDrawerContent';
 import { GravationScreen } from '../screens/anotation/GravationScreen';
+import { DonateScreen } from '../screens/alarm/DonateScreen';
 
 
 const Screen = createNativeStackNavigator();
@@ -83,10 +84,10 @@ function MainTab() {
           headerShown: false,
           tabBarIcon: ({ color, size, focused }) => {
             if(focused) {
-              return <Alarm color="#FFFFFF" size={25}/>
+              return <CurrencyCircleDollar  color="#FFFFFF" size={28}/>
             }
 
-            return <Alarm color="#FFFFFF" size={25}/>
+            return <CurrencyCircleDollar  color="#FFFFFF" size={28}/>
           }
         }}
       />
@@ -314,6 +315,7 @@ export function AppRoutes() {
       <Screen.Screen name="anotationText" component={TextInputAnotation} />
       <Screen.Screen name="allAnotation" component={AllAnotation} />
       <Screen.Screen name="gravation" component={GravationScreen} />
+      <Screen.Screen name="donate" component={DonateScreen} />
     </Screen.Navigator>
   );
 }

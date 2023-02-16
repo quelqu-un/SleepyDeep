@@ -14,6 +14,7 @@ export function AllAnotation(props) {
     const [searchInput, setSearchInput] = useState("");
     const [searchInputControl, setSearchInputControl] = useState(false);
     const [searchInputFilter, setSearchInputFilter] = useState(false);
+    const [recControl, setRecControl] = useState([-1,false]);
 
     useEffect(() => {
         getNotes();
@@ -23,7 +24,8 @@ export function AllAnotation(props) {
         await AsyncStorage.getItem("ALLSECTIONTEST1").then((notes) => {
             const  notesN = JSON.parse(notes);
             const indexChange = notesN.indexOf(notesN.filter(function(obj){return obj.name === props.route.params.name;})[0]);
-            let arrayAux = notesN[indexChange].values;
+            let arrayAux = notesN[indexChange].values;         
+
             if (searchInput.length > 0) {
                 let newNote = JSON.parse(arrayAux).filter((item) => {
                     return item.title.match(searchInput);
@@ -112,6 +114,8 @@ export function AllAnotation(props) {
                         renderItem={({ item }) =>
                             item.isRecording ?
                             <SavedRecAnotation
+                                setRecControl={setRecControl}
+                                recControl={recControl}
                                 onDelete={onDelete}
                                 data={item}
                             >

@@ -34,28 +34,28 @@ export function AnotationScreen() {
     await AsyncStorage.getItem("TESTECOUNT3").then((count) => {
       const countJson = count ? JSON.parse(count) : 0;
       AsyncStorage.getItem("ALLSECTIONTEST1").then((noteValue) => {
-          let noteJson = noteValue ? JSON.parse(noteValue) : [];
-  
-          const sectionName = noteJson.map(item => item.name);
+        let noteJson = noteValue ? JSON.parse(noteValue) : [];
 
-          noteJson.push({
-            id: countJson,
-            name: textSave,
-            values: []
-          });
-                
-          if(sectionName.indexOf(textSave) === -1) {
-            AsyncStorage.setItem("ALLSECTIONTEST1", JSON.stringify(noteJson)).then(() => {
-              AsyncStorage.getItem("ALLSECTIONTEST1")
+        const sectionName = noteJson.map(item => item.name);
+
+        noteJson.push({
+          id: countJson,
+          name: textSave,
+          values: []
+        });
+
+        if (sectionName.indexOf(textSave) === -1) {
+          AsyncStorage.setItem("ALLSECTIONTEST1", JSON.stringify(noteJson)).then(() => {
+            AsyncStorage.getItem("ALLSECTIONTEST1")
               .then((noteValue) => {
                 setSections(JSON.parse(noteValue));
                 AsyncStorage.setItem("TESTECOUNT3", JSON.stringify(countJson + 1));
               });
-            });
-          } else {
-            setOpenBack(true);
-          }
-  
+          });
+        } else {
+          setOpenBack(true);
+        }
+
       });
     });
 
@@ -63,7 +63,7 @@ export function AnotationScreen() {
 
   useEffect(() => {
     AsyncStorage.getItem("ALLSECTIONTEST1").then((noteValue) => {
-      if(noteValue) {
+      if (noteValue) {
         let noteJson = JSON.parse(noteValue);
         setSections(noteJson)
       }
@@ -72,7 +72,7 @@ export function AnotationScreen() {
 
   useEffect(() => {
     AsyncStorage.getItem("ALLSECTIONTEST1").then((noteValue) => {
-      if(!(noteValue === undefined)) {
+      if (!(noteValue === undefined)) {
         setSections(JSON.parse(noteValue));
       } else {
         AsyncStorage.getItem("TESTECOUNT3").then((count) => {
@@ -85,12 +85,12 @@ export function AnotationScreen() {
               values: []
             },
             {
-              id: countJson+1,
+              id: countJson + 1,
               name: "Estresse do Dia",
               values: []
             },
             {
-              id: countJson+2,
+              id: countJson + 2,
               name: "Metas do dia",
               values: []
             },
@@ -98,10 +98,10 @@ export function AnotationScreen() {
 
           AsyncStorage.setItem("ALLSECTIONTEST1", JSON.stringify(newArray)).then(() => {
             AsyncStorage.getItem("ALLSECTIONTEST1")
-            .then((noteValue) => {
-              setSections(JSON.parse(noteValue));
-              AsyncStorage.setItem("TESTECOUNT3", JSON.stringify(countJson + 3));
-            });
+              .then((noteValue) => {
+                setSections(JSON.parse(noteValue));
+                AsyncStorage.setItem("TESTECOUNT3", JSON.stringify(countJson + 3));
+              });
           });
 
         });
@@ -110,13 +110,13 @@ export function AnotationScreen() {
   }, []);
 
   return (
-    <VStack 
+    <VStack
       height={'100%'}>
       <VStack flex={1}
         bg="#180F34"
       >
 
-        <HStack marginBottom={8} paddingTop={5} paddingX={4} style={styles.title}>
+        <HStack marginBottom={8} paddingTop={4} paddingX={4} style={styles.title}>
 
           <TouchableOpacity onPress={handleNewOrder}>
             <IconButton
@@ -143,47 +143,46 @@ export function AnotationScreen() {
             marginTop={-3}
             marginRight={-2}
             icon={<PlusCircle color="#FFFFFF" size={28} />}
-            onPress={() => { setOpen(true)}}
+            onPress={() => { setOpen(true) }}
           />
 
         </HStack>
 
         <FlatList
-            data={sections}
-            keyExtractor={item => item.id}
-            renderItem={({ item }) => 
-            <View  key={item.id}>
-              
+          data={sections}
+          keyExtractor={item => item.id}
+          renderItem={({ item }) =>
+            <View key={item.id}>
 
-              <VStack marginBottom={5} 
-              alignSelf={'center'} justifyContent = {'center'} 
+
+              <VStack marginBottom={5}
+                alignSelf={'center'} justifyContent={'center'}
               >
 
-<TouchableOpacity onPress={() => {
-                handleNavigateToTextAnotation(item.id, item.name);
-              }}>
-                <Text 
-             //  textAlign={'center'}
-                
-               
-                fontFamily={'robolight'} 
-                marginBottom={3} 
-                style={styles.secondtitle}>
-                  {item.name}
-                </Text>
-              </TouchableOpacity>
+                <TouchableOpacity onPress={() => {
+                  handleNavigateToTextAnotation(item.id, item.name);
+                }}>
+                  <Text
+                    fontFamily={'robolight'}
+                    marginBottom={3}
+                    style={styles.secondtitle}>
+                    {item.name}
+                  </Text>
+                </TouchableOpacity>
 
                 <CardAnotation
                   cor={"#2E888D"}
                   name={'Todas'}
+                  navId={item.id}
+                  navName={item.name}
                   value={item.values}
                 ></CardAnotation>
 
               </VStack>
             </View>
-            }
-            contentContainerStyle={{ paddingBottom: 40 }}
-          />
+          }
+          contentContainerStyle={{ paddingBottom: 40 }}
+        />
 
       </VStack>
 
@@ -196,34 +195,34 @@ export function AnotationScreen() {
           </Modal.Header>
 
           <Modal.Body>
-            <Input 
-            size="xs" 
-            variant="outline" 
-            _focus={{
-              backgroundColor: "#FFFFFF",
-              borderColor: "#FFFFFF"
-            }}
-            value={textSave}
-            onChangeText={setTextSave}
-            fontFamily={'robolight'}
-            placeholder="new_section_0001" 
-            color="#0C091F" 
-            borderColor={"#1B1065"}
-            fontSize={"12px"} 
-            bg="white"
+            <Input
+              size="xs"
+              variant="outline"
+              _focus={{
+                backgroundColor: "#FFFFFF",
+                borderColor: "#FFFFFF"
+              }}
+              value={textSave}
+              onChangeText={setTextSave}
+              fontFamily={'robolight'}
+              placeholder="new_section_0001"
+              color="#0C091F"
+              borderColor={"#1B1065"}
+              fontSize={"12px"}
+              bg="white"
             />
           </Modal.Body>
 
           <Modal.Footer bg="#5C4EBC" borderColor={"#5C4EBC"}>
             <Button.Group width={'100%'}>
               <Button bg="#2F2570" width={'120px'} height={'40px'} onPress={() => {
-              setOpen(false);
+                setOpen(false);
               }}>
                 <Text color="#FFFFFF" fontFamily={'robomedium'}>
                   Cancel
                 </Text>
               </Button>
-              <Spacer/>
+              <Spacer />
               <Button bg="#2F2570" width={'120px'} height={'40px'} onPress={() => {
                 setOpen(false);
                 saveSection();
@@ -240,32 +239,32 @@ export function AnotationScreen() {
       </Modal>
 
       <Modal isOpen={openBack} onClose={() => setOpenBack(false)} safeAreaTop={true}>
-                <Modal.Content maxWidth="350" {...styles[placementBack]} bg="#5C4EBC">
-                    <Modal.Header bg="#5C4EBC" borderColor={"#5C4EBC"}>
-                        <Text color="#FFFFFF" fontSize={"16px"} fontFamily={'robobold'}>
-                            Atenção
-                        </Text>
-                    </Modal.Header>
+        <Modal.Content maxWidth="350" {...styles[placementBack]} bg="#5C4EBC">
+          <Modal.Header bg="#5C4EBC" borderColor={"#5C4EBC"}>
+            <Text color="#FFFFFF" fontSize={"16px"} fontFamily={'robobold'}>
+              Atenção
+            </Text>
+          </Modal.Header>
 
-                    <Modal.Body>
-                        <Text color="#FFFFFF" fontSize={"14px"} fontFamily={'robomedium'}>
-                            Não é possível criar uma seção com um nome já existente.
-                        </Text>
-                    </Modal.Body>
+          <Modal.Body>
+            <Text color="#FFFFFF" fontSize={"14px"} fontFamily={'robomedium'}>
+              Não é possível criar uma seção com um nome já existente.
+            </Text>
+          </Modal.Body>
 
-                    <Modal.Footer bg="#5C4EBC" borderColor={"#5C4EBC"}>
-                        <Button.Group width={'100%'}>
-                            <Spacer />
-                            <Button bg="#2F2570" width={'120px'} height={'40px'} onPress={() => {
-                                setOpenBack(false);
-                            }}>
-                                <Text color="#FFFFFF" fontFamily={'robomedium'}>
-                                    Ok
-                                </Text>
-                            </Button>
-                        </Button.Group>
-                    </Modal.Footer>
-                </Modal.Content>
+          <Modal.Footer bg="#5C4EBC" borderColor={"#5C4EBC"}>
+            <Button.Group width={'100%'}>
+              <Spacer />
+              <Button bg="#2F2570" width={'120px'} height={'40px'} onPress={() => {
+                setOpenBack(false);
+              }}>
+                <Text color="#FFFFFF" fontFamily={'robomedium'}>
+                  Ok
+                </Text>
+              </Button>
+            </Button.Group>
+          </Modal.Footer>
+        </Modal.Content>
       </Modal>
 
     </VStack>
