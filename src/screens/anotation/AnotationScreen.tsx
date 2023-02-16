@@ -116,7 +116,7 @@ export function AnotationScreen() {
         bg="#180F34"
       >
 
-        <HStack marginBottom={8} paddingTop={5} paddingX={4} style={styles.title}>
+        <HStack marginBottom={8} paddingTop={4} paddingX={4} style={styles.title}>
 
           <TouchableOpacity onPress={handleNewOrder}>
             <IconButton

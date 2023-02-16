@@ -21,9 +21,11 @@ type NoteType = {
 type Props = IPressableProps & {
   data: NoteType;
   onDelete: Function;
+  recControl: Array<Object>;
+  setRecControl: Function;
 }
 
-export function SavedRecAnotation({ data, onDelete, ...rest }: Props) {
+export function SavedRecAnotation({ data, onDelete, recControl, setRecControl, ...rest }: Props) {
   const navigation = useNavigation();
   const [sound, setSound] = useState<Sound>(new Audio.Sound());
 
@@ -51,6 +53,13 @@ export function SavedRecAnotation({ data, onDelete, ...rest }: Props) {
   }, [sound]);
 
   useEffect(() => {
+    if(sound) {
+      if(recControl[0] !== data.id && !(recControl[0] === -1) && playPauseRecording) {
+        setPlayPauseRecording(false);
+        sound.pauseAsync();
+      }
+    }
+
     if(control.didJustFinish) {
       setPlayPauseRecording(false);
       sound.setPositionAsync(0);
@@ -82,9 +91,9 @@ export function SavedRecAnotation({ data, onDelete, ...rest }: Props) {
     if(playPauseRecording) {
       sound.pauseAsync();
     } else {
-      
       sound.playAsync();
     }
+    setRecControl([data.id,!playPauseRecording]);
     setPlayPauseRecording(!playPauseRecording);
   }
 
@@ -120,6 +129,7 @@ export function SavedRecAnotation({ data, onDelete, ...rest }: Props) {
               if (control.positionMillis >= control.durationMillis) {
                 sound.replayAsync();
                 setPlayPauseRecording(true);
+                setRecControl([data.id,!playPauseRecording]);
               } else {
                 playPauseRecordingControl(sound);
               }
