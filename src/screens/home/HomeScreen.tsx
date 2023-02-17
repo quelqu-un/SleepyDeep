@@ -128,7 +128,8 @@ export function HomeScreen() {
             keyExtractor={item => item.id}
             renderItem={({ item }) =>
               <HomeCardAnotation
-              cor = {"#1DC0B7"}
+                cor = {"#32206A"}
+                
                 data={item}
               ></HomeCardAnotation>
             }
