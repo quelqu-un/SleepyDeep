@@ -17,16 +17,18 @@ type NoteType = {
 type Props = IPressableProps & {
   data: NoteType;
   onDelete: Function;
+  name: string;
+  id: number;
 }
 
-export function SavedTextAnotation({ data, onDelete, ...rest }: Props) {
+export function SavedTextAnotation({ data, onDelete, name, id, ...rest }: Props) {
   const navigation = useNavigation();
 
   const deleteNote = async () => {
     await AsyncStorage.getItem("ALLSECTIONTEST1").then((notes) => {
       let newNotes = JSON.parse(notes);
 
-      const indexSectionRemove = newNotes.indexOf(newNotes.filter(function(obj){return obj.name === 'teste';})[0]);
+      const indexSectionRemove = newNotes.indexOf(newNotes.filter(function(obj){return obj.name === name;})[0]);
       const arrayRemove = newNotes[indexSectionRemove].values;
       const indexAnotation = arrayRemove.indexOf(arrayRemove.filter(function(obj){return obj.id === data.id;})[0]);
       arrayRemove.splice(indexAnotation, 1);
@@ -39,7 +41,13 @@ export function SavedTextAnotation({ data, onDelete, ...rest }: Props) {
   }
 
   const handleNewOrder = () => {
-    navigation.goBack();
+    navigation.navigate("anotationText", {
+      id: id,
+      name: name,
+      title: data.title,
+      text: data.text,
+      idAnotation: data.id,
+    });
   }
 
   return (

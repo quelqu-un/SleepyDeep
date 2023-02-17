@@ -23,9 +23,10 @@ type Props = IPressableProps & {
   onDelete: Function;
   recControl: Array<Object>;
   setRecControl: Function;
+  name: string;
 }
 
-export function SavedRecAnotation({ data, onDelete, recControl, setRecControl, ...rest }: Props) {
+export function SavedRecAnotation({ data, onDelete, recControl, setRecControl, name, ...rest }: Props) {
   const navigation = useNavigation();
   const [sound, setSound] = useState<Sound>(new Audio.Sound());
 
@@ -71,7 +72,7 @@ export function SavedRecAnotation({ data, onDelete, recControl, setRecControl, .
     await AsyncStorage.getItem("ALLSECTIONTEST1").then((notes) => {
       let newNotes = JSON.parse(notes);
 
-      const indexSectionRemove = newNotes.indexOf(newNotes.filter(function(obj){return obj.name === 'teste';})[0]);
+      const indexSectionRemove = newNotes.indexOf(newNotes.filter(function(obj){return obj.name === name;})[0]);
       const arrayRemove = newNotes[indexSectionRemove].values;
       const indexAnotation = arrayRemove.indexOf(arrayRemove.filter(function(obj){return obj.id === data.id;})[0]);
       arrayRemove.splice(indexAnotation, 1);
