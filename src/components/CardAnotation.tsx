@@ -1,4 +1,4 @@
-import { Text, VStack, IPressableProps ,} from 'native-base';
+import { Text, VStack, IPressableProps, HStack ,} from 'native-base';
 import { TouchableOpacity } from 'react-native';
 import { StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
@@ -30,8 +30,8 @@ export function CardAnotation({ cor, name, value, navId, navName, ...rest }) {
   const formatText = (text) => {
     if(text !== undefined) {
 
-      if(text.length >= 210) {
-        return text.substring(0, 210) + '...'
+      if(text.length >= 32) {
+        return text.substring(0, 32) + '...'
       }
       
       return text;
@@ -62,10 +62,48 @@ export function CardAnotation({ cor, name, value, navId, navName, ...rest }) {
             <VStack style={styles.input}
               borderBottomLeftRadius={20} 
               borderBottomRightRadius={20}
-            bg="#FFFFFF">           
-              <Text color={"#FFFFFF"}>
-                {formatText(value.reverse()[0]?.text)}
-              </Text>
+            bg="#FFFFFF"> 
+
+              {value.reverse()[0] !== undefined ? <HStack alignItems={'center'} marginTop={'-5px'} marginBottom={'-10px'}>
+                <VStack bg={"#FFFFFF"} marginTop={'-10px'} marginBottom={"5px"} marginRight={'5px'} width={'4px'} height={'4px'} borderRadius={'full'}>
+                </VStack>   
+                <Text color={"#FFFFFF"} >
+                  {formatText(value.reverse()[0]?.title)} {'\n'}
+                </Text>   
+              </HStack>  : null}
+
+              {value.reverse()[1] !== undefined ? <HStack alignItems={'center'} marginTop={'-5px'} marginBottom={'-10px'}>
+                <VStack bg={"#FFFFFF"} marginTop={'-10px'} marginBottom={"5px"} marginRight={'5px'} width={'4px'} height={'4px'} borderRadius={'full'}>
+                </VStack>   
+                <Text color={"#FFFFFF"} >
+                  {formatText(value.reverse()[1]?.title)} {'\n'}
+                </Text>   
+              </HStack>  : null}
+
+              {value.reverse()[2] !== undefined ? <HStack alignItems={'center'} marginTop={'-5px'} marginBottom={'-10px'}>
+                <VStack bg={"#FFFFFF"} marginTop={'-10px'} marginBottom={"5px"} marginRight={'5px'} width={'4px'} height={'4px'} borderRadius={'full'}>
+                </VStack>   
+                <Text color={"#FFFFFF"} >
+                  {formatText(value.reverse()[2]?.title)} {'\n'}
+                </Text>   
+              </HStack>  : null}
+
+              {value.reverse()[3] !== undefined ? <HStack alignItems={'center'} marginTop={'-5px'} marginBottom={'-10px'}>
+                <VStack bg={"#FFFFFF"} marginTop={'-10px'} marginBottom={"5px"} marginRight={'5px'} width={'4px'} height={'4px'} borderRadius={'full'}>
+                </VStack>   
+                <Text color={"#FFFFFF"} >
+                  {formatText(value.reverse()[3]?.title)} {'\n'}
+                </Text>   
+              </HStack>  : null}
+
+              {value.reverse()[4] !== undefined ? <HStack alignItems={'center'} marginTop={'-5px'} marginBottom={'-10px'}>
+                <VStack bg={"#FFFFFF"} marginTop={'-10px'} marginBottom={"5px"} marginRight={'5px'} width={'4px'} height={'4px'} borderRadius={'full'}>
+                </VStack>   
+                <Text color={"#FFFFFF"} >
+                  {formatText(value.reverse()[4]?.title)} {'\n'}
+                </Text>   
+              </HStack>  : null}
+
             </VStack>
           </TouchableOpacity>
             

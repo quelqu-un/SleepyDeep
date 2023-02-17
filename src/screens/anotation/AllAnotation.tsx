@@ -27,7 +27,7 @@ export function AllAnotation(props) {
             let arrayAux = notesN[indexChange].values;         
 
             if (searchInput.length > 0) {
-                let newNote = JSON.parse(arrayAux).filter((item) => {
+                let newNote = arrayAux.filter((item) => {
                     return item.title.match(searchInput);
                 });
 
@@ -114,6 +114,7 @@ export function AllAnotation(props) {
                         renderItem={({ item }) =>
                             item.isRecording ?
                             <SavedRecAnotation
+                                name={props.route.params.name}
                                 setRecControl={setRecControl}
                                 recControl={recControl}
                                 onDelete={onDelete}
@@ -121,6 +122,8 @@ export function AllAnotation(props) {
                             >
                             </SavedRecAnotation> :
                             <SavedTextAnotation
+                                name={props.route.params.name}
+                                id={props.route.params.id}
                                 onDelete={onDelete}
                                 data={item}
                             ></SavedTextAnotation>
