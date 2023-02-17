@@ -1,4 +1,5 @@
 import { Text, useTheme, VStack, Pressable, IPressableProps ,} from 'native-base';
+import { background } from 'native-base/lib/typescript/theme/styled-system';
 import { useState } from 'react';
 import { Image } from 'react-native';
 import { StyleSheet, View,TextInput } from 'react-native';
@@ -18,28 +19,31 @@ export function HomeCardAnotation({ data, cor, ...rest }) {
 
   return (
     <Pressable {...rest}  >
-        <VStack  marginLeft={4} marginRight={5} marginBottom = {-5} >
+        <VStack  marginLeft={4}  >
            
             <VStack style={styles.legenda} 
-             borderBottomLeftRadius={20} 
-             borderBottomRightRadius={20}
-            borderTopLeftRadius={20} 
-            borderTopRightRadius={20}
+            height={10}
+            borderTopLeftRadius ={20} borderTopRightRadius ={20} 
+            
             bg={cor}
             alignItems={'center'}>
 
-              <Text paddingX={2} 
-              paddingY={1} 
+              <Text 
+             
               color="#FFFFFF" 
               fontSize={12}
               fontFamily={'robolight'}>
                 {data.text}
                 </Text>
-
+                 
+                </VStack>
+                <VStack style={styles.bg} borderBottomLeftRadius ={20} borderBottomRightRadius ={20}>
                 <Image  style={styles.imagens} borderBottomLeftRadius ={20} borderBottomRightRadius ={20}  source={dataImagesCardAnotation[data.id]} />
 
-            </VStack>
+         
 
+</VStack>
+                
         </VStack>
     </Pressable>
   );
@@ -47,16 +51,25 @@ export function HomeCardAnotation({ data, cor, ...rest }) {
 const styles = StyleSheet.create({
   imagens: {
     color: "#FFFFFF",
-    width: 120,
+    width: 125,
     height: 100
   } ,
+  bg:{
+    width: 125,
+    height: 100,
+    backgroundColor:"#1DC0B7" ,
+    
+    marginBottom: 50,
+  },
     legenda: {
       color: "#FFFFFF",
-      width: 120,
+      width: 125,
+      justifyContent: 'center',
+      flexDirection: 'column',
     },
     input: {
     width: 120,
-    height: 80,
+    height: 200,
     padding: 10,
     backgroundColor:"#251751" ,
   },
