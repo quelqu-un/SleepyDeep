@@ -309,6 +309,7 @@ export function AppRoutes() {
     }}
     >
       <Screen.Screen name="home" component={MainTab} />
+      <Screen.Screen name="homehome" component={HomeScreen} />
       <Screen.Screen name="search" component={SearchScreen} />
       <Screen.Screen name="music" component={MusicScreen} />
       <Screen.Screen name="musicplayer" component={MusicPlayer} />
@@ -316,6 +317,7 @@ export function AppRoutes() {
       <Screen.Screen name="allAnotation" component={AllAnotation} />
       <Screen.Screen name="gravation" component={GravationScreen} />
       <Screen.Screen name="donate" component={DonateScreen} />
+      <Screen.Screen name="alarm" component={AlarmScreen} />
     </Screen.Navigator>
   );
 }
