@@ -1,5 +1,5 @@
-import { VStack, HStack, Text, ScrollView, IconButton, Center, Spacer, Button } from 'native-base';
-import React from 'react';
+import { VStack, HStack, Text, ScrollView, IconButton, Center, Spacer, Button, Modal } from 'native-base';
+import React, { useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { Image, ImageBackground } from 'react-native';
 import { Globe, ArrowLeft, CaretDown } from 'phosphor-react-native';
@@ -9,10 +9,16 @@ import { SearchBarComponent } from '../../components/SearchBar';
 
 export function DonateScreen() {
   const navigation = useNavigation();
-
+  const [openBack, setOpenBack] = useState(false);
+  const [placementBack, setPlacementBack] = useState(undefined);
+  
   function handleNewOrder() {
-    navigation.goBack();
+    setOpenBack(true);
   }
+  function handleNewNewOrder() {
+    navigation.navigate("alarm");
+  }
+
 
   return (
     
@@ -32,7 +38,7 @@ export function DonateScreen() {
           <IconButton
             marginTop={-2}
             icon={<ArrowLeft color="#FFFFFF" size={25} />}
-            onPress={handleNewOrder}
+            onPress={handleNewNewOrder}
           />
 
           <Text
@@ -81,11 +87,44 @@ export function DonateScreen() {
     <IconButton
             marginTop={-2}
             icon={<CaretDown color="#FFFFFF" size={20} />}
-            onPress={handleNewOrder}
+            onPress={handleNewOrder }
           />
     </HStack>
     
     </ScrollView>
+    <Modal isOpen={openBack} onClose={() => setOpenBack(false)} safeAreaTop={true}>
+        <Modal.Content height = "800" width="350"  alignItems={'center'}  
+        {...styles[placementBack]} bg="#5C4EBC">
+          <Modal.Header  bg="#5C4EBC" borderColor={"#5C4EBC"}>
+            <Text color="#FFFFFF" fontSize={"16px"} fontFamily={'robobold'}>
+              Atenção
+            </Text>
+          </Modal.Header>
+
+          <Modal.Body>
+            <Text color="#FFFFFF" fontSize={"14px"} fontFamily={'robomedium'}>
+              Não é possível criar uma seção com um nome já existente.
+            </Text>
+          </Modal.Body>
+
+          <Modal.Footer  bg="#5C4EBC"
+          borderColor={"#5C4EBC"}
+          >
+            <Button.Group alignItems={'center'} justifyContent={"center"} width={'100%'}>
+              
+              <Button  bg="#2F2570" width={'120px'} height={'40px'}  onPress={() => {
+                setOpenBack(false);
+              }}>
+                <Text color="#FFFFFF" fontFamily={'robomedium'}>
+                  OK
+                </Text>
+              </Button>
+         
+            
+            </Button.Group>
+          </Modal.Footer>
+        </Modal.Content>
+      </Modal>
       </VStack>
      
 

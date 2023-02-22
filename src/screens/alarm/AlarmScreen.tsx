@@ -11,7 +11,7 @@ export function AlarmScreen() {
   const navigation = useNavigation();
 
   function handleNewOrder() {
-    navigation.goBack();
+    navigation.navigate("homehome");
   }
   function handleNewNewOrder() {
     navigation.navigate("donate");
