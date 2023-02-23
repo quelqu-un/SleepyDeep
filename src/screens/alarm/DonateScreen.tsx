@@ -15,6 +15,7 @@ export function DonateScreen() {
   function handleNewOrder() {
     setOpenBack(true);
   }
+  
   function handleNewNewOrder() {
     navigation.navigate("alarm");
   }

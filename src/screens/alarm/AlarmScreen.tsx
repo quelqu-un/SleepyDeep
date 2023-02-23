@@ -11,11 +11,13 @@ export function AlarmScreen() {
   const navigation = useNavigation();
 
   function handleNewOrder() {
-    navigation.navigate("homehome");
+    navigation.goBack();
   }
+  
   function handleNewNewOrder() {
     navigation.navigate("donate");
   }
+  
   return (
     <VStack flex={1}
     bg="#251751"
