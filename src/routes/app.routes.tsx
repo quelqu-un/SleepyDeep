@@ -48,7 +48,7 @@ function MainTab() {
   
       <Tab.Screen 
         name="homeMainTab" 
-        component={HomeTab} 
+        component={HomeDrawer} 
         options={{
           headerShown: false,
           tabBarIcon: ({ color, size, focused }) => {
@@ -108,22 +108,6 @@ function MainTab() {
       />
 
     </Tab.Navigator>
-  );
-}
-
-function HomeTab() {
-
-  return(
-    <Screen.Navigator 
-    screenOptions={{ 
-      headerShown: false 
-    }}
-    >
-
-      <Screen.Screen name="homeHomeTab" component={HomeDrawer} />
-      
-
-    </Screen.Navigator>
   );
 }
 
@@ -309,15 +293,12 @@ export function AppRoutes() {
     }}
     >
       <Screen.Screen name="home" component={MainTab} />
-      <Screen.Screen name="homehome" component={HomeScreen} />
-      <Screen.Screen name="search" component={SearchScreen} />
       <Screen.Screen name="music" component={MusicScreen} />
       <Screen.Screen name="musicplayer" component={MusicPlayer} />
       <Screen.Screen name="anotationText" component={TextInputAnotation} />
       <Screen.Screen name="allAnotation" component={AllAnotation} />
       <Screen.Screen name="gravation" component={GravationScreen} />
       <Screen.Screen name="donate" component={DonateScreen} />
-      <Screen.Screen name="alarm" component={AlarmScreen} />
     </Screen.Navigator>
   );
 }

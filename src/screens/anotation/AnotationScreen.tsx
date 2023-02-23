@@ -19,7 +19,7 @@ export function AnotationScreen() {
   const [placementBack, setPlacementBack] = useState(undefined);
 
   function handleNewOrder() {
-    navigation.navigate("home");
+    navigation.goBack();
   }
 
   function handleNavigateToTextAnotation(id, name) {
