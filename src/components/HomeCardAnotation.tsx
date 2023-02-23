@@ -1,9 +1,10 @@
 import { Text, useTheme, VStack, Pressable, IPressableProps ,} from 'native-base';
 import { background } from 'native-base/lib/typescript/theme/styled-system';
 import { useState } from 'react';
-import { Image } from 'react-native';
+import { Image, TouchableOpacity } from 'react-native';
 import { StyleSheet, View,TextInput } from 'react-native';
 import { dataImagesCardAnotation } from '../model/Data';
+import { useNavigation } from '@react-navigation/native';
 
 export type CardAnotationProps = {
   id: string;
@@ -13,20 +14,35 @@ export type CardAnotationProps = {
 
 type Props = IPressableProps & {
   data: CardAnotationProps;
+  name: string;
+  value: any;
+  navId: number;
+  navName: string;
 }
 
-export function HomeCardAnotation({ data, cor, ...rest }) {
+export function HomeCardAnotation({ data, cor, navId, navName,  ...rest }) {
+  
+  const navigation = useNavigation();
+
+  function handleNewOrder() {
+    navigation.navigate("allAnotation", {
+      id: navId,
+      name: navName,
+    });
+  }
 
   return (
     <Pressable {...rest}  >
         <VStack  marginLeft={4}  >
-           
+        <TouchableOpacity  onPress={handleNewOrder} >
             <VStack style={styles.legenda} 
             height={10}
             borderTopLeftRadius ={20} borderTopRightRadius ={20} 
             
             bg={cor}
             alignItems={'center'}>
+
+             
 
               <Text 
              
@@ -35,16 +51,14 @@ export function HomeCardAnotation({ data, cor, ...rest }) {
               fontFamily={'robolight'}>
                 {data.text}
                 </Text>
-                 
+               
                 </VStack>
                 <VStack style={styles.bg} borderBottomLeftRadius ={20} borderBottomRightRadius ={20}>
-                <Image  style={styles.imagens} borderBottomLeftRadius ={20} borderBottomRightRadius ={20}  source={dataImagesCardAnotation[data.id]} />
-
-         
-
+                <Image  style={styles.imagens} borderBottomLeftRadius ={20} borderBottomRightRadius ={20}  source={dataImagesCardAnotation[data.id]} />               
 </VStack>
-                
+</TouchableOpacity>  
         </VStack>
+      
     </Pressable>
   );
 }
