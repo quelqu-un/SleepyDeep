@@ -1,7 +1,8 @@
-import { Text, VStack, IPressableProps, HStack ,} from 'native-base';
+import { Text, VStack, IPressableProps, HStack, IconButton, Spacer ,} from 'native-base';
 import { TouchableOpacity } from 'react-native';
 import { StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { Trash } from 'phosphor-react-native';
 
 export type CardAnotationProps = {
   id: string;
@@ -50,14 +51,30 @@ export function CardAnotation({ cor, name, value, navId, navName, ...rest }) {
           
             >
           <TouchableOpacity  onPress={handleNewOrder} >
-            <Text style = {styles.text} paddingX={2} 
-          paddingY={1} 
-        
-          color="#FFFFFF" 
-          fontSize={12}
-          fontFamily={'robolight'}>
-            {name}
-            </Text>
+            <HStack >
+              <VStack marginLeft={'4px'}>
+                <Trash color={cor} size={18} />
+              </VStack>
+
+              <Spacer/>
+
+              <Text style = {styles.text} 
+                paddingY={1} 
+              
+                color="#FFFFFF" 
+                fontSize={12}
+                fontFamily={'robolight'}>
+              {name}
+              </Text>
+
+              <Spacer/>
+
+              <IconButton
+                icon={<Trash  color="#FFFFFF" size={18} />}
+                onPress={() => {}}
+              />
+
+            </HStack>
 
             <VStack style={styles.input}
               borderBottomLeftRadius={20} 
