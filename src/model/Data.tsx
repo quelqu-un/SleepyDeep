@@ -102,17 +102,17 @@ export const dataHome = [[{
 ], [
   {
     id: '0',
-    text: 'O que eu sonhei hoje',
+    text: 'Sonhos',
     recent: true
   },
   {
     id: '1',
-    text: 'Estresse do dia',
+    text: 'Estresse do Dia',
     recent: true
   },
   {
     id: '2',
-    text: 'Metas do dia ',
+    text: 'Metas do dia',
     recent: true
   },
 ],

@@ -13,10 +13,17 @@ import { dataHome } from '../../model/Data';
 export function HomeScreen() {
   const navigation = useNavigation();
 
-  function handleNewOrder() {
+  // function handleNewOrder() {
+  //   navigation.navigate("allAnotation", {
+  //     id: 1, 
+  //     name: "Sonhos"
+  //   });
+  // }
+
+  function handleNavigateToTextAnotation(id, name) {
     navigation.navigate("allAnotation", {
-      id: 1, 
-      name: "Sonhos"
+      id: id,
+      name: name,
     });
   }
 
@@ -64,7 +71,7 @@ export function HomeScreen() {
             <IconButton
               marginBottom={-3}
               icon={<Globe color="#FFFFFF" size={25} />}
-              onPress={handleNewOrder}
+              //onPress={handleNewOrder}
             />
 
             <Text fontSize={12} color={'#FFFFFF'}>br</Text>
@@ -112,9 +119,12 @@ export function HomeScreen() {
             horizontal={true}
             keyExtractor={item => item.id}
             renderItem={({ item }) =>
+           
+
               <CardMusic
                 data={item}
               ></CardMusic>
+              
             }
             contentContainerStyle={{ paddingBottom: 80 }}
           />
@@ -127,11 +137,17 @@ export function HomeScreen() {
             horizontal={true}
             keyExtractor={item => item.id}
             renderItem={({ item }) =>
+
+         
+               
               <HomeCardAnotation
                 cor = {"#32206A"}
-                
                 data={item}
+                navId={item.id}
+                navName={item.text}
+               
               ></HomeCardAnotation>
+             
             }
             contentContainerStyle={{ paddingBottom: 40 }}
           />
