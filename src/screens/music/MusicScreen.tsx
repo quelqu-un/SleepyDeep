@@ -1,5 +1,5 @@
 import { VStack, HStack, Text, ScrollView } from 'native-base';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { FlatList, GestureResponderEvent, StyleSheet } from 'react-native';
 import { CardMusic } from '../../components/CardMusic';
 import { CardindividualMusic } from '../../components/CardindividualMusic';
@@ -9,19 +9,11 @@ import { dataHome } from '../../model/Data';
 import { dataindividualHome } from '../../model/Data';
 import {translation} from '../../routes/utils';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { LangContext } from '../../contexts/langProvider';
 
 export function MusicScreen() {
   const navigation = useNavigation();
-  const [modalVisible, setModalVisible] = useState(false);
-  const [selectedLang, setSelectedLang] = useState(0);
-
-  useEffect(() => {
-    getLang();
-  }, []);
-  
-  const getLang = async () => {
-    setSelectedLang(parseInt(await AsyncStorage.getItem('LANG')));
-  };
+  const context:any = useContext(LangContext);
 
   function handleNewOrder() {
     navigation.navigate("home");

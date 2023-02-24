@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { Audio } from 'expo-av';
 import { VStack, HStack, Text, IconButton, View, Spacer, Modal, Button, Input, Flex } from 'native-base';
 import { Pressable, StyleSheet } from 'react-native';
@@ -10,6 +10,7 @@ import Slider from '@react-native-community/slider';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Sound } from 'expo-av/build/Audio';
 import {translation} from '../../routes/utils'
+import { LangContext } from '../../contexts/langProvider';
 
 type NoteType = {
   id: string;
@@ -50,17 +51,7 @@ export function GravationScreen(props) {
 
   const opacityStyle = { opacity: opacityAnimation };
 
-  const [modalVisible, setModalVisible] = useState(false);
-  const [selectedLang, setSelectedLang] = useState(0);
-
-  useEffect(() => {
-    getLang();
-  }, []);
-
-  const getLang = async () => {
-    
-    setSelectedLang(parseInt(await AsyncStorage.getItem('LANG')));
-  };
+  const context:any = useContext(LangContext);
 
   useEffect(() => {
     if (control.didJustFinish) {
@@ -382,9 +373,9 @@ export function GravationScreen(props) {
           textAlign="center"
           color={'#FFFFFF'}
           fontSize={18}>
-            {selectedLang == 0
+            {context.language == 0
             ? translation[12].English
-            : selectedLang == 1
+            : context.language == 1
             ? translation[12].Portuguese
             : null}
         </Text>
@@ -485,9 +476,9 @@ export function GravationScreen(props) {
           bg={'#5C4EBC'}
           onPress={openModalSave}>
           <Text style={styles.text}>
-              {selectedLang == 0
+              {context.language == 0
               ? translation[11].English
-              : selectedLang == 1
+              : context.language == 1
               ? translation[11].Portuguese
               : null}
           </Text>
@@ -498,9 +489,9 @@ export function GravationScreen(props) {
         <Modal.Content maxWidth="350" {...styles[placement]} bg="#5C4EBC">
           <Modal.Header bg="#5C4EBC" borderColor={"#5C4EBC"}>
             <Text color="#FFFFFF" fontSize={"16px"} fontFamily={'robobold'}>
-            {selectedLang == 0
+            {context.language == 0
                         ? translation[13].English
-                        : selectedLang == 1
+                        : context.language == 1
                         ? translation[13].Portuguese
                         : null}
             </Text>
@@ -552,9 +543,9 @@ export function GravationScreen(props) {
         <Modal.Content maxWidth="350" {...styles[placementBack]} bg="#5C4EBC">
           <Modal.Header bg="#5C4EBC" borderColor={"#5C4EBC"}>
             <Text color="#FFFFFF" fontSize={"16px"} fontFamily={'robobold'}>
-            {selectedLang == 0
+            {context.language == 0
                         ? translation[14].English
-                        : selectedLang == 1
+                        : context.language == 1
                         ? translation[14].Portuguese
                         : null}
             </Text>
@@ -562,9 +553,9 @@ export function GravationScreen(props) {
 
           <Modal.Body>
             <Text color="#FFFFFF" fontSize={"14px"} fontFamily={'robomedium'}>
-            {selectedLang == 0
+            {context.language == 0
                         ? translation[15].English
-                        : selectedLang == 1
+                        : context.language == 1
                         ? translation[15].Portuguese
                         : null}
             </Text>

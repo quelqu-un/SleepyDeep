@@ -5,24 +5,17 @@ import { Globe, ArrowLeft, CaretDown } from 'phosphor-react-native';
 import { useNavigation } from '@react-navigation/native';
 import { SearchBarComponent } from '../../components/SearchBar';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import {translation} from '../../routes/utils'
+import { LangContext } from '../../contexts/langProvider';
 
 
 export function DonateScreen() {
   const navigation = useNavigation();
   const [openBack, setOpenBack] = useState(false);
   const [placementBack, setPlacementBack] = useState(undefined);
-  const [modalVisible, setModalVisible] = useState(false);
-  const [selectedLang, setSelectedLang] = useState(0);
 
-  useEffect(() => {
-    getLang();
-  }, []);
-
-  const getLang = async () => {
-    setSelectedLang(parseInt(await AsyncStorage.getItem('LANG')));
-  };
+  const context:any = useContext(LangContext);
   
   function handleNewOrder() {
     setOpenBack(true);
@@ -60,9 +53,9 @@ export function DonateScreen() {
             textAlign="center"
             color={'#FFFFFF'}
             fontSize={18}>
-              {selectedLang == 0
+              {context.language == 0
               ? translation[7].English
-              : selectedLang == 1
+              : context.language == 1
               ? translation[7].Portuguese
               : null}
           </Text>
@@ -93,9 +86,9 @@ export function DonateScreen() {
                     </Button>
                     <Button style={styles.button} >
                         <Text style={styles.text}>
-                        {selectedLang == 0
+                        {context.language == 0
                         ? translation[9].English
-                        : selectedLang == 1
+                        : context.language == 1
                         ? translation[9].Portuguese
                         : null}
                         </Text>
@@ -104,9 +97,9 @@ export function DonateScreen() {
     <Spacer />
     <HStack marginBottom={'30px'} flexDirection={'row'} justifyContent={'center'}>
     <Text style={styles.text}>  
-                {selectedLang == 0
+                {context.language == 0
                 ? translation[10].English
-                : selectedLang == 1
+                : context.language == 1
                 ? translation[10].Portuguese
                 : null}
                 </Text>

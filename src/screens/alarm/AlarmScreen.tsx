@@ -1,28 +1,17 @@
-import { VStack, HStack, Text, ScrollView, IconButton, Center, Spacer, Button } from 'native-base';
-import React from 'react';
+import { VStack, HStack, Text, ScrollView, IconButton, Button } from 'native-base';
+import React, { useContext } from 'react';
 import { StyleSheet } from 'react-native';
-import { Image, ImageBackground } from 'react-native';
-import { Globe, ArrowLeft } from 'phosphor-react-native';
+import { Image } from 'react-native';
+import { ArrowLeft } from 'phosphor-react-native';
 import { useNavigation } from '@react-navigation/native';
-import { SearchBarComponent } from '../../components/SearchBar';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useEffect, useState } from 'react';
 import {translation} from '../../routes/utils'
+import { LangContext } from '../../contexts/langProvider';
 
 
 export function AlarmScreen() {
   const navigation = useNavigation();
-  const [modalVisible, setModalVisible] = useState(false);
-  const [selectedLang, setSelectedLang] = useState(0);
 
-  useEffect(() => {
-    getLang();
-  }, []);
-
-  const getLang = async () => {
-
-    setSelectedLang(parseInt(await AsyncStorage.getItem('LANG')));
-  };
+  const context:any = useContext(LangContext);
 
   function handleNewOrder() {
     navigation.goBack();
@@ -59,9 +48,9 @@ export function AlarmScreen() {
             textAlign="center"
             color={'#FFFFFF'}
             fontSize={18}>
-           {selectedLang == 0
+           {context.language == 0
             ? translation[5].English
-            : selectedLang == 1
+            : context.language == 1
             ? translation[5].Portuguese
             : null}
           </Text>
@@ -91,9 +80,9 @@ export function AlarmScreen() {
                     <Button style={styles.button} onPress={handleNewNewOrder}
                     >
                         <Text style={styles.text}>
-                        {selectedLang == 0
+                        {context.language == 0
                         ? translation[8].English
-                        : selectedLang == 1
+                        : context.language == 1
                         ? translation[8].Portuguese
                         : null}
                         </Text>

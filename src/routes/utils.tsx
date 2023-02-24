@@ -4,94 +4,97 @@
 export const translation = [
     {
       English: 'Music',
-      Portuguese: 'Músicas',
+      Portuguese: 'Músicas', // 0
    
     },
     {
       English: 'Bedtime Stories',
-      Portuguese: 'Histórias para Dormir',
+      Portuguese: 'Histórias para Dormir', // 1
     },
     {
        English: 'Notes',
-       Portuguese: 'Anotação',
+       Portuguese: 'Anotação', // 2
     },
 
       //DRAWER
 
       {
         English: 'All categories',
-        Portuguese: 'Todas categorias',
+        Portuguese: 'Todas categorias', // 3
       },
 
       //Títulos
 
       {
         English: 'Notes',
-        Portuguese: 'Anotação',
+        Portuguese: 'Anotação', // 4
       },
       {
         English: 'Donate',
-        Portuguese: 'Doar',
+        Portuguese: 'Doar', // 5
       },
       {
         English: 'Search',
-        Portuguese: 'Pesquisar',
+        Portuguese: 'Pesquisar', // 6
       },
       {
         English: 'Donate',
-        Portuguese: 'Quero doar',
+        Portuguese: 'Quero doar', // 7
       },
 
       //Donate Buttons
       {
         English: 'I want to donate',
-        Portuguese: 'Quero doar',
+        Portuguese: 'Quero doar', // 8
       },
     
       {
         English: 'Credit card',
-        Portuguese: 'Cartão de crédito',
+        Portuguese: 'Cartão de crédito', // 9
       },
       {
         English: 'Learn more',
-        Portuguese: 'Saiba mais',
+        Portuguese: 'Saiba mais', // 10
       },
     
         //Bottons
         {
           English: 'Save',
-          Portuguese: 'Salvar',
-        },
+          Portuguese: 'Salvar', // 11
+        }, 
 
         {
           English: 'Recorder',
-          Portuguese: 'Gravador',
+          Portuguese: 'Gravador', // 12
         },
 
          //Modals Gravation
         
          {
           English: 'Type the file name',
-          Portuguese: 'Digite o nome de arquivo',
+          Portuguese: 'Digite o nome de arquivo', // 13
         },
         {
           English: 'Warning!',
-          Portuguese: 'Aviso!',
+          Portuguese: 'Aviso!', // 14
         }, {
           English: 'If you go back to the previous page, this recording will be deleted',
-          Portuguese: 'Se você voltar para página anterior, a gravação será excluída.',
+          Portuguese: 'Se você voltar para página anterior, a gravação será excluída.', // 15
         },
 
            //Modals Anotation
 
            {
             English: 'Type the section name',
-            Portuguese: 'Digite o nome da seção',
+            Portuguese: 'Digite o nome da seção', // 16
           },
           {
             English: 'It cannot create a section name that already exists.',
-            Portuguese: 'Não é possível criar uma seção com um nome já existente.',
+            Portuguese: 'Não é possível criar uma seção com um nome já existente.', // 17
           },
-
+          {
+            English: 'en',
+            Portuguese: 'br', // 18
+          },
   ];
    //Search Placeholders

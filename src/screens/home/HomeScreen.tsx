@@ -1,5 +1,5 @@
 import { VStack, HStack, Text,  ScrollView, IconButton } from 'native-base';
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { FlatList, StyleSheet, TouchableOpacity, SafeAreaView,} from 'react-native';
 import { HomeCardAnotation } from '../../components/HomeCardAnotation';
 import { CardMusic } from '../../components/CardMusic';
@@ -10,23 +10,26 @@ import { dataHome } from '../../model/Data';
 import { LanguageModal } from '../../model/LangaugeModal';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {translation} from '../../routes/utils';
-
-
+import { LangContext } from '../../contexts/langProvider';
 
 export function HomeScreen() {
   const navigation = useNavigation();
   const [langModalVisible, setLangModalVisible] = useState(false);
-  const [selectedLang, setSelectedLang] = useState(0);
+
+  useEffect(() => {
+    getLang();
+  }, []);
+
+  const getLang = async () => {
+    context.setLanguage(parseInt(await AsyncStorage.getItem('LANG')));
+  };
+
+  const context:any = useContext(LangContext);
 
   const saveSelectedLang = async index => {
     await AsyncStorage.setItem('LANG', index + '');
+    context.setLanguage(index);
   };
-  // function handleNewOrder() {
-  //   navigation.navigate("allAnotation", {
-  //     id: 1, 
-  //     name: "Sonhos"
-  //   });
-  // }
 
   function handleNavigateToTextAnotation(id, name) {
     navigation.navigate("allAnotation", {
@@ -83,22 +86,28 @@ export function HomeScreen() {
                 setLangModalVisible(!langModalVisible);
               }}
             />
-            <Text fontSize={10} color={'#FFFFFF'}>Len</Text>
+            <Text fontSize={10} color={'#FFFFFF'}>
+                {context.language == 0
+              ? translation[18].English
+              : context.language == 1
+              ? translation[18].Portuguese
+              : null}
+            </Text>
           </VStack>
 
           <LanguageModal
               langModalVisible={langModalVisible}
               setLangModalVisible={setLangModalVisible}   
                onSelectLang={x => {
-                setSelectedLang(x);
+                context.setLanguage(x);
                 saveSelectedLang(x);
               }} />
         </HStack>
 
         <Text paddingX={5} marginTop={8} marginBottom={4} fontFamily={'robomedium'} style={styles.secondtitle}>
-        {selectedLang == 0
+        {context.language == 0
           ? translation[0].English
-          : selectedLang == 1
+          : context.language == 1
           ? translation[0].Portuguese
           : null}
           </Text>
@@ -134,9 +143,9 @@ export function HomeScreen() {
         </HStack>
         
         <Text paddingX={5} marginBottom={3} fontFamily={'robomedium'}  style={styles.secondtitle} >
-        {selectedLang == 0
+        {context.language == 0
           ? translation[1].English
-          : selectedLang == 1
+          : context.language == 1
           ? translation[1].Portuguese
           : null}
           </Text>
@@ -159,9 +168,9 @@ export function HomeScreen() {
 
         </HStack>
         <Text paddingX={5} marginBottom={3} fontFamily={'robomedium'}  style={styles.secondtitle}>
-        {selectedLang == 0
+        {context.language == 0
           ? translation[2].English
-          : selectedLang == 1
+          : context.language == 1
           ? translation[2].Portuguese
           : null}
           </Text>

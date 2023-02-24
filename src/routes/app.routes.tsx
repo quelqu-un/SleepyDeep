@@ -14,7 +14,7 @@ import { AllAnotation } from '../screens/anotation/AllAnotation';
 
 import { NotePencil, MagnifyingGlass, Alarm, House, CurrencyDollar, ArrowLeft, CurrencyCircleDollar } from 'phosphor-react-native';
 
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
 import { CustomDrawerContent } from '../components/CustomDrawerContent';
 import { GravationScreen } from '../screens/anotation/GravationScreen';
 import { DonateScreen } from '../screens/alarm/DonateScreen';

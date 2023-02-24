@@ -4,8 +4,9 @@ import { ArrowLeft, Trash, Microphone } from 'phosphor-react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Image, TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import {translation} from '../../routes/utils'
+import { LangContext } from '../../contexts/langProvider';
 
 type NoteType = {
     id: string;
@@ -24,15 +25,8 @@ export function TextInputAnotation(props) {
     const [placementBack, setPlacementBack] = useState(undefined);
     const [saveControl, setSaveControl] = useState(false);
     const [idAnotation, setIdAnotation] = useState(props.route.params.idAnotation ? props.route.params.idAnotation : undefined);
-    const [modalVisible, setModalVisible] = useState(false);
-    const [selectedLang, setSelectedLang] = useState(0);
   
-    useEffect(() => {
-      getLang();
-    }, []);
-    const getLang = async () => {
-        setSelectedLang(parseInt(await AsyncStorage.getItem('LANG')));
-      };
+    const context:any = useContext(LangContext);
     
     const saveNote = async () => {
         //NOTES
@@ -232,9 +226,9 @@ export function TextInputAnotation(props) {
 
                     <Button style={styles.button} onPress={saveNote} disabled={saveControl}>
                         <Text style={styles.text}>
-                        {selectedLang == 0
+                        {context.language == 0
                         ? translation[11].English
-                        : selectedLang == 1
+                        : context.language == 1
                         ? translation[11].Portuguese
                         : null}
                         </Text>

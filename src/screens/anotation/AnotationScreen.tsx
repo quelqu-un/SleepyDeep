@@ -1,5 +1,5 @@
 import { VStack, HStack, Text, ScrollView, IconButton, Modal, Input, Button, Spacer } from 'native-base';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { FlatList, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { Image } from 'react-native';
 import { ArrowLeft, PlusCircle } from 'phosphor-react-native';
@@ -8,6 +8,7 @@ import { CardAnotation } from '../../components/CardAnotation';
 import { dataAnotationScreen } from '../../model/Data';
 import {translation} from '../../routes/utils';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { LangContext } from '../../contexts/langProvider';
 
 export function AnotationScreen() {
   const navigation = useNavigation();
@@ -18,17 +19,8 @@ export function AnotationScreen() {
   const [sections, setSections] = useState([]);
   const [openBack, setOpenBack] = useState(false);
   const [placementBack, setPlacementBack] = useState(undefined);
-  const [modalVisible, setModalVisible] = useState(false);
-  const [selectedLang, setSelectedLang] = useState(0);
 
-  useEffect(() => {
-    getLang();
-  }, []);
-
-  const getLang = async () => {
- 
-    setSelectedLang(parseInt(await AsyncStorage.getItem('LANG')));
-  };
+  const context:any = useContext(LangContext);
 
   function handleNewOrder() {
     navigation.goBack();
@@ -146,9 +138,9 @@ export function AnotationScreen() {
               textAlign="center"
               color={'#FFFFFF'}
               fontSize={18}>
-                {selectedLang == 0
+                {context.language == 0
                 ? translation[4].English
-                : selectedLang == 1
+                : context.language == 1
                 ? translation[4].Portuguese
                 : null}
             </Text>
@@ -206,9 +198,9 @@ export function AnotationScreen() {
         <Modal.Content maxWidth="350" {...styles[placement]} bg="#5C4EBC">
           <Modal.Header bg="#5C4EBC" borderColor={"#5C4EBC"}>
             <Text color="#FFFFFF" fontSize={"16px"} fontFamily={'robobold'}>
-            {selectedLang == 0
+            {context.language == 0
               ? translation[16].English
-              : selectedLang == 1
+              : context.language == 1
               ? translation[16].Portuguese
               : null}
             </Text>
@@ -262,9 +254,9 @@ export function AnotationScreen() {
         <Modal.Content maxWidth="350" {...styles[placementBack]} bg="#5C4EBC">
           <Modal.Header bg="#5C4EBC" borderColor={"#5C4EBC"}>
             <Text color="#FFFFFF" fontSize={"16px"} fontFamily={'robobold'}>
-            {selectedLang == 0
+            {context.language == 0
               ? translation[14].English
-              : selectedLang == 1
+              : context.language == 1
               ? translation[14].Portuguese
               : null}
             </Text>
@@ -272,9 +264,9 @@ export function AnotationScreen() {
 
           <Modal.Body>
             <Text color="#FFFFFF" fontSize={"14px"} fontFamily={'robomedium'}>
-            {selectedLang == 0
+            {context.language == 0
               ? translation[17].English
-              : selectedLang == 1
+              : context.language == 1
               ? translation[17].Portuguese
               : null}
             </Text>
