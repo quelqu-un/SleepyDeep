@@ -1,16 +1,28 @@
 import { VStack, HStack, Text, ScrollView, IconButton, Center, Spacer, Button, Modal } from 'native-base';
-import React, { useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { Image, ImageBackground } from 'react-native';
 import { Globe, ArrowLeft, CaretDown } from 'phosphor-react-native';
 import { useNavigation } from '@react-navigation/native';
 import { SearchBarComponent } from '../../components/SearchBar';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useEffect, useState } from 'react';
+import {translation} from '../../routes/utils'
 
 
 export function DonateScreen() {
   const navigation = useNavigation();
   const [openBack, setOpenBack] = useState(false);
   const [placementBack, setPlacementBack] = useState(undefined);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedLang, setSelectedLang] = useState(0);
+
+  useEffect(() => {
+    getLang();
+  }, []);
+
+  const getLang = async () => {
+    setSelectedLang(parseInt(await AsyncStorage.getItem('LANG')));
+  };
   
   function handleNewOrder() {
     setOpenBack(true);
@@ -48,7 +60,11 @@ export function DonateScreen() {
             textAlign="center"
             color={'#FFFFFF'}
             fontSize={18}>
-            Quero Doar
+              {selectedLang == 0
+              ? translation[7].English
+              : selectedLang == 1
+              ? translation[7].Portuguese
+              : null}
           </Text>
 
           <Image style={styles.imageLogo} source={require('../../assets/images/moon.png')} />
@@ -77,14 +93,23 @@ export function DonateScreen() {
                     </Button>
                     <Button style={styles.button} >
                         <Text style={styles.text}>
-                           
-                            Cartão de crédito
+                        {selectedLang == 0
+                        ? translation[9].English
+                        : selectedLang == 1
+                        ? translation[9].Portuguese
+                        : null}
                         </Text>
                     </Button>
          </VStack>
     <Spacer />
     <HStack marginBottom={'30px'} flexDirection={'row'} justifyContent={'center'}>
-    <Text style={styles.text}> Saiba mais</Text>
+    <Text style={styles.text}>  
+                {selectedLang == 0
+                ? translation[10].English
+                : selectedLang == 1
+                ? translation[10].Portuguese
+                : null}
+                </Text>
     <IconButton
             marginTop={-2}
             icon={<CaretDown color="#FFFFFF" size={20} />}

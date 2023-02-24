@@ -1,5 +1,5 @@
 import { VStack, HStack, Text, ScrollView } from 'native-base';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { FlatList, GestureResponderEvent, StyleSheet } from 'react-native';
 import { CardMusic } from '../../components/CardMusic';
 import { CardindividualMusic } from '../../components/CardindividualMusic';
@@ -7,9 +7,21 @@ import { Image, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { dataHome } from '../../model/Data';
 import { dataindividualHome } from '../../model/Data';
+import {translation} from '../../routes/utils';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export function MusicScreen() {
   const navigation = useNavigation();
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedLang, setSelectedLang] = useState(0);
+
+  useEffect(() => {
+    getLang();
+  }, []);
+  
+  const getLang = async () => {
+    setSelectedLang(parseInt(await AsyncStorage.getItem('LANG')));
+  };
 
   function handleNewOrder() {
     navigation.navigate("home");
@@ -38,7 +50,9 @@ export function MusicScreen() {
 
           </HStack>
 
-          <Text paddingX={5} marginTop={8} marginBottom={4} fontFamily={'medium'} style={styles.secondtitle} >Músicas</Text>
+          <Text paddingX={5} marginTop={8} marginBottom={4} fontFamily={'medium'} style={styles.secondtitle} >
+            alguma coisa
+            </Text>
 
           <HStack marginBottom={10}>
             <FlatList

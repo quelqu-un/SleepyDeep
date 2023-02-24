@@ -51,25 +51,16 @@ export function CardAnotation({ cor, name, value, navId, navName, ...rest }) {
           
             >
           <TouchableOpacity  onPress={handleNewOrder} >
-            <HStack >
-              <VStack marginLeft={'4px'}>
-                <Trash color={cor} size={18} />
-              </VStack>
-
-              <Spacer/>
-
-              <Text style = {styles.text} 
-                paddingY={1} 
-              
+            <HStack  >
+            
+              <Text flex={1} textAlign={'center'} style = {styles.text} 
                 color="#FFFFFF" 
                 fontSize={12}
                 fontFamily={'robolight'}>
-              {name}
+                {name}
               </Text>
-
-              <Spacer/>
-
-              <IconButton
+         
+              <IconButton  
                 icon={<Trash  color="#FFFFFF" size={18} />}
                 onPress={() => {}}
               />
@@ -146,6 +137,8 @@ const styles = StyleSheet.create({
       justifyContent:'center',
       alignSelf:'center',
       flexDirection: 'row',
+      marginLeft: 30,
+   
      },
      input: {
       width: 310,
