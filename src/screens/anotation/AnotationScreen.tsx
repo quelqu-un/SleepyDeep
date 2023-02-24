@@ -6,6 +6,7 @@ import { ArrowLeft, PlusCircle } from 'phosphor-react-native';
 import { useNavigation } from '@react-navigation/native';
 import { CardAnotation } from '../../components/CardAnotation';
 import { dataAnotationScreen } from '../../model/Data';
+import {translation} from '../../routes/utils';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export function AnotationScreen() {
@@ -17,6 +18,17 @@ export function AnotationScreen() {
   const [sections, setSections] = useState([]);
   const [openBack, setOpenBack] = useState(false);
   const [placementBack, setPlacementBack] = useState(undefined);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedLang, setSelectedLang] = useState(0);
+
+  useEffect(() => {
+    getLang();
+  }, []);
+
+  const getLang = async () => {
+ 
+    setSelectedLang(parseInt(await AsyncStorage.getItem('LANG')));
+  };
 
   function handleNewOrder() {
     navigation.goBack();
@@ -134,7 +146,11 @@ export function AnotationScreen() {
               textAlign="center"
               color={'#FFFFFF'}
               fontSize={18}>
-              Anotação
+                {selectedLang == 0
+                ? translation[4].English
+                : selectedLang == 1
+                ? translation[4].Portuguese
+                : null}
             </Text>
             <Image style={styles.imageLogo} source={require('../../assets/images/moon.png')} />
           </HStack>
@@ -190,7 +206,11 @@ export function AnotationScreen() {
         <Modal.Content maxWidth="350" {...styles[placement]} bg="#5C4EBC">
           <Modal.Header bg="#5C4EBC" borderColor={"#5C4EBC"}>
             <Text color="#FFFFFF" fontSize={"16px"} fontFamily={'robobold'}>
-              Digite o nome da seção
+            {selectedLang == 0
+              ? translation[16].English
+              : selectedLang == 1
+              ? translation[16].Portuguese
+              : null}
             </Text>
           </Modal.Header>
 
@@ -242,13 +262,21 @@ export function AnotationScreen() {
         <Modal.Content maxWidth="350" {...styles[placementBack]} bg="#5C4EBC">
           <Modal.Header bg="#5C4EBC" borderColor={"#5C4EBC"}>
             <Text color="#FFFFFF" fontSize={"16px"} fontFamily={'robobold'}>
-              Atenção
+            {selectedLang == 0
+              ? translation[14].English
+              : selectedLang == 1
+              ? translation[14].Portuguese
+              : null}
             </Text>
           </Modal.Header>
 
           <Modal.Body>
             <Text color="#FFFFFF" fontSize={"14px"} fontFamily={'robomedium'}>
-              Não é possível criar uma seção com um nome já existente.
+            {selectedLang == 0
+              ? translation[17].English
+              : selectedLang == 1
+              ? translation[17].Portuguese
+              : null}
             </Text>
           </Modal.Body>
 

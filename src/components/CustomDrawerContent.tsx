@@ -3,10 +3,24 @@ import { StyleSheet, View } from 'react-native';
 import { HStack, IconButton, ScrollView, Text } from 'native-base'
 import { ArrowLeft } from 'phosphor-react-native';
 import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useEffect, useState } from 'react';
+import {translation} from '../routes/utils';
 
 export function CustomDrawerContent(props) {
 
  const navigation = useNavigation();
+ const [modalVisible, setModalVisible] = useState(false);
+ const [selectedLang, setSelectedLang] = useState(0);
+
+ useEffect(() => {
+   getLang();
+ }, []);
+
+ const getLang = async () => {
+  setSelectedLang(parseInt(await AsyncStorage.getItem('LANG')));
+};
+
  function handleNewOrder() {
     navigation.goBack();
   } 
@@ -29,7 +43,11 @@ export function CustomDrawerContent(props) {
             color="#FFFFFF"
             fontFamily={'robomedium'}
             >
-                Todas categorias
+                 {selectedLang == 0
+          ? translation[3].English
+          : selectedLang == 1
+          ? translation[3].Portuguese
+          : null}
             </Text>
             <IconButton
                   marginTop = {-2}
@@ -39,8 +57,6 @@ export function CustomDrawerContent(props) {
                 onPress={handleNewOrder}
               />
             </HStack>
-          
-
 
             <DrawerItemList 
                 {...props} 

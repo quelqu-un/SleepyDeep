@@ -1,10 +1,11 @@
 import { VStack, HStack, Text, ScrollView, IconButton, View, Spacer, Button, Modal } from 'native-base';
-import React, { useState } from 'react';
 import { StyleSheet, TextInput } from 'react-native';
 import { ArrowLeft, Trash, Microphone } from 'phosphor-react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Image, TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useEffect, useState } from 'react';
+import {translation} from '../../routes/utils'
 
 type NoteType = {
     id: string;
@@ -23,7 +24,16 @@ export function TextInputAnotation(props) {
     const [placementBack, setPlacementBack] = useState(undefined);
     const [saveControl, setSaveControl] = useState(false);
     const [idAnotation, setIdAnotation] = useState(props.route.params.idAnotation ? props.route.params.idAnotation : undefined);
-
+    const [modalVisible, setModalVisible] = useState(false);
+    const [selectedLang, setSelectedLang] = useState(0);
+  
+    useEffect(() => {
+      getLang();
+    }, []);
+    const getLang = async () => {
+        setSelectedLang(parseInt(await AsyncStorage.getItem('LANG')));
+      };
+    
     const saveNote = async () => {
         //NOTES
         //TESTE
@@ -180,7 +190,7 @@ export function TextInputAnotation(props) {
                         multiline
                         value={noteTitle}
                         onChangeText={setNoteTitle}
-                        placeholder={'Titulo'}
+                        placeholder={'Título'}
                         placeholderTextColor={"#FFFFFF"}
                     />
 
@@ -222,7 +232,11 @@ export function TextInputAnotation(props) {
 
                     <Button style={styles.button} onPress={saveNote} disabled={saveControl}>
                         <Text style={styles.text}>
-                            Salvar
+                        {selectedLang == 0
+                        ? translation[11].English
+                        : selectedLang == 1
+                        ? translation[11].Portuguese
+                        : null}
                         </Text>
                     </Button>
 

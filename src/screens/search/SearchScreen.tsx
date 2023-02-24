@@ -5,11 +5,25 @@ import { Image, ImageBackground } from 'react-native';
 import { ArrowLeft } from 'phosphor-react-native';
 import { useNavigation } from '@react-navigation/native';
 import { SearchBarComponent } from '../../components/SearchBar';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useEffect, useState } from 'react';
+import {translation} from '../../routes/utils'
 
 
 export function SearchScreen() {
 
   const navigation = useNavigation();
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedLang, setSelectedLang] = useState(0);
+
+  useEffect(() => {
+    getLang();
+  }, []);
+
+  const getLang = async () => {
+    
+    setSelectedLang(parseInt(await AsyncStorage.getItem('LANG')));
+  };
 
   function handleNewOrder() {
     navigation.goBack();
@@ -38,7 +52,11 @@ export function SearchScreen() {
               textAlign="center"
               color={'#FFFFFF'}
               fontSize={18}>
-              Pesquisar
+              {selectedLang == 0
+              ? translation[6].English
+              : selectedLang == 1
+              ? translation[6].Portuguese
+              : null}
             </Text>
 
             <Image style={styles.imageLogo} source={require('../../assets/images/moon.png')} />

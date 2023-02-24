@@ -5,10 +5,24 @@ import { Image, ImageBackground } from 'react-native';
 import { Globe, ArrowLeft } from 'phosphor-react-native';
 import { useNavigation } from '@react-navigation/native';
 import { SearchBarComponent } from '../../components/SearchBar';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useEffect, useState } from 'react';
+import {translation} from '../../routes/utils'
 
 
 export function AlarmScreen() {
   const navigation = useNavigation();
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedLang, setSelectedLang] = useState(0);
+
+  useEffect(() => {
+    getLang();
+  }, []);
+
+  const getLang = async () => {
+
+    setSelectedLang(parseInt(await AsyncStorage.getItem('LANG')));
+  };
 
   function handleNewOrder() {
     navigation.goBack();
@@ -45,7 +59,11 @@ export function AlarmScreen() {
             textAlign="center"
             color={'#FFFFFF'}
             fontSize={18}>
-            Doar
+           {selectedLang == 0
+            ? translation[5].English
+            : selectedLang == 1
+            ? translation[5].Portuguese
+            : null}
           </Text>
 
           <Image style={styles.imageLogo} source={require('../../assets/images/moon.png')} />
@@ -73,7 +91,11 @@ export function AlarmScreen() {
                     <Button style={styles.button} onPress={handleNewNewOrder}
                     >
                         <Text style={styles.text}>
-                            Quero Doar
+                        {selectedLang == 0
+                        ? translation[8].English
+                        : selectedLang == 1
+                        ? translation[8].Portuguese
+                        : null}
                         </Text>
                     </Button>
          </HStack>
