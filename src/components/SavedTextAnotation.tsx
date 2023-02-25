@@ -1,9 +1,12 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
-import { Text, VStack, IPressableProps, HStack, IconButton } from 'native-base';
+import { Text, VStack, IPressableProps, HStack, IconButton, Modal, Spacer, Button, Input } from 'native-base';
 import { Trash } from 'phosphor-react-native';
 import { TouchableOpacity } from 'react-native';
 import { StyleSheet } from 'react-native';
+import { useContext, useEffect, useState } from 'react';
+import {translation} from '../routes/utils'
+import { LangContext } from '../contexts/langProvider';
 
 type NoteType = {
   id: string;
@@ -23,7 +26,16 @@ type Props = IPressableProps & {
 
 export function SavedTextAnotation({ data, onDelete, name, id, ...rest }: Props) {
   const navigation = useNavigation();
+  const [open, setOpen] = useState(false);
+  const [openBack, setOpenBack] = useState(false);
+  const [textSave, setTextSave] = useState("");
+  const [placement, setPlacement] = useState(undefined);
 
+  const context:any = useContext(LangContext);
+
+  function handleNewNewOrder() {
+    setOpenBack(true);
+  }
   const deleteNote = async () => {
     await AsyncStorage.getItem("ALLSECTIONTEST1").then((notes) => {
       let newNotes = JSON.parse(notes);
@@ -69,14 +81,14 @@ export function SavedTextAnotation({ data, onDelete, name, id, ...rest }: Props)
               {data.title}
             </Text>
 
-
             <VStack>
 
               <VStack marginLeft={5} style={styles.folha}>
                 <IconButton
                   marginTop={-1}
                   icon={<Trash color="#FFFFFF" size={20} />}
-                  onPress={deleteNote}
+                //  onPress={deleteNote}
+                  onPress={handleNewNewOrder }
                 />
 
               </VStack>
@@ -95,7 +107,58 @@ export function SavedTextAnotation({ data, onDelete, name, id, ...rest }: Props)
           </HStack>
 
         </VStack>
+        <Modal isOpen={openBack} onClose={() => setOpenBack(false)} safeAreaTop={true}>
+        <Modal.Content maxWidth="350" {...styles[placement]} bg="#5C4EBC">
+          <Modal.Header bg="#5C4EBC" borderColor={"#5C4EBC"}>
+            <Text color="#FFFFFF" fontSize={"16px"} fontFamily={'robobold'}>
+            {context.language == 0
+                ? translation[20].English
+                : context.language == 1
+                ? translation[20].Portuguese
+                : null}
+            </Text>
+          </Modal.Header>
 
+          <Modal.Body>
+            <Text color="#FFFFFF" fontSize={"14px"} fontFamily={'robomedium'}>
+               {context.language == 0
+                ? translation[21].English
+                : context.language == 1
+                ? translation[21].Portuguese
+                : null}
+            </Text>
+          </Modal.Body>
+
+
+          <Modal.Footer bg="#5C4EBC" borderColor={"#5C4EBC"}>
+            <Button.Group width={'100%'}>
+              <Button bg="#2F2570" width={'120px'} height={'40px'} onPress={() => {
+                 setOpenBack(false);
+              }}>
+                <Text color="#FFFFFF" fontFamily={'robomedium'}>
+                {context.language == 0
+                ? translation[19].English
+                : context.language == 1
+                ? translation[19].Portuguese
+                : null}
+                </Text>
+              </Button>
+              <Spacer />
+              <Button bg="#2F2570" width={'120px'} height={'40px'} onPress={() => {
+                deleteNote()
+                setOpenBack(false);
+                // saveNote();
+                // navigation.navigate('allAnotation');
+              }}>
+                <Text color="#FFFFFF" fontFamily={'robomedium'} 
+                >
+                  Ok
+                </Text>
+              </Button>
+            </Button.Group>
+          </Modal.Footer>
+        </Modal.Content>
+      </Modal>
       </VStack>
     </TouchableOpacity>
   );

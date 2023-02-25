@@ -62,7 +62,7 @@ import {
                     <TouchableOpacity
                       style={[
                         styles.languageItem,
-                        {borderColor: item.selected == true ? 'blue' : 'black'},
+                        {borderColor: item.selected == true ? "#0000cc" : 'white'},
                       ]}
                       onPress={() => {
                         onSelect(index);
@@ -70,7 +70,7 @@ import {
                       {item.selected == true ? (
                          <Image
                          source={require('../assets/images/selected.png')}
-                         style={[styles.icon, {tintColor: 'blue'}]}
+                         style={[styles.icon, {tintColor: "#0000cc"}]}
                        />
                      ) : (
                        <Image
@@ -83,7 +83,7 @@ import {
                         style={{
                           marginLeft: 20,
                           fontSize: 18,
-                          color: item.selected == true ? 'blue' : 'black',
+                          color: item.selected == true ? "#0000cc" : 'white',
                         }}>
                         {item.name}
                       </Text>
@@ -98,7 +98,7 @@ import {
                 onPress={() => {
                   setLangModalVisible(false);
                 }}>
-                <Text>Cancel</Text>
+                <Text style={{color: '#ffffff'}}>Cancel</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.btn2}
@@ -121,19 +121,17 @@ import {
       flex: 1,
       justifyContent: 'center',
       alignItems: 'center',
-      marginTop: 22,
       backgroundColor: 'rgba(0,0,0,.5)',
     },
     modalView: {
       margin: 20,
       width: width - 20,
       // height: height / 2,
-  
-      backgroundColor: 'white',
+      backgroundColor:"#2F2570",
       borderRadius: 20,
       padding: 35,
       alignItems: 'center',
-      shadowColor: '#000',
+      shadowColor: '#ffffff',
       shadowOffset: {
         width: 0,
         height: 2,
@@ -145,6 +143,7 @@ import {
     title: {
       fontSize: 18,
       fontWeight: '600',
+      color: "#ffffff"
     },
     languageItem: {
       width: '100%',
@@ -155,6 +154,7 @@ import {
       paddingLeft: 10,
       flexDirection: 'row',
       alignItems: 'center',
+      backgroundColor: "#5C4EBC",
     },
     icon: {
       width: 24,
@@ -166,7 +166,7 @@ import {
       justifyContent: 'space-evenly',
       alignItems: 'center',
       marginTop: 20,
-      marginBottom: 20,
+      marginBottom: 20,  
     },
     btn1: {
       width: '40%',
@@ -175,6 +175,7 @@ import {
       borderRadius: 10,
       justifyContent: 'center',
       alignItems: 'center',
+      borderColor: "#ffffff",
     },
     btn2: {
       width: '40%',
@@ -184,5 +185,6 @@ import {
       backgroundColor: '#4B68E9',
       justifyContent: 'center',
       alignItems: 'center',
+      borderColor: "#ffffff",
     },
   });
