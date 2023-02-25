@@ -33,7 +33,11 @@ export function MusicScreen() {
               fontFamily={'robobold'}
               color={'#FFFFFF'}
               fontSize={19}>
-              Chuva
+              {context.language == 0
+                  ? "Rain"
+                  : context.language == 1
+                  ? "Chuva"
+                  : null}
             </Text>
 
 
@@ -41,10 +45,6 @@ export function MusicScreen() {
 
 
           </HStack>
-
-          <Text paddingX={5} marginTop={8} marginBottom={4} fontFamily={'medium'} style={styles.secondtitle} >
-            alguma coisa
-            </Text>
 
           <HStack marginBottom={10}>
             <FlatList

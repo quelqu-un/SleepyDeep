@@ -81,6 +81,16 @@ export function SavedRecAnotation({ data, onDelete, recControl, setRecControl, n
     }
   }, [control]); 
 
+  const TodaysDate = (date) => {
+
+    if(context.language == 0) {
+      let dateFormat = date.split("/");
+      return `${dateFormat[1]}/${dateFormat[0]}/${dateFormat[2]}`
+    } else if(context.language == 1) {
+      return date
+    }
+  }
+
   const deleteNote = async () => {
     await AsyncStorage.getItem("ALLSECTIONTEST1").then((notes) => {
       let newNotes = JSON.parse(notes);
@@ -191,7 +201,7 @@ export function SavedRecAnotation({ data, onDelete, recControl, setRecControl, n
               color="#FFFFFF"
               fontSize={9}
               fontFamily={'robolight'}>
-               {data.date}
+              {TodaysDate(data.date)}
             </Text>
           </VStack>
 

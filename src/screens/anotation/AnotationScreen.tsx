@@ -249,7 +249,11 @@ export function AnotationScreen() {
                 setOpen(false);
               }}>
                 <Text color="#FFFFFF" fontFamily={'robomedium'}>
-                  Cancel
+                  {context.language == 0
+                  ? "Cancel"
+                  : context.language == 1
+                  ? "Cancelar"
+                  : null}
                 </Text>
               </Button>
               <Spacer />

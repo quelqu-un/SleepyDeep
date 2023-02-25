@@ -1,9 +1,12 @@
 import { VStack, Box, Divider, Input } from 'native-base';
-import React from 'react';
+import React, { useContext } from 'react';
 import { StyleSheet } from 'react-native';
 import { MagnifyingGlass } from 'phosphor-react-native';
+import { LangContext } from '../contexts/langProvider';
 
 export function SearchBarComponent() {
+    const context:any = useContext(LangContext);
+    
     return (
         <VStack my="5" space={5} w="100%" maxW="330px" divider={<Box px="2">
             <Divider />
@@ -15,7 +18,11 @@ export function SearchBarComponent() {
                     style={styles.lupa}
                     marginLeft={7}
                     bg="#310569"
-                    placeholder="Pesquisar"
+                    placeholder={context.language == 0
+                        ? "Search"
+                        : context.language == 1
+                        ? "Pesquisar"
+                        : null}
                     placeholderTextColor={"#FFFFFF"}
                     variant="filled"
                     width="100%"

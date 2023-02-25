@@ -1,11 +1,13 @@
 import { VStack, HStack, Text, IconButton, Spacer } from 'native-base';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { StyleSheet, FlatList, TextInput } from 'react-native';
 import { ArrowLeft, MagnifyingGlass, PlusCircle } from 'phosphor-react-native';
 import { useNavigation } from '@react-navigation/native';
 import { SavedTextAnotation } from '../../components/SavedTextAnotation';
 import { SavedRecAnotation } from '../../components/SavedRecAnotation';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { LangContext } from '../../contexts/langProvider';
+import { dataHome } from '../../model/Data';
 
 
 export function AllAnotation(props) {
@@ -15,6 +17,8 @@ export function AllAnotation(props) {
     const [searchInputControl, setSearchInputControl] = useState(false);
     const [searchInputFilter, setSearchInputFilter] = useState(false);
     const [recControl, setRecControl] = useState([-1,false]);
+
+    const context:any = useContext(LangContext);
 
     useEffect(() => {
         getNotes();
@@ -91,7 +95,25 @@ export function AllAnotation(props) {
                             textAlign="center"
                             color={'#FFFFFF'}
                             fontSize={18}>
-                            {props.route.params.name}
+                            {props.route.params.name === "Sonhos" && context.language == 0 ? 
+                            dataHome[3][0].textEn
+                            : props.route.params.name === "Sonhos" && context.language == 1
+                            ? dataHome[3][0].textBr
+                            : null}
+                            {props.route.params.name === "Metas do dia" && context.language == 0 ? 
+                            dataHome[3][2].textEn
+                            : props.route.params.name === "Metas do dia" && context.language == 1
+                            ? dataHome[3][2].textBr
+                            : null}
+                            {props.route.params.name === "Estresse do Dia" && context.language == 0 ? 
+                            dataHome[3][1].textEn
+                            : props.route.params.name === "Estresse do Dia" && context.language == 1
+                            ? dataHome[3][1].textBr
+                            : null}
+                            {props.route.params.name !== "Sonhos" &&
+                            props.route.params.name !== "Estresse do Dia" &&
+                            props.route.params.name !== "Metas do dia"  ? 
+                            props.route.params.name : null}
                         </Text>
                         <IconButton
                             marginTop={-3}
@@ -104,7 +126,14 @@ export function AllAnotation(props) {
                 </VStack>
 
                 <Text color="#FFFFFF" textAlign={'center'}>
-                    {searchInputControl ? 'Nenhum resultado encontrado' : null}
+                
+                    {searchInputControl ? 
+                    context.language == 0
+                        ? "No results found"
+                        : context.language == 1
+                        ? "Nenhum resultado encontrado"
+                        : null 
+                    :null}
                 </Text>
 
                 <HStack marginTop={'10px'} width={'100%'}>
@@ -166,7 +195,11 @@ export function AllAnotation(props) {
                             onChangeText={(value) => {
                                 setSearchInput(value);
                             }}
-                            placeholder={'Pesquisar'}
+                            placeholder={context.language == 0
+                                ? "Search"
+                                : context.language == 1
+                                ? "Pesquisar"
+                                : null}
                             placeholderTextColor={"#FFFFFF"}
                             underlineColorAndroid={'transparent'}
                         />

@@ -60,8 +60,8 @@ export const dataHome = [[{
 },
 {
   id: '1',
-  textEn: 'Strong rain',
-  textBr: 'Chuva Forte',
+  textEn: 'Rain',
+  textBr: 'Chuva',
   recent: true
 },
 {

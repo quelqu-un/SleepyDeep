@@ -415,7 +415,17 @@ export function GravationScreen(props) {
             : null
           }
         >
-          <Text color="#FFFFFF">{recording ? 'Parar gravação' : 'Iniciar gravação'}</Text>
+          <Text color="#FFFFFF">{recording ? 
+          context.language == 0
+            ? "Stop recording"
+            : context.language == 1
+            ? "Para gravação"
+            : null : 
+            context.language == 0
+            ? "Start recording"
+            : context.language == 1
+            ? "Iniciar gravação"
+            : null}</Text>
         </Button>
         <VStack style={styles.legenda} bg="#32206A"
         >
@@ -522,7 +532,11 @@ export function GravationScreen(props) {
                 setOpen(false);
               }}>
                 <Text color="#FFFFFF" fontFamily={'robomedium'}>
-                  Cancel
+                {context.language == 0
+                  ? "Cancel"
+                  : context.language == 1
+                  ? "Cancelar"
+                  : null}
                 </Text>
               </Button>
               <Spacer />
@@ -567,7 +581,11 @@ export function GravationScreen(props) {
                 setOpenBack(false);
               }}>
                 <Text color="#FFFFFF" fontFamily={'robomedium'}>
-                  Cancel
+                {context.language == 0
+                  ? "Cancel"
+                  : context.language == 1
+                  ? "Cancelar"
+                  : null}
                 </Text>
               </Button>
               <Spacer />

@@ -1,5 +1,5 @@
 import { VStack, HStack, Text, ScrollView, IconButton, Actionsheet, useDisclose, Button, Spacer } from 'native-base';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 
 import { ImageBackground, StyleSheet } from 'react-native';
 import { Image } from 'react-native';
@@ -10,10 +10,12 @@ import Slider from '@react-native-community/slider';
 import { Audio } from 'expo-av';
 import { Sound } from 'expo-av/build/Audio';
 import { songsPath } from '../../model/Data';
+import { LangContext } from '../../contexts/langProvider';
 
 export function MusicPlayer() {
   const timerOptions = useDisclose();
   const customOptions = useDisclose();
+  const context:any = useContext(LangContext);
 
   const _30MIN = 1800000;
   const _1H = 3600000;
@@ -251,7 +253,11 @@ export function MusicPlayer() {
               fontFamily={'bold'}
               color={'#FFFFFF'}
               fontSize={20}>
-              Título da música
+              {context.language == 0
+                  ? "Rain"
+                  : context.language == 1
+                  ? "Chuva"
+                  : null}
             </Text>
 
             <Image style={styles.imageLogo} source={require('../../assets/images/moonalone.png')} />
@@ -348,7 +354,11 @@ export function MusicPlayer() {
             }}>
             <HStack alignItems={'center'} width={'100%'}>
               <Text color="#FFFFFF" width={'90%'}>
-                30 minutos
+                30 {context.language == 0
+                  ? "minutes"
+                  : context.language == 1
+                  ? "minutos"
+                  : null}
               </Text>
 
               {options === _30MIN ?
@@ -379,7 +389,11 @@ export function MusicPlayer() {
             }}>
             <HStack alignItems={'center'} width={'100%'}>
               <Text color="#FFFFFF" width={'90%'}>
-                1 hora
+                1 {context.language == 0
+                  ? "hour"
+                  : context.language == 1
+                  ? "hora"
+                  : null}
               </Text>
 
               {options === _1H ?
@@ -410,7 +424,11 @@ export function MusicPlayer() {
             }}>
             <HStack alignItems={'center'} width={'100%'}>
               <Text color="#FFFFFF" width={'90%'}>
-                6 horas
+                6 {context.language == 0
+                  ? "hours"
+                  : context.language == 1
+                  ? "horas"
+                  : null}
               </Text>
 
               {options === _6H ?
@@ -438,7 +456,11 @@ export function MusicPlayer() {
             }}>
             <HStack alignItems={'center'} width={'100%'}>
               <Text color="#FFFFFF" width={'90%'}>
-                Personalizar
+              {context.language == 0
+                  ? "Customize"
+                  : context.language == 1
+                  ? "Personalizar"
+                  : null}
               </Text>
 
               {options !== _30MIN && options !== _1H && options !== _6H && options > 0 ?
@@ -468,7 +490,11 @@ export function MusicPlayer() {
               textAlign="center"
               fontFamily={'robomedium'}
               fontSize={16}>
-              Personalizar
+              {context.language == 0
+                  ? "Customize"
+                  : context.language == 1
+                  ? "Personalizar"
+                  : null}
             </Text>
           </VStack>
 
@@ -478,7 +504,17 @@ export function MusicPlayer() {
             fontFamily={'robolight'}
             fontSize={14}>
             {onChangeValueFinalControl ? onChangeValueFinal : onChangeEndValue}
-            {onChangeEndValue === 1 ? ' hora' : ' horas'}
+            {onChangeEndValue === 1 ? 
+            context.language == 0
+            ? " hour"
+            : context.language == 1
+            ? " hora"
+            : null : 
+            context.language == 0
+            ? " hours"
+            : context.language == 1
+            ? " horas"
+            : null }
           </Text>
 
           <Slider
@@ -516,7 +552,11 @@ export function MusicPlayer() {
                 <Text
                   color="#FFFFFF"
                 >
-                  Cancelar
+                  {context.language == 0
+                  ? "Cancel"
+                  : context.language == 1
+                  ? "Cancelar"
+                  : null}
                 </Text>
               </Button>
 

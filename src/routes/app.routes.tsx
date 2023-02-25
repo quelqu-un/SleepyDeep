@@ -18,6 +18,9 @@ import React, { useContext, useEffect } from 'react';
 import { CustomDrawerContent } from '../components/CustomDrawerContent';
 import { GravationScreen } from '../screens/anotation/GravationScreen';
 import { DonateScreen } from '../screens/alarm/DonateScreen';
+import { LangContext } from '../contexts/langProvider';
+import { dataHome } from '../model/Data';
+import { translation } from './utils';
 
 
 const Screen = createNativeStackNavigator();
@@ -112,7 +115,9 @@ function MainTab() {
 }
 
 function HomeDrawer() {
-  const fontFamily = "Roboto_500Medium"
+  const fontFamily = "Roboto_500Medium";
+  const context:any = useContext(LangContext);
+  
   return ( 
     <Drawer.Navigator 
     screenOptions={{ 
@@ -125,7 +130,11 @@ function HomeDrawer() {
 
         
       <Drawer.Screen 
-      name="Chuvas" 
+      name={context.language == 0
+        ? dataHome[0][1].textEn
+        : context.language == 1
+        ? dataHome[0][1].textBr
+        : null} 
       component={HomeScreen} 
       options={{
         drawerItemStyle: {
@@ -139,7 +148,11 @@ function HomeDrawer() {
       />
 
       <Drawer.Screen 
-      name="Músicas instrumental" 
+      name={context.language == 0
+        ? dataHome[0][2].textEn
+        : context.language == 1
+        ? dataHome[0][2].textBr
+        : null}  
       component={MainTab} 
       options={{
         drawerItemStyle: {
@@ -153,7 +166,11 @@ function HomeDrawer() {
       />
 
       <Drawer.Screen 
-      name="Sons da natureza" 
+      name={context.language == 0
+        ? dataHome[1][0].textEn
+        : context.language == 1
+        ? dataHome[1][0].textBr
+        : null}  
       component={MainTab} 
       options={{
         drawerItemStyle: {
@@ -167,7 +184,11 @@ function HomeDrawer() {
       />
 
       <Drawer.Screen 
-      name="ASMR" 
+      name={context.language == 0
+        ? dataHome[1][1].textEn
+        : context.language == 1
+        ? dataHome[1][1].textBr
+        : null} 
       component={MainTab} 
       options={{
         drawerItemStyle: {
@@ -181,7 +202,11 @@ function HomeDrawer() {
       />
 
       <Drawer.Screen 
-      name="Histórias de Ninar" 
+      name={context.language == 0
+        ? dataHome[1][2].textEn
+        : context.language == 1
+        ? dataHome[1][2].textBr
+        : null} 
       component={MainTab} 
       options={{
         drawerItemStyle: {
@@ -195,7 +220,11 @@ function HomeDrawer() {
       />
 
       <Drawer.Screen 
-      name="Sons de onda" 
+      name={context.language == 0
+        ? translation[1].English
+        : context.language == 1
+        ? translation[1].Portuguese
+        : null} 
       component={MainTab} 
       options={{
         drawerItemStyle: {
@@ -209,7 +238,11 @@ function HomeDrawer() {
       />
 
       <Drawer.Screen 
-      name="Anotações" 
+      name={context.language == 0
+        ? translation[4].English
+        : context.language == 1
+        ? translation[4].Portuguese
+        : null}
       component={MainTab} 
       options={{
         drawerItemStyle: {
@@ -223,7 +256,11 @@ function HomeDrawer() {
       />
 
       <Drawer.Screen 
-      name="O que sonhei hoje" 
+      name={context.language == 0
+        ? dataHome[3][0].textEn
+        : context.language == 1
+        ? dataHome[3][0].textBr
+        : null}
       component={MainTab} 
       options={{
         drawerItemStyle: {
@@ -237,7 +274,11 @@ function HomeDrawer() {
       />
 
       <Drawer.Screen 
-      name="Estresse do dia" 
+      name={context.language == 0
+        ? dataHome[3][1].textEn
+        : context.language == 1
+        ? dataHome[3][1].textBr
+        : null} 
       component={MainTab} 
       options={{
         drawerItemStyle: {
@@ -251,7 +292,11 @@ function HomeDrawer() {
       />
 
       <Drawer.Screen 
-      name="Metas do dia" 
+      name={context.language == 0
+        ? dataHome[3][2].textEn
+        : context.language == 1
+        ? dataHome[3][2].textBr
+        : null}
       component={MainTab} 
       options={{
         drawerItemStyle: {
@@ -265,7 +310,11 @@ function HomeDrawer() {
       />
 
       <Drawer.Screen 
-      name="Doar" 
+      name={context.language == 0
+        ? translation[5].English
+        : context.language == 1
+        ? translation[5].Portuguese
+        : null}
       component={MainTab} 
       options={{
         drawerItemStyle: {

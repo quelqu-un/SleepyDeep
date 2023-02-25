@@ -49,7 +49,6 @@ export function TextInputAnotation(props) {
         setSaveControl(true);
 
         if(idAnotation === undefined) {
-            console.log(idAnotation)
             await AsyncStorage.getItem("TESTECOUNT2").then((count) => {
                 let countJson = count ? JSON.parse(count) : 0;
     
@@ -129,11 +128,23 @@ export function TextInputAnotation(props) {
 
     const mensageModal = () => {
         if (note.length === 0 && noteTitle.length === 0) {
-            return 'Insira o título e o texto.'
+            return context.language == 0
+                ? "Enter title and text."
+                : context.language == 1
+                ? "Insira o título e texto."
+                : null
         } else if (note.length === 0) {
-            return 'Insira o texto.'
+            return context.language == 0
+            ? "Enter text."
+            : context.language == 1
+            ? "Insira o texto."
+            : null
         } else if (noteTitle.length === 0) {
-            return 'Insira o título.'
+            return context.language == 0
+            ? "Enter title."
+            : context.language == 1
+            ? "Insira o título."
+            : null
         } else {
             return
         }
@@ -149,11 +160,15 @@ export function TextInputAnotation(props) {
             name: props.route.params.name
         });
     }
+    
     const TodaysDate = () => {
         const dateNow = new Date(Date.now());
 
-        return `${dateNow.getDate()}/${dateNow.getUTCMonth()+1}/${dateNow.getFullYear()}`
-
+        if(context.language == 0) {
+            return `${dateNow.getUTCMonth()+1}/${dateNow.getDate()}/${dateNow.getFullYear()}`
+        } else if(context.language == 1) {
+            return `${dateNow.getDate()}/${dateNow.getUTCMonth()+1}/${dateNow.getFullYear()}`
+        }
     }
 
     return (
@@ -184,7 +199,11 @@ export function TextInputAnotation(props) {
                         multiline
                         value={noteTitle}
                         onChangeText={setNoteTitle}
-                        placeholder={'Título'}
+                        placeholder={context.language == 0
+                            ? "Title"
+                            : context.language == 1
+                            ? "Título"
+                            : null}
                         placeholderTextColor={"#FFFFFF"}
                     />
 
@@ -213,7 +232,11 @@ export function TextInputAnotation(props) {
                         multiline
                         value={note}
                         onChangeText={setNote}
-                        placeholder={'Texto aqui'}
+                        placeholder={context.language == 0
+                            ? "Text here"
+                            : context.language == 1
+                            ? "Texto aqui"
+                            : null}
                         placeholderTextColor={"#FFFFFF"}
                         style={styles.input}
                     />
@@ -250,7 +273,11 @@ export function TextInputAnotation(props) {
                 <Modal.Content maxWidth="350" {...styles[placementBack]} bg="#5C4EBC">
                     <Modal.Header bg="#5C4EBC" borderColor={"#5C4EBC"}>
                         <Text color="#FFFFFF" fontSize={"16px"} fontFamily={'robobold'}>
-                            Atenção
+                            {context.language == 0
+                            ? "Alert"
+                            : context.language == 1
+                            ? "Atenção"
+                            : null}
                         </Text>
                     </Modal.Header>
 
