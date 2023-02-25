@@ -40,6 +40,8 @@ export function CardAnotation({ cor, name, value, navId, navName, ...rest }) {
       return "";
     }
   }
+
+  const newValue = value.reverse();
   
   return (
     <VStack alignSelf={'center'} justifyContent = {'center'} flexDirection = {'row'} 
@@ -72,43 +74,43 @@ export function CardAnotation({ cor, name, value, navId, navName, ...rest }) {
               borderBottomRightRadius={20}
             bg="#FFFFFF"> 
 
-              {value.reverse()[0] !== undefined ? <HStack alignItems={'center'} marginTop={'-5px'} marginBottom={'-10px'}>
+              {newValue[0] !== undefined ? <HStack alignItems={'center'} marginTop={'-5px'} marginBottom={'-10px'}>
                 <VStack bg={"#FFFFFF"} marginTop={'-10px'} marginBottom={"5px"} marginRight={'5px'} width={'4px'} height={'4px'} borderRadius={'full'}>
                 </VStack>   
                 <Text color={"#FFFFFF"} >
-                  {formatText(value.reverse()[0]?.title)} {'\n'}
+                  {formatText(newValue[0]?.title)} {'\n'}
                 </Text>   
               </HStack>  : null}
 
-              {value.reverse()[1] !== undefined ? <HStack alignItems={'center'} marginTop={'-5px'} marginBottom={'-10px'}>
+              {newValue[1] !== undefined ? <HStack alignItems={'center'} marginTop={'-5px'} marginBottom={'-10px'}>
                 <VStack bg={"#FFFFFF"} marginTop={'-10px'} marginBottom={"5px"} marginRight={'5px'} width={'4px'} height={'4px'} borderRadius={'full'}>
                 </VStack>   
                 <Text color={"#FFFFFF"} >
-                  {formatText(value.reverse()[1]?.title)} {'\n'}
+                  {formatText(newValue[1]?.title)} {'\n'}
                 </Text>   
               </HStack>  : null}
 
-              {value.reverse()[2] !== undefined ? <HStack alignItems={'center'} marginTop={'-5px'} marginBottom={'-10px'}>
+              {newValue[2] !== undefined ? <HStack alignItems={'center'} marginTop={'-5px'} marginBottom={'-10px'}>
                 <VStack bg={"#FFFFFF"} marginTop={'-10px'} marginBottom={"5px"} marginRight={'5px'} width={'4px'} height={'4px'} borderRadius={'full'}>
                 </VStack>   
                 <Text color={"#FFFFFF"} >
-                  {formatText(value.reverse()[2]?.title)} {'\n'}
+                  {formatText(newValue[2]?.title)} {'\n'}
                 </Text>   
               </HStack>  : null}
 
-              {value.reverse()[3] !== undefined ? <HStack alignItems={'center'} marginTop={'-5px'} marginBottom={'-10px'}>
+              {newValue[3] !== undefined ? <HStack alignItems={'center'} marginTop={'-5px'} marginBottom={'-10px'}>
                 <VStack bg={"#FFFFFF"} marginTop={'-10px'} marginBottom={"5px"} marginRight={'5px'} width={'4px'} height={'4px'} borderRadius={'full'}>
                 </VStack>   
                 <Text color={"#FFFFFF"} >
-                  {formatText(value.reverse()[3]?.title)} {'\n'}
+                  {formatText(newValue[3]?.title)} {'\n'}
                 </Text>   
               </HStack>  : null}
 
-              {value.reverse()[4] !== undefined ? <HStack alignItems={'center'} marginTop={'-5px'} marginBottom={'-10px'}>
+              {newValue[4] !== undefined ? <HStack alignItems={'center'} marginTop={'-5px'} marginBottom={'-10px'}>
                 <VStack bg={"#FFFFFF"} marginTop={'-10px'} marginBottom={"5px"} marginRight={'5px'} width={'4px'} height={'4px'} borderRadius={'full'}>
                 </VStack>   
                 <Text color={"#FFFFFF"} >
-                  {formatText(value.reverse()[4]?.title)} {'\n'}
+                  {formatText(newValue[4]?.title)} {'\n'}
                 </Text>   
               </HStack>  : null}
 

@@ -1,10 +1,11 @@
 import { Text, useTheme, VStack, Pressable, IPressableProps ,} from 'native-base';
 import { background } from 'native-base/lib/typescript/theme/styled-system';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { Image, TouchableOpacity } from 'react-native';
 import { StyleSheet, View,TextInput } from 'react-native';
 import { dataImagesCardAnotation } from '../model/Data';
 import { useNavigation } from '@react-navigation/native';
+import { LangContext } from '../contexts/langProvider';
 
 export type CardAnotationProps = {
   id: string;
@@ -23,6 +24,8 @@ type Props = IPressableProps & {
 export function HomeCardAnotation({ data, cor, navId, navName,  ...rest }) {
   
   const navigation = useNavigation();
+
+  const context:any = useContext(LangContext);
 
   function handleNewOrder() {
     navigation.navigate("allAnotation", {
@@ -49,7 +52,11 @@ export function HomeCardAnotation({ data, cor, navId, navName,  ...rest }) {
               color="#FFFFFF" 
               fontSize={12}
               fontFamily={'robolight'}>
-                {data.text}
+                {context.language == 0
+                  ? data.textEn
+                  : context.language == 1
+                  ? data.textBr
+                  : null}
                 </Text>
                
                 </VStack>

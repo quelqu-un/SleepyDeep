@@ -5,7 +5,7 @@ import { Image } from 'react-native';
 import { ArrowLeft, PlusCircle } from 'phosphor-react-native';
 import { useNavigation } from '@react-navigation/native';
 import { CardAnotation } from '../../components/CardAnotation';
-import { dataAnotationScreen } from '../../model/Data';
+import { dataAnotationScreen, dataHome } from '../../model/Data';
 import {translation} from '../../routes/utils';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LangContext } from '../../contexts/langProvider';
@@ -159,7 +159,7 @@ export function AnotationScreen() {
         <FlatList
           data={sections}
           keyExtractor={item => item.id}
-          renderItem={({ item }) =>
+          renderItem={({ item, index }) =>
             <View key={item.id}>
 
 
@@ -170,17 +170,35 @@ export function AnotationScreen() {
                 <TouchableOpacity onPress={() => {
                   handleNavigateToTextAnotation(item.id, item.name);
                 }}>
-                  <Text
+                  {
+                    index < 3 ?
+                    <Text
                     fontFamily={'robolight'}
                     marginBottom={3}
                     style={styles.secondtitle}>
+                    {context.language == 0
+                    ? dataHome[3][index].textEn
+                    : context.language == 1
+                    ? dataHome[3][index].textBr
+                    : null}
+                  </Text> : 
+                  <Text
+                  fontFamily={'robolight'}
+                  marginBottom={3}
+                  style={styles.secondtitle}>
                     {item.name}
-                  </Text>
+                </Text>
+                  }
+                  
                 </TouchableOpacity>
 
                 <CardAnotation
                   cor={"#2E888D"}
-                  name={'Todas'}
+                  name={context.language == 0
+                    ? "All"
+                    : context.language == 1
+                    ? "Todas"
+                    : null}
                   navId={item.id}
                   navName={item.name}
                   value={item.values}

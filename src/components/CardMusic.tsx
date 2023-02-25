@@ -1,23 +1,29 @@
 import { useNavigation } from '@react-navigation/native';
 import { Text, VStack, IPressableProps } from 'native-base';
+import { useContext } from 'react';
 import { Image, TouchableOpacity } from 'react-native';
 import { StyleSheet } from 'react-native';
+import { LangContext } from '../contexts/langProvider';
 import { dataImagesCardMusic } from '../model/Data';
+import { translation } from '../routes/utils';
 
 
 
 export type CardMusicProps = {
   id: string;
-  text: string;
+  textEn: string;
+  textBr: string;
   recent: boolean;
 }
 
 type Props = IPressableProps & {
-    data: CardMusicProps;
+  data: CardMusicProps;
 }
 
 export function CardMusic({ data, ...rest }: Props) {
   const navigation = useNavigation();
+
+  const context:any = useContext(LangContext);
 
   function handleNewOrder() {
     navigation.navigate("music");
@@ -40,7 +46,11 @@ export function CardMusic({ data, ...rest }: Props) {
               color="#FFFFFF" 
               fontSize={10}
               fontFamily={'robolight'}>
-                {data.text}
+                {context.language == 0
+                  ? data.textEn
+                  : context.language == 1
+                  ? data.textBr
+                  : null}
               </Text>
 
             </VStack>

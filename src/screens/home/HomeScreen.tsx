@@ -156,8 +156,6 @@ export function HomeScreen() {
             horizontal={true}
             keyExtractor={item => item.id}
             renderItem={({ item }) =>
-           
-
               <CardMusic
                 data={item}
               ></CardMusic>
@@ -187,7 +185,7 @@ export function HomeScreen() {
                 cor = {"#32206A"}
                 data={item}
                 navId={item.id}
-                navName={item.text}
+                navName={item.textBr}
                
               ></HomeCardAnotation>
              

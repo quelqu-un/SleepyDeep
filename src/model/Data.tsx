@@ -54,65 +54,77 @@ export const dataindividualHome = [[{
 
 export const dataHome = [[{
   id: '0',
-  text: 'Ouvidos recentes',
+  textEn: 'Recent played',
+  textBr: 'Ouvidos recentes',
   recent: true
 },
 {
   id: '1',
-  text: 'Chuva Forte',
+  textEn: 'Strong rain',
+  textBr: 'Chuva Forte',
   recent: true
 },
 {
   id: '2',
-  text: 'Música Instrumental',
+  textEn: 'Instrumental music',
+  textBr: 'Música Instrumental',
   recent: true
 },
 ], [
   {
     id: '3',
-    text: 'Ondas Alphas',
+    textEn: 'Alpha waves',
+    textBr: 'Ondas Alpha',
     recent: true
   },
   {
     id: '4',
-    text: 'Sons da Natureza',
+    textEn: 'Sounds of nature',
+    textBr: 'Sons da Natureza',
     recent: true
   },
   {
     id: '5',
-    text: 'ASMR',
+    textEn: 'ASMR',
+    textBr: 'ASMR',
     recent: true
   },
 ], [
   {
     id: '6',
-    text: 'História 1',
+    textEn: 'story 1',
+    textBr: 'História 1',
     recent: true
   },
   {
     id: '7',
-    text: 'História 2',
+    textEn: 'story 2',
+    textBr: 'História 2',
     recent: true
   },
   {
     id: '8',
-    text: 'História 3',
+    textEn: 'story 3',
+    textBr: 'História 3',
     recent: true
   },
 ], [
   {
     id: '0',
-    text: 'Sonhos',
+    textEn: 'Dreams',
+    textBr: 'Sonhos',
     recent: true
   },
   {
     id: '1',
-    text: 'Estresse do Dia',
+    textEn: 'Daily stress',
+    textBr: 'Estresse do dia',
     recent: true
   },
   {
     id: '2',
-    text: 'Metas do dia',
+    textEn: 'Goals of the day',
+    textBr: 'Metas do dia',
     recent: true
   },
 ],
