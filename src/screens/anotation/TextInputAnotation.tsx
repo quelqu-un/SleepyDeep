@@ -165,7 +165,7 @@ export function TextInputAnotation(props) {
                 }}
             >
                     
-                <HStack paddingTop={'20px'} paddingBottom={'20px'} paddingX={4} style={styles.title}>
+                <HStack paddingTop={'20px'} paddingBottom={'8px'} paddingX={4} style={styles.title}>
 
 
                     <IconButton
@@ -304,13 +304,13 @@ const styles = StyleSheet.create({
         marginTop: -2
     },
     input: {
-        width: '85%',
-        minHeight: 600,
+        width: '88%',
+        height: 550,
         padding: 20,
         color: "#FFFFFF",
         backgroundColor: "#5C4EBC",
         textAlignVertical: 'top',
-        marginBottom: 50,
+        marginBottom: 30,
         borderRadius: 20,
     },
     button: {
