@@ -2,12 +2,14 @@ import Slider from '@react-native-community/slider';
 import { useNavigation } from '@react-navigation/native';
 import { Sound } from 'expo-av/build/Audio';
 import { Audio } from 'expo-av';
-import { Text, VStack, IPressableProps, HStack, IconButton } from 'native-base';
+import { Text, VStack, IPressableProps, HStack, IconButton, Modal, Button, Spacer } from 'native-base';
 import { PauseCircle, PlayCircle, Trash } from 'phosphor-react-native';
-import { useEffect, useState } from 'react';
 import { TouchableOpacity, View } from 'react-native';
 import { StyleSheet } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useContext, useEffect, useState } from 'react';
+import {translation} from '../routes/utils'
+import { LangContext } from '../contexts/langProvider';
 
 type NoteType = {
   id: string;
@@ -28,6 +30,17 @@ type Props = IPressableProps & {
 
 export function SavedRecAnotation({ data, onDelete, recControl, setRecControl, name, ...rest }: Props) {
   const navigation = useNavigation();
+  const [open, setOpen] = useState(false);
+  const [openBack, setOpenBack] = useState(false);
+  const [textSave, setTextSave] = useState("");
+  const [placement, setPlacement] = useState(undefined);
+
+  const context:any = useContext(LangContext);
+
+  function handleNewNewOrder() {
+    setOpenBack(true);
+  }
+
   const [sound, setSound] = useState<Sound>(new Audio.Sound());
 
   const [playPauseRecording, setPlayPauseRecording] = useState(false);
@@ -170,7 +183,7 @@ export function SavedRecAnotation({ data, onDelete, recControl, setRecControl, n
             <IconButton
               marginTop={-1}
               icon={<Trash color="#FFFFFF" size={20} />}
-              onPress={deleteNote}
+              onPress={handleNewNewOrder }
             />
 
             <Text
@@ -185,7 +198,58 @@ export function SavedRecAnotation({ data, onDelete, recControl, setRecControl, n
         </View>
 
       </VStack>
-    </VStack>
+      <Modal isOpen={openBack} onClose={() => setOpenBack(false)} safeAreaTop={true}>
+        <Modal.Content maxWidth="350" {...styles[placement]} bg="#5C4EBC">
+          <Modal.Header bg="#5C4EBC" borderColor={"#5C4EBC"}>
+            <Text color="#FFFFFF" fontSize={"16px"} fontFamily={'robobold'}>
+            {context.language == 0
+                ? translation[20].English
+                : context.language == 1
+                ? translation[20].Portuguese
+                : null}
+            </Text>
+          </Modal.Header>
+
+          <Modal.Body>
+            <Text color="#FFFFFF" fontSize={"14px"} fontFamily={'robomedium'}>
+               {context.language == 0
+                ? translation[21].English
+                : context.language == 1
+                ? translation[21].Portuguese
+                : null}
+            </Text>
+          </Modal.Body>
+          <Modal.Footer bg="#5C4EBC" borderColor={"#5C4EBC"}>
+            <Button.Group width={'100%'}>
+              <Button bg="#2F2570" width={'120px'} height={'40px'} onPress={() => {
+                 setOpenBack(false);
+              }}>
+                <Text color="#FFFFFF" fontFamily={'robomedium'}>
+                {context.language == 0
+                ? translation[19].English
+                : context.language == 1
+                ? translation[19].Portuguese
+                : null}
+                </Text>
+              </Button>
+              <Spacer />
+              <Button bg="#2F2570" width={'120px'} height={'40px'} onPress={() => {
+                deleteNote()
+                setOpenBack(false);
+                // saveNote();
+                // navigation.navigate('allAnotation');
+              }}>
+                <Text color="#FFFFFF" fontFamily={'robomedium'} 
+                >
+                  Ok
+                </Text>
+              </Button>
+            </Button.Group>
+          </Modal.Footer>
+        </Modal.Content>
+      </Modal>
+      </VStack>
+
   );
 }
 

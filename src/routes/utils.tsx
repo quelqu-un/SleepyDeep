@@ -3,8 +3,8 @@
 // english
 export const translation = [
     {
-      English: 'Music',
-      Portuguese: 'Músicas', // 0
+      English: 'Sounds',
+      Portuguese: 'Sons', // 0
    
     },
     {
@@ -77,7 +77,8 @@ export const translation = [
         {
           English: 'Warning!',
           Portuguese: 'Aviso!', // 14
-        }, {
+        }, 
+        {
           English: 'If you go back to the previous page, this recording will be deleted',
           Portuguese: 'Se você voltar para página anterior, a gravação será excluída.', // 15
         },
@@ -95,6 +96,22 @@ export const translation = [
           {
             English: 'en',
             Portuguese: 'br', // 18
+          },
+
+          //Buttons
+          {
+            English: 'Cancel',
+            Portuguese: 'Cancelar', // 19
+          },
+
+          //Delete
+          {
+            English: 'Delete File',
+            Portuguese: 'Excluir arquivo', // 20
+          },
+          {
+            English: 'Are you certain you want to delete this file?',
+            Portuguese: 'Tem certeza de que deseja excluir este arquivo?', // 21
           },
   ];
    //Search Placeholders
