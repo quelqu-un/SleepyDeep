@@ -113,5 +113,10 @@ export const translation = [
             English: 'Are you certain you want to delete this file?',
             Portuguese: 'Tem certeza de que deseja excluir este arquivo?', // 21
           },
+
+          {
+            English: "This section can't be deleted.",
+            Portuguese: 'Essa seção não pode ser excluída.', // 22
+          },
   ];
    //Search Placeholders
