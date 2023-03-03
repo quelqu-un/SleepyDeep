@@ -1,8 +1,9 @@
-import { Text, VStack, IPressableProps, HStack, IconButton, Spacer ,} from 'native-base';
-import { TouchableOpacity } from 'react-native';
+import { Text, VStack, IPressableProps, HStack, IconButton } from 'native-base';
+import { TouchableOpacity, Image } from 'react-native';
 import { StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Trash } from 'phosphor-react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export type CardAnotationProps = {
   id: string;
@@ -13,12 +14,13 @@ export type CardAnotationProps = {
 type Props = IPressableProps & {
   data: CardAnotationProps;
   name: string;
+  onDelete: Function;
   value: any;
   navId: number;
   navName: string;
 }
 
-export function CardAnotation({ cor, name, value, navId, navName, ...rest }) {
+export function CardAnotation({ cor, name, onDelete, value, navId, navName, ...rest }) {
   const navigation = useNavigation();
 
   function handleNewOrder() {
@@ -26,6 +28,21 @@ export function CardAnotation({ cor, name, value, navId, navName, ...rest }) {
       id: navId,
       name: navName,
     });
+  }
+
+  const deleteSection = async () => {
+    if(navName !== "Sonhos" && navName !== "Estresse do Dia" && navName !== "Metas do dia") {
+      await AsyncStorage.getItem("ALLSECTIONTEST1").then((notes) => {
+        let newNotes = JSON.parse(notes);
+  
+        const indexSectionRemove = newNotes.indexOf(newNotes.filter(function(obj){return obj.name === navName;})[0]);
+        newNotes.splice(indexSectionRemove, 1);
+  
+        AsyncStorage.setItem("ALLSECTIONTEST1", JSON.stringify(newNotes)).then((value) => {
+          onDelete();
+        });
+      });
+    }
   }
 
   const formatText = (text) => {
@@ -53,7 +70,7 @@ export function CardAnotation({ cor, name, value, navId, navName, ...rest }) {
           
             >
           <TouchableOpacity  onPress={handleNewOrder} >
-            <HStack  >
+            <HStack height={'30px'}>
             
               <Text flex={1} textAlign={'center'} style = {styles.text} 
                 color="#FFFFFF" 
@@ -62,10 +79,17 @@ export function CardAnotation({ cor, name, value, navId, navName, ...rest }) {
                 {name}
               </Text>
          
-              <IconButton  
+              { navName === "Sonhos" || navName === "Estresse do Dia" || navName === "Metas do dia"
+                ? <Image 
+                style={styles.imageLogo} 
+                source={require('../assets/images/moonalone.png')} /> :
+                <IconButton  
                 icon={<Trash  color="#FFFFFF" size={18} />}
-                onPress={() => {}}
-              />
+                onPress={() => {
+                  deleteSection();
+                  }
+                }
+              /> }
 
             </HStack>
 
@@ -118,34 +142,38 @@ export function CardAnotation({ cor, name, value, navId, navName, ...rest }) {
           </TouchableOpacity>
             
         </VStack>
-
+        
 
     </VStack>
    
   );
 }
 const styles = StyleSheet.create({
-    imagens: {
-      color: "#FFFFFF",
-      width: 120,
-      height: 100
-  
-    } ,
-     legenda: {
-      color: "#FFFFFF",
-      width: 310,
-     },
-     text: {
-      justifyContent:'center',
-      alignSelf:'center',
-      flexDirection: 'row',
-      marginLeft: 30,
-   
-     },
-     input: {
-      width: 310,
-      height: 130,
-      padding: 10,
-      backgroundColor:"#251751" ,
-    },
-  });
+  imagens: {
+    color: "#FFFFFF",
+    width: 120,
+    height: 100,
+  },
+  legenda: {
+  color: "#FFFFFF",
+  width: 310,
+  },
+  imageLogo: {
+    width: 25,
+    height: 25,
+    marginTop: 2,
+    marginRight: 6
+  },
+  text: {
+    justifyContent:'center',
+    alignSelf:'center',
+    flexDirection: 'row',
+    marginLeft: 30,
+  },
+    input: {
+    width: 310,
+    height: 130,
+    padding: 10,
+    backgroundColor:"#251751" ,
+  },
+});

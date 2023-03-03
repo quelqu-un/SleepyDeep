@@ -77,9 +77,7 @@ export function SavedTextAnotation({ data, onDelete, name, id, ...rest }: Props)
     <TouchableOpacity onPress={handleNewOrder} >
       <VStack alignItems={'center'} paddingBottom={'12px'} >
 
-        <VStack style={styles.legenda} bg="#32206A"
-
-        >
+        <VStack style={styles.legenda} bg="#32206A">
           <HStack flexDirection={'row'}
             justifyContent={'space-between'}>
 
@@ -118,6 +116,7 @@ export function SavedTextAnotation({ data, onDelete, name, id, ...rest }: Props)
           </HStack>
 
         </VStack>
+
         <Modal isOpen={openBack} onClose={() => setOpenBack(false)} safeAreaTop={true}>
         <Modal.Content maxWidth="350" {...styles[placement]} bg="#5C4EBC">
           <Modal.Header bg="#5C4EBC" borderColor={"#5C4EBC"}>
@@ -169,7 +168,7 @@ export function SavedTextAnotation({ data, onDelete, name, id, ...rest }: Props)
             </Button.Group>
           </Modal.Footer>
         </Modal.Content>
-      </Modal>
+        </Modal>
       </VStack>
     </TouchableOpacity>
   );

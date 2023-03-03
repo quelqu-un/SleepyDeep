@@ -33,6 +33,15 @@ export function AnotationScreen() {
     });
   }
 
+  const onDelete = async () => {
+    AsyncStorage.getItem("ALLSECTIONTEST1").then((noteValue) => {
+      if (noteValue) {
+        let noteJson = JSON.parse(noteValue);
+        setSections(noteJson)
+      }
+    });
+  }
+
   const saveSection = async () => {
     //ALLSECTIONTEST1
     await AsyncStorage.getItem("TESTECOUNT3").then((count) => {
@@ -199,6 +208,7 @@ export function AnotationScreen() {
                     : context.language == 1
                     ? "Todas"
                     : null}
+                  onDelete={onDelete}
                   navId={item.id}
                   navName={item.name}
                   value={item.values}
