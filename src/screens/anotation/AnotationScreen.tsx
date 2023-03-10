@@ -5,7 +5,7 @@ import { Image } from 'react-native';
 import { ArrowLeft, PlusCircle } from 'phosphor-react-native';
 import { useNavigation } from '@react-navigation/native';
 import { CardAnotation } from '../../components/CardAnotation';
-import { dataAnotationScreen, dataHome } from '../../model/Data';
+import { dataHome } from '../../model/Data';
 import {translation} from '../../routes/utils';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LangContext } from '../../contexts/langProvider';
@@ -99,7 +99,7 @@ export function AnotationScreen() {
             },
             {
               id: countJson + 1,
-              name: "Estresse do Dia",
+              name: "Estresse do dia",
               values: []
             },
             {

@@ -1,23 +1,8 @@
-export const songs = [
-  {
-    id: 1,
-    title: 'About You',
-
-    img: require('../assets/images/music_0.png'),
-    source: require('../assets/audio/aboutu.mpeg'),
-  },
-  {
-    id: 2,
-    title: 'Gabriel é o cara!!!!!!!!',
-    img: require('../assets/images/music_1.png'),
-    source: require('../assets/audio/gabrielenjoadinho.mp3'),
-  },
-];
-
 export const songsPath = [
   require('../assets/audio/aboutu.mpeg'),
   require('../assets/audio/enjoadinho.mp4'),
 ];
+
 export const dataindividualHome = [[{
   id: '0',
   text: 'Chuvisco',
@@ -118,7 +103,7 @@ export const dataHome = [[{
   {
     id: '1',
     textEn: 'Daily stress',
-    textBr: 'Estresse do dia',
+    textBr: 'Estresse do Dia',
     recent: true
   },
   {
@@ -126,96 +111,6 @@ export const dataHome = [[{
     textEn: 'Goals of the day',
     textBr: 'Metas do dia',
     recent: true
-  },
-],
-
-];
-
-export const dataAllAnotation = [[{
-  id: '0',
-  text: 'Chapeuzinho',
-  datas: '01/08/22',
-  recent: true
-},
-
-], [
-  {
-    id: '1',
-    text: 'Laura',
-    datas: '01/08/22',
-    recent: true
-  },
-
-], [
-  {
-    id: '2',
-    text: 'Rainha',
-    datas: '01/08/22',
-    recent: true
-  },
-
-], [
-  {
-    id: '3',
-    text: 'O resto nadinhar',
-    datas: '01/08/22',
-    recent: true
-  },
-
-], [
-  {
-    id: '4',
-    text: 'Recording_01',
-    datas: '01/08/22',
-    recent: true
-  },
-
-],
-[
-  {
-    id: '5',
-    text: 'Recording_02',
-    datas: '01/08/22',
-    recent: true
-  },
-
-],
-
-];
-
-export const dataAnotationScreen = [[{
-  id: '0',
-  text: 'Recentes',
-  recent: true
-},
-{
-  id: '1',
-  text: 'Tudo',
-  recent: false
-},
-
-], [
-  {
-    id: '2',
-    text: 'Recentes',
-    recent: true
-  },
-  {
-    id: '3',
-    text: 'Tudo',
-    recent: false
-  },
-
-], [
-  {
-    id: '3',
-    text: 'Recentes',
-    recent: true
-  },
-  {
-    id: '4',
-    text: 'Tudo',
-    recent: false
   },
 ],
 
@@ -242,14 +137,10 @@ export const dataImagesCardAnotation = [
 ];
 
 export const dataImagesCardindividualMusic = [
-    
   require('../assets/imageind/rain1.jpg'),
   require('../assets/imageind/rain2.jpg'),
   require('../assets/imageind/rain3.jpg'),
   require('../assets/imageind/rain4.jpg'),
   require('../assets/imageind/rain5.jpg'),
   require('../assets/imageind/rain6.jpg'),
-  
-
- 
 ];

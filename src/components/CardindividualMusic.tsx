@@ -2,7 +2,6 @@ import { useNavigation } from '@react-navigation/native';
 import { Text, VStack, IPressableProps } from 'native-base';
 import { Image, TouchableOpacity } from 'react-native';
 import { StyleSheet } from 'react-native';
-import { dataImagesCardMusic } from '../model/Data';
 import { dataImagesCardindividualMusic } from '../model/Data';
 
 export type CardMusicProps = {

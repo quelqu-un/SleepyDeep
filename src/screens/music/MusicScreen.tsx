@@ -11,7 +11,7 @@ import {translation} from '../../routes/utils';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LangContext } from '../../contexts/langProvider';
 
-export function MusicScreen() {
+export function MusicScreen(props) {
   const navigation = useNavigation();
   const context:any = useContext(LangContext);
 
@@ -33,11 +33,7 @@ export function MusicScreen() {
               fontFamily={'robobold'}
               color={'#FFFFFF'}
               fontSize={19}>
-              {context.language == 0
-                  ? "Rain"
-                  : context.language == 1
-                  ? "Chuva"
-                  : null}
+              {props.route.params.title}
             </Text>
 
 

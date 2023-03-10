@@ -26,7 +26,13 @@ export function CardMusic({ data, ...rest }: Props) {
   const context:any = useContext(LangContext);
 
   function handleNewOrder() {
-    navigation.navigate("music");
+    navigation.navigate("music", {
+      title: context.language == 0
+        ? data.textEn
+        : context.language == 1
+        ? data.textBr
+        : null
+    });
   }
 
   return (
