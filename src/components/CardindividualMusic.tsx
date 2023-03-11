@@ -1,31 +1,31 @@
 import { useNavigation } from '@react-navigation/native';
 import { Text, VStack, IPressableProps } from 'native-base';
+import { useContext } from 'react';
 import { Image, TouchableOpacity } from 'react-native';
 import { StyleSheet } from 'react-native';
-import { dataImagesCardindividualMusic } from '../model/Data';
+import { LangContext } from '../contexts/langProvider';
 
-export type CardMusicProps = {
-  id: string;
-  text: string;
-  recent: boolean;
-}
-
-type Props = IPressableProps & {
-    data: CardMusicProps;
-}
-
-export function CardindividualMusic({ data, ...rest }: Props) {
+export function CardindividualMusic({ data, listSongs }) {
   const navigation = useNavigation();
+  const context:any = useContext(LangContext);
 
 
   function handleNewNewOrder() {
-    navigation.navigate("musicplayer");
+    navigation.navigate("musicplayer", {
+      id: data.id,
+      listSongs: listSongs,
+    });
   }
 
   return (
     <TouchableOpacity  onPress={handleNewNewOrder} >
         <VStack width={100} height={95} marginLeft={4} marginRight={5} >
-            <Image  style={styles.imagens} borderTopLeftRadius ={20} borderTopRightRadius ={20}  source={dataImagesCardindividualMusic[data.id]} />
+            <Image 
+            style={styles.imagens} 
+            borderTopLeftRadius={20} 
+            borderTopRightRadius ={20}  
+            source={data.imagePath} 
+            />
 
             <VStack style={styles.legenda}  bg="#32206A" 
             borderBottomLeftRadius={20} 
@@ -39,7 +39,11 @@ export function CardindividualMusic({ data, ...rest }: Props) {
               color="#FFFFFF" 
               fontSize={10}
               fontFamily={'robolight'}>
-                {data.text}
+                {context.language == 0
+                ? data.textEn
+                : context.language == 1
+                ? data.textBr
+                : null}
               </Text>
 
             </VStack>

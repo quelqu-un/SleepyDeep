@@ -12,7 +12,7 @@ import { Sound } from 'expo-av/build/Audio';
 import { songsPath } from '../../model/Data';
 import { LangContext } from '../../contexts/langProvider';
 
-export function MusicPlayer() {
+export function MusicPlayer(props) {
   const timerOptions = useDisclose();
   const customOptions = useDisclose();
   const context:any = useContext(LangContext);
@@ -25,7 +25,7 @@ export function MusicPlayer() {
 
   const [sound, setSound] = useState<Sound>(new Audio.Sound());
   const [playPause, setplayPause] = useState<boolean>(false);
-  const [musicIndex, setMusicIndex] = useState<number>(0);
+  const [musicIndex, setMusicIndex] = useState<number>(props.route.params.id);
   const [musicCheck, setMusicCheck] = useState<boolean>(true);
   const [control, setControl] = useState<any>({
     isBuffering: 0,
@@ -58,7 +58,7 @@ export function MusicPlayer() {
       };
 
       sound.setOnPlaybackStatusUpdate(onPlaybackStatusUpdate);
-      sound.loadAsync(songsPath.sounds[musicIndex], status, true);
+      sound.loadAsync(props.route.params.listSongs[musicIndex], status, true);
 
       setMusicCheck(false);
     }
@@ -69,7 +69,7 @@ export function MusicPlayer() {
         isLooping: true
       };
       sound.unloadAsync();
-      sound.loadAsync(songsPath.sounds[musicIndex], status, false);
+      sound.loadAsync(props.route.params.listSongs[musicIndex], status, false);
       sound.playAsync();
     }
   }, [musicIndex]);
@@ -138,7 +138,7 @@ export function MusicPlayer() {
     setOnChangeEndValue(1);
     setOnChangeValueFinal(1);
     setOnChangeValueFinalControl(true);
-    if (musicIndex === (songsPath.sounds.length - 1)) {
+    if (musicIndex === (props.route.params.listSongs.length - 1)) {
       setMusicIndex(0);
       setplayPause(false);
     } else {
@@ -157,7 +157,7 @@ export function MusicPlayer() {
     setOnChangeValueFinal(1);
     setOnChangeValueFinalControl(true);
     if (musicIndex === 0) {
-      setMusicIndex(songsPath.sounds.length - 1);
+      setMusicIndex(props.route.params.listSongs.length - 1);
       setplayPause(false);
     } else {
       setMusicIndex(musicIndex - 1);

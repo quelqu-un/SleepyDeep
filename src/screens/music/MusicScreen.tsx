@@ -44,12 +44,13 @@ export function MusicScreen(props) {
 
           <HStack marginBottom={10}>
             <FlatList
-              data={dataindividualHome[0]}
+              data={props.route.params.sounds[0]}
               horizontal={true}
               keyExtractor={item => item.id}
               renderItem={({ item }) =>
                 <CardindividualMusic
                   data={item}
+                  listSongs={props.route.params.sounds[2]}
                 ></CardindividualMusic>
               }
               contentContainerStyle={{ paddingBottom: 40 }}
@@ -58,12 +59,13 @@ export function MusicScreen(props) {
           </HStack>
           <HStack marginBottom={10}>
             <FlatList
-              data={dataindividualHome[1]}
+              data={props.route.params.sounds[1]}
               horizontal={true}
               keyExtractor={item => item.id}
               renderItem={({ item }) =>
                 <CardindividualMusic
                   data={item}
+                  listSongs={props.route.params.sounds[2]}
                 ></CardindividualMusic>
               }
               contentContainerStyle={{ paddingBottom: 40 }}

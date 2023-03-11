@@ -5,22 +5,8 @@ import { Image, TouchableOpacity } from 'react-native';
 import { StyleSheet } from 'react-native';
 import { LangContext } from '../contexts/langProvider';
 import { dataImagesCardMusic } from '../model/Data';
-import { translation } from '../routes/utils';
 
-
-
-export type CardMusicProps = {
-  id: string;
-  textEn: string;
-  textBr: string;
-  recent: boolean;
-}
-
-type Props = IPressableProps & {
-  data: CardMusicProps;
-}
-
-export function CardMusic({ data, ...rest }: Props) {
+export function CardMusic({ data }) {
   const navigation = useNavigation();
 
   const context:any = useContext(LangContext);
@@ -31,7 +17,8 @@ export function CardMusic({ data, ...rest }: Props) {
         ? data.textEn
         : context.language == 1
         ? data.textBr
-        : null
+        : null,
+      sounds: data.sounds
     });
   }
 

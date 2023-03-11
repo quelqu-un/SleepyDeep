@@ -19,7 +19,7 @@ import { CustomDrawerContent } from '../components/CustomDrawerContent';
 import { GravationScreen } from '../screens/anotation/GravationScreen';
 import { DonateScreen } from '../screens/alarm/DonateScreen';
 import { LangContext } from '../contexts/langProvider';
-import { dataHome } from '../model/Data';
+import { dataHome, dataSoundsRain } from '../model/Data';
 import { translation } from './utils';
 
 
@@ -153,7 +153,11 @@ function HomeDrawer() {
         : context.language == 1
         ? dataHome[0][2].textBr
         : null}  
-      component={MainTab} 
+      component={MusicPlayer} 
+      initialParams={{
+        id: 0,
+        listSongs: dataSoundsRain
+      }}
       options={{
         drawerItemStyle: {
           paddingVertical: 4,
@@ -171,7 +175,11 @@ function HomeDrawer() {
         : context.language == 1
         ? dataHome[1][0].textBr
         : null}  
-      component={MainTab} 
+      component={MusicPlayer} 
+      initialParams={{
+        id: 0,
+        listSongs: dataSoundsRain
+      }} 
       options={{
         drawerItemStyle: {
           paddingVertical: 4,
@@ -189,7 +197,11 @@ function HomeDrawer() {
         : context.language == 1
         ? dataHome[1][1].textBr
         : null} 
-      component={MainTab} 
+      component={MusicPlayer} 
+      initialParams={{
+        id: 0,
+        listSongs: dataSoundsRain
+      }} 
       options={{
         drawerItemStyle: {
           paddingVertical: 4,
@@ -207,7 +219,11 @@ function HomeDrawer() {
         : context.language == 1
         ? dataHome[1][2].textBr
         : null} 
-      component={MainTab} 
+      component={MusicPlayer} 
+      initialParams={{
+        id: 0,
+        listSongs: dataSoundsRain
+      }} 
       options={{
         drawerItemStyle: {
           paddingVertical: 4,
@@ -225,7 +241,11 @@ function HomeDrawer() {
         : context.language == 1
         ? translation[1].Portuguese
         : null} 
-      component={MainTab} 
+      component={MusicPlayer} 
+      initialParams={{
+        id: 0,
+        listSongs: dataSoundsRain
+      }}  
       options={{
         drawerItemStyle: {
           paddingVertical: 4,
@@ -243,7 +263,7 @@ function HomeDrawer() {
         : context.language == 1
         ? translation[4].Portuguese
         : null}
-      component={MainTab} 
+      component={HomeScreen} 
       options={{
         drawerItemStyle: {
           paddingVertical: 4,
@@ -261,7 +281,11 @@ function HomeDrawer() {
         : context.language == 1
         ? dataHome[3][0].textBr
         : null}
-      component={MainTab} 
+      component={AllAnotation} 
+      initialParams={{
+        id: 0,
+        name: "Sonhos"
+      }}  
       options={{
         drawerItemStyle: {
           paddingVertical: 4,
@@ -279,7 +303,11 @@ function HomeDrawer() {
         : context.language == 1
         ? dataHome[3][1].textBr
         : null} 
-      component={MainTab} 
+      component={AllAnotation} 
+      initialParams={{
+        id: 0,
+        name: "Estresse do Dia"
+      }} 
       options={{
         drawerItemStyle: {
           paddingVertical: 4,
@@ -297,7 +325,11 @@ function HomeDrawer() {
         : context.language == 1
         ? dataHome[3][2].textBr
         : null}
-      component={MainTab} 
+      component={AllAnotation} 
+      initialParams={{
+        id: 0,
+        name: "Metas do dia"
+      }} 
       options={{
         drawerItemStyle: {
           paddingVertical: 4,
@@ -315,7 +347,7 @@ function HomeDrawer() {
         : context.language == 1
         ? translation[5].Portuguese
         : null}
-      component={MainTab} 
+      component={HomeScreen} 
       options={{
         drawerItemStyle: {
           paddingVertical: 4,
