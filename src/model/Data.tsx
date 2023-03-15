@@ -29,7 +29,7 @@ export const dataindividualHome = [[{
   text: 'Chuva ',
   recent: true
 },
-],]
+],];
 
 export const dataSoundsRain = [[{
   id: '0',

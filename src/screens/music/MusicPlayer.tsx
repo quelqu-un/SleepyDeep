@@ -9,7 +9,6 @@ import Slider from '@react-native-community/slider';
 
 import { Audio } from 'expo-av';
 import { Sound } from 'expo-av/build/Audio';
-import { songsPath } from '../../model/Data';
 import { LangContext } from '../../contexts/langProvider';
 
 export function MusicPlayer(props) {
@@ -68,9 +67,10 @@ export function MusicPlayer(props) {
         shouldPlay: true,
         isLooping: true
       };
-      sound.unloadAsync();
-      sound.loadAsync(props.route.params.listSongs[musicIndex], status, false);
-      sound.playAsync();
+      sound.unloadAsync().then(v =>
+        sound.loadAsync(props.route.params.listSongs[musicIndex], status, false)
+      );
+      
     }
   }, [musicIndex]);
 
